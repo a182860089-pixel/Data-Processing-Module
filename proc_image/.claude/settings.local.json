@@ -1,0 +1,12 @@
+{
+  "enabledMcpjsonServers": [
+    "Context 7",
+    "shadcn-ui-vue",
+    "llama_index Docs",
+    "graphrag Docs",
+    "fetch",
+    "firecrawl-mcp",
+    "pydantic-ai Docs"
+  ],
+  "enableAllProjectMcpServers": true
+}

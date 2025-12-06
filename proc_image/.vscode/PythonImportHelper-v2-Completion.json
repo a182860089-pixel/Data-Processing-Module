@@ -1,0 +1,224 @@
+[
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "is_animated",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def is_animated(image: pyvips.Image) -> bool:\n    # n_pages > 1 通常表示多页图（动图/多帧/多层）\n    try:\n        return int(getattr(image, 'n_pages', 1)) > 1\n    except Exception:\n        return False\ndef ensure_srgb(image: pyvips.Image) -> pyvips.Image:\n    try:\n        if image.interpretation != pyvips.Interpretation.srgb:\n            return image.colourspace(pyvips.Interpretation.srgb)",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "ensure_srgb",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def ensure_srgb(image: pyvips.Image) -> pyvips.Image:\n    try:\n        if image.interpretation != pyvips.Interpretation.srgb:\n            return image.colourspace(pyvips.Interpretation.srgb)\n    except Exception:\n        # 一些格式不支持/无 ICC，直接返回\n        pass\n    return image\ndef maybe_autorotate(image: pyvips.Image) -> pyvips.Image:\n    \"\"\"",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "maybe_autorotate",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def maybe_autorotate(image: pyvips.Image) -> pyvips.Image:\n    \"\"\"\n    尝试依据 EXIF 方向对图像进行物理旋转；不同版本返回签名可能不同，这里做兼容处理。\n    \"\"\"\n    try:\n        res = image.autorot()\n        if isinstance(res, pyvips.Image):\n            return res\n        # 某些版本可能返回 (image, angle) 或 (image, angle, flip)\n        if isinstance(res, (tuple, list)) and len(res) >= 1 and isinstance(res[0], pyvips.Image):",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "resize_to_box",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def resize_to_box(image: pyvips.Image, max_w: int, max_h: int) -> pyvips.Image:\n    # 保持比例缩放到不超过 max_w x max_h\n    width, height = image.width, image.height\n    if width <= max_w and height <= max_h:\n        return image\n    scale = min(max_w / width, max_h / height)\n    # 大幅缩小时，先整数缩小再连续缩放，质量和性能更好\n    try:\n        shrink = max(1, int(1 // scale))  # 1/scale 的整数部分\n        if shrink > 1:",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "save_webp",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def save_webp(image: pyvips.Image, out_path: str, quality: int) -> None:\n    # 去除元数据尽量使用 strip 选项；如遇老版本不支持则自动降级\n    # 同时尽量选择高质量有损压缩（非 lossless）\n    tried = []\n    # 优先尝试 write_to_file，兼容性最好\n    try:\n        image.write_to_file(out_path, Q=quality, strip=True)\n        return\n    except Exception as e:\n        tried.append((\"write_to_file(strip=True)\", str(e)))",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "process_one",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def process_one(in_path: Path, out_path: Path, max_w: int, max_h: int, quality: int, overwrite: bool) -> bool:\n    out_path.parent.mkdir(parents=True, exist_ok=True)\n    if out_path.exists() and not overwrite:\n        # 已存在则跳过\n        return True\n    # 顺序读有助于大图性能\n    image = pyvips.Image.new_from_file(str(in_path), access=\"sequential\")\n    # 跳过动图等多页图\n    if is_animated(image):\n        print(f\"[SKIP] 多帧/动图跳过: {in_path}\")",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "should_process",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def should_process(file: Path) -> bool:\n    return file.is_file() and file.suffix.lower() in IMAGE_EXTS\ndef main():\n    parser = argparse.ArgumentParser(description=\"使用 pyvips 将图片批量转换为高质量有损 WebP（限制大小、去元数据）\")\n    parser.add_argument(\"input_dir\", nargs=\"?\", default=r\"D:\\\\coding\\\\proc_image\\\\testimgs\",\n                        help=\"待处理的图片文件夹（默认: D:/coding/proc_image/testimgs）\")\n    parser.add_argument(\"--output-dir\", \"-o\", default=None,\n                        help=\"输出文件夹（默认: 在输入目录下创建 webp_output）\")\n    parser.add_argument(\"--max-width\", type=int, default=1920, help=\"最大宽度（默认: 1920）\")\n    parser.add_argument(\"--max-height\", type=int, default=1080, help=\"最大高度（默认: 1080）\")",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "def main():\n    parser = argparse.ArgumentParser(description=\"使用 pyvips 将图片批量转换为高质量有损 WebP（限制大小、去元数据）\")\n    parser.add_argument(\"input_dir\", nargs=\"?\", default=r\"D:\\\\coding\\\\proc_image\\\\testimgs\",\n                        help=\"待处理的图片文件夹（默认: D:/coding/proc_image/testimgs）\")\n    parser.add_argument(\"--output-dir\", \"-o\", default=None,\n                        help=\"输出文件夹（默认: 在输入目录下创建 webp_output）\")\n    parser.add_argument(\"--max-width\", type=int, default=1920, help=\"最大宽度（默认: 1920）\")\n    parser.add_argument(\"--max-height\", type=int, default=1080, help=\"最大高度（默认: 1080）\")\n    parser.add_argument(\"--quality\", \"-q\", type=int, default=90, help=\"WebP 质量 0-100（默认: 85）\")\n    parser.add_argument(\"--recurse\", action=\"store_true\", help=\"递归处理子目录（默认: 否）\")",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "IMAGE_EXTS",
+        "kind": 5,
+        "importPath": "smallimg.webp_compress",
+        "description": "smallimg.webp_compress",
+        "peekOfCode": "IMAGE_EXTS = {\n    \".jpg\", \".jpeg\", \".png\", \".tif\", \".tiff\", \".bmp\", \".webp\", \".heic\", \".heif\",\n    \".gif\"  # 将尽量处理静态 gif，动图将被跳过\n}\ndef is_animated(image: pyvips.Image) -> bool:\n    # n_pages > 1 通常表示多页图（动图/多帧/多层）\n    try:\n        return int(getattr(image, 'n_pages', 1)) > 1\n    except Exception:\n        return False",
+        "detail": "smallimg.webp_compress",
+        "documentation": {}
+    },
+    {
+        "label": "get_new_dimensions",
+        "kind": 2,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "def get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):\n    \"\"\"\n    计算新的图片尺寸，保持宽高比\n    Args:\n        width: 原始宽度\n        height: 原始高度\n        max_width: 最大宽度\n        max_height: 最大高度\n    Returns:\n        (new_width, new_height): 新的宽度和高度",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "compress_image",
+        "kind": 2,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "def compress_image(input_path, output_path, quality=WEBP_QUALITY):\n    \"\"\"\n    压缩单张图片\n    Args:\n        input_path: 输入图片路径\n        output_path: 输出图片路径\n        quality: WebP 质量参数 (0-100)\n    Returns:\n        bool: 是否成功\n    \"\"\"",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "process_folder",
+        "kind": 2,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "def process_folder(folder_path, output_folder=None, quality=WEBP_QUALITY):\n    \"\"\"\n    处理文件夹中的所有图片\n    Args:\n        folder_path: 输入文件夹路径\n        output_folder: 输出文件夹路径（如果为 None，则保存在原文件夹）\n        quality: WebP 质量参数\n    \"\"\"\n    folder_path = Path(folder_path)\n    if not folder_path.exists():",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "def main():\n    \"\"\"主函数\"\"\"\n    parser = argparse.ArgumentParser(\n        description='批量压缩图片并转换为 WebP 格式',\n        formatter_class=argparse.RawDescriptionHelpFormatter,\n        epilog=\"\"\"\n示例:\n  python compress_images.py\n  python compress_images.py -q 80\n  python compress_images.py -o ./output",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "SUPPORTED_FORMATS",
+        "kind": 5,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "SUPPORTED_FORMATS = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.tif', '.webp'}\n# 最大尺寸限制\nMAX_WIDTH = 1920\nMAX_HEIGHT = 1080\n# WebP 质量参数（组合2：极致压缩）\nWEBP_QUALITY = 95\n# 组合2：极致压缩优化参数\nUSE_MINIMIZE_SIZE = True  # 自动优化编码方式\nCOMPRESSION_PASSES = 1  # 压缩迭代次数（1-10，越高越慢但体积越小）\ndef get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_WIDTH",
+        "kind": 5,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "MAX_WIDTH = 1920\nMAX_HEIGHT = 1080\n# WebP 质量参数（组合2：极致压缩）\nWEBP_QUALITY = 95\n# 组合2：极致压缩优化参数\nUSE_MINIMIZE_SIZE = True  # 自动优化编码方式\nCOMPRESSION_PASSES = 1  # 压缩迭代次数（1-10，越高越慢但体积越小）\ndef get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):\n    \"\"\"\n    计算新的图片尺寸，保持宽高比",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_HEIGHT",
+        "kind": 5,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "MAX_HEIGHT = 1080\n# WebP 质量参数（组合2：极致压缩）\nWEBP_QUALITY = 95\n# 组合2：极致压缩优化参数\nUSE_MINIMIZE_SIZE = True  # 自动优化编码方式\nCOMPRESSION_PASSES = 1  # 压缩迭代次数（1-10，越高越慢但体积越小）\ndef get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):\n    \"\"\"\n    计算新的图片尺寸，保持宽高比\n    Args:",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "WEBP_QUALITY",
+        "kind": 5,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "WEBP_QUALITY = 95\n# 组合2：极致压缩优化参数\nUSE_MINIMIZE_SIZE = True  # 自动优化编码方式\nCOMPRESSION_PASSES = 1  # 压缩迭代次数（1-10，越高越慢但体积越小）\ndef get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):\n    \"\"\"\n    计算新的图片尺寸，保持宽高比\n    Args:\n        width: 原始宽度\n        height: 原始高度",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "USE_MINIMIZE_SIZE",
+        "kind": 5,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "USE_MINIMIZE_SIZE = True  # 自动优化编码方式\nCOMPRESSION_PASSES = 1  # 压缩迭代次数（1-10，越高越慢但体积越小）\ndef get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):\n    \"\"\"\n    计算新的图片尺寸，保持宽高比\n    Args:\n        width: 原始宽度\n        height: 原始高度\n        max_width: 最大宽度\n        max_height: 最大高度",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    },
+    {
+        "label": "COMPRESSION_PASSES",
+        "kind": 5,
+        "importPath": "compress_images原版webp",
+        "description": "compress_images原版webp",
+        "peekOfCode": "COMPRESSION_PASSES = 1  # 压缩迭代次数（1-10，越高越慢但体积越小）\ndef get_new_dimensions(width, height, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):\n    \"\"\"\n    计算新的图片尺寸，保持宽高比\n    Args:\n        width: 原始宽度\n        height: 原始高度\n        max_width: 最大宽度\n        max_height: 最大高度\n    Returns:",
+        "detail": "compress_images原版webp",
+        "documentation": {}
+    }
+]

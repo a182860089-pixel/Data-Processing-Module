@@ -1,0 +1,2243 @@
+[
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "UploadFile",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "File",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Form",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "UploadFile",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Header",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Type",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertOptions",
+        "importPath": "app.models.request",
+        "description": "app.models.request",
+        "isExtraImport": true,
+        "detail": "app.models.request",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertResponse",
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "isExtraImport": true,
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertSyncResponse",
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "isExtraImport": true,
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponse",
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "isExtraImport": true,
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "HealthResponse",
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "isExtraImport": true,
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "StatusResponse",
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "isExtraImport": true,
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponse",
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "isExtraImport": true,
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionService",
+        "importPath": "app.services.conversion.conversion_service",
+        "description": "app.services.conversion.conversion_service",
+        "isExtraImport": true,
+        "detail": "app.services.conversion.conversion_service",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionService",
+        "importPath": "app.services.conversion.conversion_service",
+        "description": "app.services.conversion.conversion_service",
+        "isExtraImport": true,
+        "detail": "app.services.conversion.conversion_service",
+        "documentation": {}
+    },
+    {
+        "label": "FileService",
+        "importPath": "app.services.storage.file_service",
+        "description": "app.services.storage.file_service",
+        "isExtraImport": true,
+        "detail": "app.services.storage.file_service",
+        "documentation": {}
+    },
+    {
+        "label": "FileService",
+        "importPath": "app.services.storage.file_service",
+        "description": "app.services.storage.file_service",
+        "isExtraImport": true,
+        "detail": "app.services.storage.file_service",
+        "documentation": {}
+    },
+    {
+        "label": "FileService",
+        "importPath": "app.services.storage.file_service",
+        "description": "app.services.storage.file_service",
+        "isExtraImport": true,
+        "detail": "app.services.storage.file_service",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "Settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAppException",
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAppException",
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAppException",
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAppException",
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "FileResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "TaskNotFoundException",
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "TaskNotFoundException",
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "DeepSeekAPIException",
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "StorageException",
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "FileInfo",
+        "importPath": "app.core.base.analyzer",
+        "description": "app.core.base.analyzer",
+        "isExtraImport": true,
+        "detail": "app.core.base.analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAnalyzer",
+        "importPath": "app.core.base.analyzer",
+        "description": "app.core.base.analyzer",
+        "isExtraImport": true,
+        "detail": "app.core.base.analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "io",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "io",
+        "description": "io",
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "fitz",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "fitz",
+        "description": "fitz",
+        "detail": "fitz",
+        "documentation": {}
+    },
+    {
+        "label": "ContentChunk",
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "isExtraImport": true,
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "BaseProcessor",
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "isExtraImport": true,
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "ContentChunk",
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "isExtraImport": true,
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "BaseProcessor",
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "isExtraImport": true,
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "ContentChunk",
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "isExtraImport": true,
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "BaseProcessor",
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "isExtraImport": true,
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "PDFInfo",
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "isExtraImport": true,
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "PDFInfo",
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "isExtraImport": true,
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "PDFInfo",
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "isExtraImport": true,
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "PDFInfo",
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "isExtraImport": true,
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "PageInfo",
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "isExtraImport": true,
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "ContentCleaner",
+        "importPath": "app.core.common.content_cleaner",
+        "description": "app.core.common.content_cleaner",
+        "isExtraImport": true,
+        "detail": "app.core.common.content_cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "ContentCleaner",
+        "importPath": "app.core.common.content_cleaner",
+        "description": "app.core.common.content_cleaner",
+        "isExtraImport": true,
+        "detail": "app.core.common.content_cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "ChunkType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "ChunkType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "PDFType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "PDFType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "FileType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "FileType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "PDFType",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "TaskStatus",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "TaskStatus",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "TaskStatus",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "TaskStatus",
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "isExtraImport": true,
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "ImageProcessor",
+        "importPath": "app.core.common.image_processor",
+        "description": "app.core.common.image_processor",
+        "isExtraImport": true,
+        "detail": "app.core.common.image_processor",
+        "documentation": {}
+    },
+    {
+        "label": "ImageProcessor",
+        "importPath": "app.core.common.image_processor",
+        "description": "app.core.common.image_processor",
+        "isExtraImport": true,
+        "detail": "app.core.common.image_processor",
+        "documentation": {}
+    },
+    {
+        "label": "DeepSeekClient",
+        "importPath": "app.services.external.deepseek_client",
+        "description": "app.services.external.deepseek_client",
+        "isExtraImport": true,
+        "detail": "app.services.external.deepseek_client",
+        "documentation": {}
+    },
+    {
+        "label": "DeepSeekClient",
+        "importPath": "app.services.external.deepseek_client",
+        "description": "app.services.external.deepseek_client",
+        "isExtraImport": true,
+        "detail": "app.services.external.deepseek_client",
+        "documentation": {}
+    },
+    {
+        "label": "TextExtractor",
+        "importPath": "app.core.converters.pdf.text_extractor",
+        "description": "app.core.converters.pdf.text_extractor",
+        "isExtraImport": true,
+        "detail": "app.core.converters.pdf.text_extractor",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "BaseConverter",
+        "importPath": "app.core.base.converter",
+        "description": "app.core.base.converter",
+        "isExtraImport": true,
+        "detail": "app.core.base.converter",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionResult",
+        "importPath": "app.core.base.converter",
+        "description": "app.core.base.converter",
+        "isExtraImport": true,
+        "detail": "app.core.base.converter",
+        "documentation": {}
+    },
+    {
+        "label": "BaseConverter",
+        "importPath": "app.core.base.converter",
+        "description": "app.core.base.converter",
+        "isExtraImport": true,
+        "detail": "app.core.base.converter",
+        "documentation": {}
+    },
+    {
+        "label": "PDFAnalyzer",
+        "importPath": "app.core.converters.pdf.pdf_analyzer",
+        "description": "app.core.converters.pdf.pdf_analyzer",
+        "isExtraImport": true,
+        "detail": "app.core.converters.pdf.pdf_analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "ImagePDFProcessor",
+        "importPath": "app.core.converters.pdf.image_pdf_processor",
+        "description": "app.core.converters.pdf.image_pdf_processor",
+        "isExtraImport": true,
+        "detail": "app.core.converters.pdf.image_pdf_processor",
+        "documentation": {}
+    },
+    {
+        "label": "MixedPDFProcessor",
+        "importPath": "app.core.converters.pdf.mixed_pdf_processor",
+        "description": "app.core.converters.pdf.mixed_pdf_processor",
+        "isExtraImport": true,
+        "detail": "app.core.converters.pdf.mixed_pdf_processor",
+        "documentation": {}
+    },
+    {
+        "label": "MarkdownGenerator",
+        "importPath": "app.core.common.markdown_generator",
+        "description": "app.core.common.markdown_generator",
+        "isExtraImport": true,
+        "detail": "app.core.common.markdown_generator",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionFailedException",
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "UnsupportedFileTypeException",
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionFailedException",
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "isExtraImport": true,
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "PDFConverter",
+        "importPath": "app.core.converters.pdf.pdf_converter",
+        "description": "app.core.converters.pdf.pdf_converter",
+        "isExtraImport": true,
+        "detail": "app.core.converters.pdf.pdf_converter",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "validator",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "validator",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "FileTypeDetector",
+        "importPath": "app.core.factory.file_type_detector",
+        "description": "app.core.factory.file_type_detector",
+        "isExtraImport": true,
+        "detail": "app.core.factory.file_type_detector",
+        "documentation": {}
+    },
+    {
+        "label": "ConverterFactory",
+        "importPath": "app.core.factory.converter_factory",
+        "description": "app.core.factory.converter_factory",
+        "isExtraImport": true,
+        "detail": "app.core.factory.converter_factory",
+        "documentation": {}
+    },
+    {
+        "label": "TaskManager",
+        "importPath": "app.services.conversion.task_manager",
+        "description": "app.services.conversion.task_manager",
+        "isExtraImport": true,
+        "detail": "app.services.conversion.task_manager",
+        "documentation": {}
+    },
+    {
+        "label": "uuid",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uuid",
+        "description": "uuid",
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
+        "label": "Task",
+        "importPath": "app.models.task",
+        "description": "app.models.task",
+        "isExtraImport": true,
+        "detail": "app.models.task",
+        "documentation": {}
+    },
+    {
+        "label": "OpenAI",
+        "importPath": "openai",
+        "description": "openai",
+        "isExtraImport": true,
+        "detail": "openai",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
+        "label": "BaseSettings",
+        "importPath": "pydantic_settings",
+        "description": "pydantic_settings",
+        "isExtraImport": true,
+        "detail": "pydantic_settings",
+        "documentation": {}
+    },
+    {
+        "label": "asynccontextmanager",
+        "importPath": "contextlib",
+        "description": "contextlib",
+        "isExtraImport": true,
+        "detail": "contextlib",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
+        "documentation": {}
+    },
+    {
+        "label": "convert",
+        "importPath": "app.api.v1.endpoints",
+        "description": "app.api.v1.endpoints",
+        "isExtraImport": true,
+        "detail": "app.api.v1.endpoints",
+        "documentation": {}
+    },
+    {
+        "label": "health",
+        "importPath": "app.api.v1.endpoints",
+        "description": "app.api.v1.endpoints",
+        "isExtraImport": true,
+        "detail": "app.api.v1.endpoints",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "app.api.v1.endpoints",
+        "description": "app.api.v1.endpoints",
+        "isExtraImport": true,
+        "detail": "app.api.v1.endpoints",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.api.v1.endpoints.convert",
+        "description": "app.api.v1.endpoints.convert",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nrouter = APIRouter()\n@router.post(\n    \"/convert\",\n    response_model=ConvertSyncResponse,\n    responses={\n        400: {\"model\": ErrorResponse},\n        413: {\"model\": ErrorResponse},\n        500: {\"model\": ErrorResponse}\n    }",
+        "detail": "app.api.v1.endpoints.convert",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "app.api.v1.endpoints.convert",
+        "description": "app.api.v1.endpoints.convert",
+        "peekOfCode": "router = APIRouter()\n@router.post(\n    \"/convert\",\n    response_model=ConvertSyncResponse,\n    responses={\n        400: {\"model\": ErrorResponse},\n        413: {\"model\": ErrorResponse},\n        500: {\"model\": ErrorResponse}\n    }\n)",
+        "detail": "app.api.v1.endpoints.convert",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.api.v1.endpoints.health",
+        "description": "app.api.v1.endpoints.health",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nrouter = APIRouter()\n@router.get(\"/health\", response_model=HealthResponse)\nasync def health_check():\n    \"\"\"\n    健康检查\n    返回服务状态、版本信息等\n    \"\"\"\n    settings = get_settings()\n    # 检查各个服务状态",
+        "detail": "app.api.v1.endpoints.health",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "app.api.v1.endpoints.health",
+        "description": "app.api.v1.endpoints.health",
+        "peekOfCode": "router = APIRouter()\n@router.get(\"/health\", response_model=HealthResponse)\nasync def health_check():\n    \"\"\"\n    健康检查\n    返回服务状态、版本信息等\n    \"\"\"\n    settings = get_settings()\n    # 检查各个服务状态\n    services_status = {",
+        "detail": "app.api.v1.endpoints.health",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.api.v1.endpoints.status",
+        "description": "app.api.v1.endpoints.status",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nrouter = APIRouter()\n@router.get(\n    \"/status/{task_id}\",\n    response_model=StatusResponse,\n    responses={404: {\"model\": ErrorResponse}}\n)\nasync def get_task_status(task_id: str):\n    \"\"\"\n    查询任务状态",
+        "detail": "app.api.v1.endpoints.status",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "app.api.v1.endpoints.status",
+        "description": "app.api.v1.endpoints.status",
+        "peekOfCode": "router = APIRouter()\n@router.get(\n    \"/status/{task_id}\",\n    response_model=StatusResponse,\n    responses={404: {\"model\": ErrorResponse}}\n)\nasync def get_task_status(task_id: str):\n    \"\"\"\n    查询任务状态\n    Args:",
+        "detail": "app.api.v1.endpoints.status",
+        "documentation": {}
+    },
+    {
+        "label": "FileInfo",
+        "kind": 6,
+        "importPath": "app.core.base.analyzer",
+        "description": "app.core.base.analyzer",
+        "peekOfCode": "class FileInfo:\n    \"\"\"文件信息\"\"\"\n    file_type: str\n    file_size: int\n    total_pages: int = 0\n    metadata: Dict[str, Any] = None\n    def __post_init__(self):\n        if self.metadata is None:\n            self.metadata = {}\nclass BaseAnalyzer(ABC):",
+        "detail": "app.core.base.analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAnalyzer",
+        "kind": 6,
+        "importPath": "app.core.base.analyzer",
+        "description": "app.core.base.analyzer",
+        "peekOfCode": "class BaseAnalyzer(ABC):\n    \"\"\"\n    抽象分析器基类\n    用于分析文件内容和结构\n    \"\"\"\n    @abstractmethod\n    def analyze(self, file_path: str) -> FileInfo:\n        \"\"\"\n        分析文件\n        Args:",
+        "detail": "app.core.base.analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionResult",
+        "kind": 6,
+        "importPath": "app.core.base.converter",
+        "description": "app.core.base.converter",
+        "peekOfCode": "class ConversionResult:\n    \"\"\"转换结果\"\"\"\n    markdown: str\n    metadata: Dict[str, Any]\n    status: str\n    error: str = None\nclass BaseConverter(ABC):\n    \"\"\"\n    抽象转换器基类\n    所有文件类型转换器必须继承此类并实现convert方法",
+        "detail": "app.core.base.converter",
+        "documentation": {}
+    },
+    {
+        "label": "BaseConverter",
+        "kind": 6,
+        "importPath": "app.core.base.converter",
+        "description": "app.core.base.converter",
+        "peekOfCode": "class BaseConverter(ABC):\n    \"\"\"\n    抽象转换器基类\n    所有文件类型转换器必须继承此类并实现convert方法\n    \"\"\"\n    @abstractmethod\n    async def convert(self, file_path: str, options: Dict[str, Any]) -> ConversionResult:\n        \"\"\"\n        转换文件为Markdown\n        Args:",
+        "detail": "app.core.base.converter",
+        "documentation": {}
+    },
+    {
+        "label": "ContentChunk",
+        "kind": 6,
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "peekOfCode": "class ContentChunk:\n    \"\"\"内容片段\"\"\"\n    content: str\n    page_number: int\n    chunk_type: str  # 'ocr', 'text', 'mixed'\n    metadata: dict = None\n    def __post_init__(self):\n        if self.metadata is None:\n            self.metadata = {}\nclass BaseProcessor(ABC):",
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "BaseProcessor",
+        "kind": 6,
+        "importPath": "app.core.base.processor",
+        "description": "app.core.base.processor",
+        "peekOfCode": "class BaseProcessor(ABC):\n    \"\"\"\n    抽象处理器基类\n    用于处理文件内容\n    \"\"\"\n    @abstractmethod\n    async def process(self, file_path: str, file_info: FileInfo) -> List[ContentChunk]:\n        \"\"\"\n        处理文件内容\n        Args:",
+        "detail": "app.core.base.processor",
+        "documentation": {}
+    },
+    {
+        "label": "ContentCleaner",
+        "kind": 6,
+        "importPath": "app.core.common.content_cleaner",
+        "description": "app.core.common.content_cleaner",
+        "peekOfCode": "class ContentCleaner:\n    \"\"\"内容清理器\"\"\"\n    @staticmethod\n    def clean_text(text: str) -> str:\n        \"\"\"\n        清理文本\n        Args:\n            text: 原始文本\n        Returns:\n            str: 清理后的文本",
+        "detail": "app.core.common.content_cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.common.content_cleaner",
+        "description": "app.core.common.content_cleaner",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass ContentCleaner:\n    \"\"\"内容清理器\"\"\"\n    @staticmethod\n    def clean_text(text: str) -> str:\n        \"\"\"\n        清理文本\n        Args:\n            text: 原始文本\n        Returns:",
+        "detail": "app.core.common.content_cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "ImageProcessor",
+        "kind": 6,
+        "importPath": "app.core.common.image_processor",
+        "description": "app.core.common.image_processor",
+        "peekOfCode": "class ImageProcessor:\n    \"\"\"图像处理器\"\"\"\n    def render_page_to_image(\n        self,\n        page: fitz.Page,\n        dpi: int = 144\n    ) -> Image.Image:\n        \"\"\"\n        将PDF页面渲染为图像\n        Args:",
+        "detail": "app.core.common.image_processor",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.common.image_processor",
+        "description": "app.core.common.image_processor",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass ImageProcessor:\n    \"\"\"图像处理器\"\"\"\n    def render_page_to_image(\n        self,\n        page: fitz.Page,\n        dpi: int = 144\n    ) -> Image.Image:\n        \"\"\"\n        将PDF页面渲染为图像",
+        "detail": "app.core.common.image_processor",
+        "documentation": {}
+    },
+    {
+        "label": "MarkdownGenerator",
+        "kind": 6,
+        "importPath": "app.core.common.markdown_generator",
+        "description": "app.core.common.markdown_generator",
+        "peekOfCode": "class MarkdownGenerator:\n    \"\"\"Markdown生成器\"\"\"\n    def __init__(self, include_metadata: bool = True, no_pagination_and_metadata: bool = False):\n        \"\"\"\n        初始化生成器\n        Args:\n            include_metadata: 是否包含元数据\n            no_pagination_and_metadata: 是否取消分页和元数据(优先级高于include_metadata)\n        \"\"\"\n        self.include_metadata = include_metadata",
+        "detail": "app.core.common.markdown_generator",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.common.markdown_generator",
+        "description": "app.core.common.markdown_generator",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass MarkdownGenerator:\n    \"\"\"Markdown生成器\"\"\"\n    def __init__(self, include_metadata: bool = True, no_pagination_and_metadata: bool = False):\n        \"\"\"\n        初始化生成器\n        Args:\n            include_metadata: 是否包含元数据\n            no_pagination_and_metadata: 是否取消分页和元数据(优先级高于include_metadata)\n        \"\"\"",
+        "detail": "app.core.common.markdown_generator",
+        "documentation": {}
+    },
+    {
+        "label": "ImagePDFProcessor",
+        "kind": 6,
+        "importPath": "app.core.converters.pdf.image_pdf_processor",
+        "description": "app.core.converters.pdf.image_pdf_processor",
+        "peekOfCode": "class ImagePDFProcessor(BaseProcessor):\n    \"\"\"纯图片PDF处理器\"\"\"\n    def __init__(self):\n        \"\"\"初始化处理器\"\"\"\n        self.settings = get_settings()\n        self.image_processor = ImageProcessor()\n        self.deepseek_client = DeepSeekClient()\n        self.dpi = self.settings.pdf_render_dpi\n        self.max_concurrent = self.settings.max_concurrent_api_calls\n    async def process(",
+        "detail": "app.core.converters.pdf.image_pdf_processor",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.converters.pdf.image_pdf_processor",
+        "description": "app.core.converters.pdf.image_pdf_processor",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass ImagePDFProcessor(BaseProcessor):\n    \"\"\"纯图片PDF处理器\"\"\"\n    def __init__(self):\n        \"\"\"初始化处理器\"\"\"\n        self.settings = get_settings()\n        self.image_processor = ImageProcessor()\n        self.deepseek_client = DeepSeekClient()\n        self.dpi = self.settings.pdf_render_dpi\n        self.max_concurrent = self.settings.max_concurrent_api_calls",
+        "detail": "app.core.converters.pdf.image_pdf_processor",
+        "documentation": {}
+    },
+    {
+        "label": "MixedPDFProcessor",
+        "kind": 6,
+        "importPath": "app.core.converters.pdf.mixed_pdf_processor",
+        "description": "app.core.converters.pdf.mixed_pdf_processor",
+        "peekOfCode": "class MixedPDFProcessor(BaseProcessor):\n    \"\"\"图文混排PDF处理器\"\"\"\n    def __init__(self):\n        \"\"\"初始化处理器\"\"\"\n        self.settings = get_settings()\n        self.image_processor = ImageProcessor()\n        self.text_extractor = TextExtractor()\n        self.deepseek_client = DeepSeekClient()\n        self.dpi = self.settings.pdf_render_dpi\n        self.max_concurrent = self.settings.max_concurrent_api_calls",
+        "detail": "app.core.converters.pdf.mixed_pdf_processor",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.converters.pdf.mixed_pdf_processor",
+        "description": "app.core.converters.pdf.mixed_pdf_processor",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass MixedPDFProcessor(BaseProcessor):\n    \"\"\"图文混排PDF处理器\"\"\"\n    def __init__(self):\n        \"\"\"初始化处理器\"\"\"\n        self.settings = get_settings()\n        self.image_processor = ImageProcessor()\n        self.text_extractor = TextExtractor()\n        self.deepseek_client = DeepSeekClient()\n        self.dpi = self.settings.pdf_render_dpi",
+        "detail": "app.core.converters.pdf.mixed_pdf_processor",
+        "documentation": {}
+    },
+    {
+        "label": "PDFAnalyzer",
+        "kind": 6,
+        "importPath": "app.core.converters.pdf.pdf_analyzer",
+        "description": "app.core.converters.pdf.pdf_analyzer",
+        "peekOfCode": "class PDFAnalyzer(BaseAnalyzer):\n    \"\"\"PDF分析器\"\"\"\n    def __init__(self):\n        \"\"\"初始化分析器\"\"\"\n        self.settings = get_settings()\n        self.text_threshold = self.settings.pdf_text_threshold\n    def analyze(self, file_path: str) -> PDFInfo:\n        \"\"\"\n        分析PDF文档\n        Args:",
+        "detail": "app.core.converters.pdf.pdf_analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.converters.pdf.pdf_analyzer",
+        "description": "app.core.converters.pdf.pdf_analyzer",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass PDFAnalyzer(BaseAnalyzer):\n    \"\"\"PDF分析器\"\"\"\n    def __init__(self):\n        \"\"\"初始化分析器\"\"\"\n        self.settings = get_settings()\n        self.text_threshold = self.settings.pdf_text_threshold\n    def analyze(self, file_path: str) -> PDFInfo:\n        \"\"\"\n        分析PDF文档",
+        "detail": "app.core.converters.pdf.pdf_analyzer",
+        "documentation": {}
+    },
+    {
+        "label": "PDFConverter",
+        "kind": 6,
+        "importPath": "app.core.converters.pdf.pdf_converter",
+        "description": "app.core.converters.pdf.pdf_converter",
+        "peekOfCode": "class PDFConverter(BaseConverter):\n    \"\"\"PDF转换器\"\"\"\n    def __init__(self):\n        \"\"\"初始化转换器\"\"\"\n        self.analyzer = PDFAnalyzer()\n    async def convert(\n        self,\n        file_path: str,\n        options: Dict[str, Any]\n    ) -> ConversionResult:",
+        "detail": "app.core.converters.pdf.pdf_converter",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.converters.pdf.pdf_converter",
+        "description": "app.core.converters.pdf.pdf_converter",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass PDFConverter(BaseConverter):\n    \"\"\"PDF转换器\"\"\"\n    def __init__(self):\n        \"\"\"初始化转换器\"\"\"\n        self.analyzer = PDFAnalyzer()\n    async def convert(\n        self,\n        file_path: str,\n        options: Dict[str, Any]",
+        "detail": "app.core.converters.pdf.pdf_converter",
+        "documentation": {}
+    },
+    {
+        "label": "TextExtractor",
+        "kind": 6,
+        "importPath": "app.core.converters.pdf.text_extractor",
+        "description": "app.core.converters.pdf.text_extractor",
+        "peekOfCode": "class TextExtractor:\n    \"\"\"文本提取器\"\"\"\n    def __init__(self):\n        \"\"\"初始化提取器\"\"\"\n        self.cleaner = ContentCleaner()\n    def extract_text(self, page: fitz.Page) -> str:\n        \"\"\"\n        提取页面文本\n        使用智能段落检测算法，自动区分段落和行内换行符：\n        - 基于文本块的位置、缩进和间距判断段落边界",
+        "detail": "app.core.converters.pdf.text_extractor",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.converters.pdf.text_extractor",
+        "description": "app.core.converters.pdf.text_extractor",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass TextExtractor:\n    \"\"\"文本提取器\"\"\"\n    def __init__(self):\n        \"\"\"初始化提取器\"\"\"\n        self.cleaner = ContentCleaner()\n    def extract_text(self, page: fitz.Page) -> str:\n        \"\"\"\n        提取页面文本\n        使用智能段落检测算法，自动区分段落和行内换行符：",
+        "detail": "app.core.converters.pdf.text_extractor",
+        "documentation": {}
+    },
+    {
+        "label": "ConverterFactory",
+        "kind": 6,
+        "importPath": "app.core.factory.converter_factory",
+        "description": "app.core.factory.converter_factory",
+        "peekOfCode": "class ConverterFactory:\n    \"\"\"转换器工厂\"\"\"\n    # 转换器注册表\n    _converters: Dict[FileType, Type[BaseConverter]] = {\n        FileType.PDF: PDFConverter,\n        # 预留其他文件类型\n        # FileType.PPTX: OfficeConverter,\n        # FileType.DOCX: OfficeConverter,\n        # FileType.MP4: VideoConverter,\n    }",
+        "detail": "app.core.factory.converter_factory",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.factory.converter_factory",
+        "description": "app.core.factory.converter_factory",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass ConverterFactory:\n    \"\"\"转换器工厂\"\"\"\n    # 转换器注册表\n    _converters: Dict[FileType, Type[BaseConverter]] = {\n        FileType.PDF: PDFConverter,\n        # 预留其他文件类型\n        # FileType.PPTX: OfficeConverter,\n        # FileType.DOCX: OfficeConverter,\n        # FileType.MP4: VideoConverter,",
+        "detail": "app.core.factory.converter_factory",
+        "documentation": {}
+    },
+    {
+        "label": "FileTypeDetector",
+        "kind": 6,
+        "importPath": "app.core.factory.file_type_detector",
+        "description": "app.core.factory.file_type_detector",
+        "peekOfCode": "class FileTypeDetector:\n    \"\"\"文件类型检测器\"\"\"\n    # 文件头签名映射\n    MAGIC_NUMBERS = {\n        b'%PDF': FileType.PDF,\n        b'PK\\x03\\x04': None,  # ZIP格式，需进一步判断\n    }\n    # 扩展名映射\n    EXTENSION_MAP = {\n        '.pdf': FileType.PDF,",
+        "detail": "app.core.factory.file_type_detector",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.core.factory.file_type_detector",
+        "description": "app.core.factory.file_type_detector",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass FileTypeDetector:\n    \"\"\"文件类型检测器\"\"\"\n    # 文件头签名映射\n    MAGIC_NUMBERS = {\n        b'%PDF': FileType.PDF,\n        b'PK\\x03\\x04': None,  # ZIP格式，需进一步判断\n    }\n    # 扩展名映射\n    EXTENSION_MAP = {",
+        "detail": "app.core.factory.file_type_detector",
+        "documentation": {}
+    },
+    {
+        "label": "BaseAppException",
+        "kind": 6,
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "peekOfCode": "class BaseAppException(Exception):\n    \"\"\"应用基础异常\"\"\"\n    def __init__(self, message: str, code: str = None, details: str = None):\n        self.message = message\n        self.code = code or self.__class__.__name__\n        self.details = details\n        super().__init__(self.message)\n    def to_dict(self):\n        \"\"\"转换为字典\"\"\"\n        return {",
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "kind": 6,
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "peekOfCode": "class ValidationError(BaseAppException):\n    \"\"\"验证错误\"\"\"\n    pass\nclass ConfigurationError(BaseAppException):\n    \"\"\"配置错误\"\"\"\n    pass\nclass FileOperationError(BaseAppException):\n    \"\"\"文件操作错误\"\"\"\n    pass",
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigurationError",
+        "kind": 6,
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "peekOfCode": "class ConfigurationError(BaseAppException):\n    \"\"\"配置错误\"\"\"\n    pass\nclass FileOperationError(BaseAppException):\n    \"\"\"文件操作错误\"\"\"\n    pass",
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "FileOperationError",
+        "kind": 6,
+        "importPath": "app.exceptions.base_exceptions",
+        "description": "app.exceptions.base_exceptions",
+        "peekOfCode": "class FileOperationError(BaseAppException):\n    \"\"\"文件操作错误\"\"\"\n    pass",
+        "detail": "app.exceptions.base_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ConverterException",
+        "kind": 6,
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "peekOfCode": "class ConverterException(BaseAppException):\n    \"\"\"转换器基础异常\"\"\"\n    pass\nclass UnsupportedFileTypeException(ConverterException):\n    \"\"\"不支持的文件类型\"\"\"\n    pass\nclass ConversionFailedException(ConverterException):\n    \"\"\"转换失败\"\"\"\n    pass\nclass FileValidationException(ConverterException):",
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "UnsupportedFileTypeException",
+        "kind": 6,
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "peekOfCode": "class UnsupportedFileTypeException(ConverterException):\n    \"\"\"不支持的文件类型\"\"\"\n    pass\nclass ConversionFailedException(ConverterException):\n    \"\"\"转换失败\"\"\"\n    pass\nclass FileValidationException(ConverterException):\n    \"\"\"文件验证失败\"\"\"\n    pass\nclass FileTooLargeException(ConverterException):",
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionFailedException",
+        "kind": 6,
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "peekOfCode": "class ConversionFailedException(ConverterException):\n    \"\"\"转换失败\"\"\"\n    pass\nclass FileValidationException(ConverterException):\n    \"\"\"文件验证失败\"\"\"\n    pass\nclass FileTooLargeException(ConverterException):\n    \"\"\"文件过大\"\"\"\n    pass\nclass InvalidFileException(ConverterException):",
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "FileValidationException",
+        "kind": 6,
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "peekOfCode": "class FileValidationException(ConverterException):\n    \"\"\"文件验证失败\"\"\"\n    pass\nclass FileTooLargeException(ConverterException):\n    \"\"\"文件过大\"\"\"\n    pass\nclass InvalidFileException(ConverterException):\n    \"\"\"无效文件\"\"\"\n    pass",
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "FileTooLargeException",
+        "kind": 6,
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "peekOfCode": "class FileTooLargeException(ConverterException):\n    \"\"\"文件过大\"\"\"\n    pass\nclass InvalidFileException(ConverterException):\n    \"\"\"无效文件\"\"\"\n    pass",
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "InvalidFileException",
+        "kind": 6,
+        "importPath": "app.exceptions.converter_exceptions",
+        "description": "app.exceptions.converter_exceptions",
+        "peekOfCode": "class InvalidFileException(ConverterException):\n    \"\"\"无效文件\"\"\"\n    pass",
+        "detail": "app.exceptions.converter_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ServiceException",
+        "kind": 6,
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "peekOfCode": "class ServiceException(BaseAppException):\n    \"\"\"服务基础异常\"\"\"\n    pass\nclass APICallException(ServiceException):\n    \"\"\"API调用失败\"\"\"\n    pass\nclass DeepSeekAPIException(APICallException):\n    \"\"\"DeepSeek API异常\"\"\"\n    pass\nclass TaskNotFoundException(ServiceException):",
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "APICallException",
+        "kind": 6,
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "peekOfCode": "class APICallException(ServiceException):\n    \"\"\"API调用失败\"\"\"\n    pass\nclass DeepSeekAPIException(APICallException):\n    \"\"\"DeepSeek API异常\"\"\"\n    pass\nclass TaskNotFoundException(ServiceException):\n    \"\"\"任务不存在\"\"\"\n    pass\nclass TaskProcessingException(ServiceException):",
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "DeepSeekAPIException",
+        "kind": 6,
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "peekOfCode": "class DeepSeekAPIException(APICallException):\n    \"\"\"DeepSeek API异常\"\"\"\n    pass\nclass TaskNotFoundException(ServiceException):\n    \"\"\"任务不存在\"\"\"\n    pass\nclass TaskProcessingException(ServiceException):\n    \"\"\"任务处理异常\"\"\"\n    pass\nclass StorageException(ServiceException):",
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "TaskNotFoundException",
+        "kind": 6,
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "peekOfCode": "class TaskNotFoundException(ServiceException):\n    \"\"\"任务不存在\"\"\"\n    pass\nclass TaskProcessingException(ServiceException):\n    \"\"\"任务处理异常\"\"\"\n    pass\nclass StorageException(ServiceException):\n    \"\"\"存储异常\"\"\"\n    pass",
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "TaskProcessingException",
+        "kind": 6,
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "peekOfCode": "class TaskProcessingException(ServiceException):\n    \"\"\"任务处理异常\"\"\"\n    pass\nclass StorageException(ServiceException):\n    \"\"\"存储异常\"\"\"\n    pass",
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "StorageException",
+        "kind": 6,
+        "importPath": "app.exceptions.service_exceptions",
+        "description": "app.exceptions.service_exceptions",
+        "peekOfCode": "class StorageException(ServiceException):\n    \"\"\"存储异常\"\"\"\n    pass",
+        "detail": "app.exceptions.service_exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "FileType",
+        "kind": 6,
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "peekOfCode": "class FileType(str, Enum):\n    \"\"\"文件类型\"\"\"\n    PDF = \"pdf\"\n    PPTX = \"pptx\"\n    PPT = \"ppt\"\n    DOCX = \"docx\"\n    DOC = \"doc\"\n    MP4 = \"mp4\"\n    AVI = \"avi\"\n    MOV = \"mov\"",
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "PDFType",
+        "kind": 6,
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "peekOfCode": "class PDFType(str, Enum):\n    \"\"\"PDF类型\"\"\"\n    IMAGE = \"image\"  # 纯图片PDF\n    MIXED = \"mixed\"  # 图文混排PDF\n    TEXT = \"text\"    # 纯文本PDF\nclass TaskStatus(str, Enum):\n    \"\"\"任务状态\"\"\"\n    PENDING = \"pending\"\n    PROCESSING = \"processing\"\n    COMPLETED = \"completed\"",
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "TaskStatus",
+        "kind": 6,
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "peekOfCode": "class TaskStatus(str, Enum):\n    \"\"\"任务状态\"\"\"\n    PENDING = \"pending\"\n    PROCESSING = \"processing\"\n    COMPLETED = \"completed\"\n    FAILED = \"failed\"\n    CANCELLED = \"cancelled\"\nclass ChunkType(str, Enum):\n    \"\"\"内容片段类型\"\"\"\n    OCR = \"ocr\"",
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "ChunkType",
+        "kind": 6,
+        "importPath": "app.models.enums",
+        "description": "app.models.enums",
+        "peekOfCode": "class ChunkType(str, Enum):\n    \"\"\"内容片段类型\"\"\"\n    OCR = \"ocr\"\n    TEXT = \"text\"\n    MIXED = \"mixed\"",
+        "detail": "app.models.enums",
+        "documentation": {}
+    },
+    {
+        "label": "PageInfo",
+        "kind": 6,
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "peekOfCode": "class PageInfo(BaseModel):\n    \"\"\"页面信息\"\"\"\n    page_number: int = Field(..., description=\"页码\")\n    has_text: bool = Field(..., description=\"是否有文本层\")\n    text_length: int = Field(..., description=\"文本字符数\")\n    has_images: bool = Field(..., description=\"是否有图像\")\n    image_count: int = Field(..., description=\"图像数量\")\nclass PDFInfo(BaseModel):\n    \"\"\"PDF文件信息\"\"\"\n    file_path: str = Field(..., description=\"文件路径\")",
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "PDFInfo",
+        "kind": 6,
+        "importPath": "app.models.file_info",
+        "description": "app.models.file_info",
+        "peekOfCode": "class PDFInfo(BaseModel):\n    \"\"\"PDF文件信息\"\"\"\n    file_path: str = Field(..., description=\"文件路径\")\n    file_size: int = Field(..., description=\"文件大小（字节）\")\n    total_pages: int = Field(..., description=\"总页数\")\n    pdf_type: PDFType = Field(..., description=\"PDF类型\")\n    pages: List[PageInfo] = Field(default_factory=list, description=\"页面信息列表\")\n    metadata: Dict[str, Any] = Field(default_factory=dict, description=\"其他元数据\")\n    def get_ocr_pages(self) -> List[int]:\n        \"\"\"获取需要OCR的页面列表\"\"\"",
+        "detail": "app.models.file_info",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertOptions",
+        "kind": 6,
+        "importPath": "app.models.request",
+        "description": "app.models.request",
+        "peekOfCode": "class ConvertOptions(BaseModel):\n    \"\"\"转换选项\"\"\"\n    dpi: int = Field(default=144, ge=72, le=300, description=\"图像渲染DPI（仅PDF有效）\")\n    include_metadata: bool = Field(default=True, description=\"是否在Markdown中包含元数据\")\n    no_pagination_and_metadata: bool = Field(default=True, description=\"是否取消分页和元数据(去掉页面标记、分隔符和元数据)\")\n    async_mode: bool = Field(default=True, alias=\"async\", description=\"是否异步处理\")\n    max_pages: int = Field(default=100, ge=1, le=1000, description=\"最大处理页数（仅PDF有效）\")\n    class Config:\n        populate_by_name = True\nclass ConvertRequest(BaseModel):",
+        "detail": "app.models.request",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertRequest",
+        "kind": 6,
+        "importPath": "app.models.request",
+        "description": "app.models.request",
+        "peekOfCode": "class ConvertRequest(BaseModel):\n    \"\"\"转换请求\"\"\"\n    options: Optional[ConvertOptions] = Field(default_factory=ConvertOptions)\n    class Config:\n        json_schema_extra = {\n            \"example\": {\n                \"options\": {\n                    \"dpi\": 144,\n                    \"include_metadata\": True,\n                    \"no_pagination_and_metadata\": False,",
+        "detail": "app.models.request",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponse",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class ErrorResponse(BaseModel):\n    \"\"\"错误响应\"\"\"\n    code: str = Field(..., description=\"错误码\")\n    message: str = Field(..., description=\"错误信息\")\n    details: Optional[str] = Field(None, description=\"详细信息\")\nclass DetectedInfo(BaseModel):\n    \"\"\"文件检测信息\"\"\"\n    total_pages: Optional[int] = Field(None, description=\"总页数\")\n    pdf_type: Optional[str] = Field(None, description=\"PDF类型\")\n    file_size: int = Field(..., description=\"文件大小（字节）\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "DetectedInfo",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class DetectedInfo(BaseModel):\n    \"\"\"文件检测信息\"\"\"\n    total_pages: Optional[int] = Field(None, description=\"总页数\")\n    pdf_type: Optional[str] = Field(None, description=\"PDF类型\")\n    file_size: int = Field(..., description=\"文件大小（字节）\")\nclass ConversionMetadata(BaseModel):\n    \"\"\"转换元数据\"\"\"\n    pages_processed: int = Field(..., description=\"处理的页数\")\n    ocr_pages: Optional[int] = Field(None, description=\"OCR处理的页数\")\n    text_pages: Optional[int] = Field(None, description=\"文本提取的页数\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionMetadata",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class ConversionMetadata(BaseModel):\n    \"\"\"转换元数据\"\"\"\n    pages_processed: int = Field(..., description=\"处理的页数\")\n    ocr_pages: Optional[int] = Field(None, description=\"OCR处理的页数\")\n    text_pages: Optional[int] = Field(None, description=\"文本提取的页数\")\n    processing_time: float = Field(..., description=\"处理时间（秒）\")\n    file_size: int = Field(..., description=\"输出文件大小（字节）\")\nclass TaskProgress(BaseModel):\n    \"\"\"任务进度\"\"\"\n    current_page: int = Field(..., description=\"当前页\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "TaskProgress",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class TaskProgress(BaseModel):\n    \"\"\"任务进度\"\"\"\n    current_page: int = Field(..., description=\"当前页\")\n    total_pages: int = Field(..., description=\"总页数\")\n    percentage: int = Field(..., description=\"完成百分比\")\nclass ConversionResult(BaseModel):\n    \"\"\"转换结果\"\"\"\n    markdown_content: Optional[str] = Field(None, description=\"Markdown内容\")\n    download_url: str = Field(..., description=\"下载链接\")\n    metadata: ConversionMetadata = Field(..., description=\"转换元数据\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionResult",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class ConversionResult(BaseModel):\n    \"\"\"转换结果\"\"\"\n    markdown_content: Optional[str] = Field(None, description=\"Markdown内容\")\n    download_url: str = Field(..., description=\"下载链接\")\n    metadata: ConversionMetadata = Field(..., description=\"转换元数据\")\nclass ConvertResponse(BaseModel):\n    \"\"\"转换响应（异步模式）\"\"\"\n    success: bool = Field(..., description=\"是否成功\")\n    task_id: str = Field(..., description=\"任务ID\")\n    message: str = Field(..., description=\"提示信息\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertResponse",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class ConvertResponse(BaseModel):\n    \"\"\"转换响应（异步模式）\"\"\"\n    success: bool = Field(..., description=\"是否成功\")\n    task_id: str = Field(..., description=\"任务ID\")\n    message: str = Field(..., description=\"提示信息\")\n    filename: str = Field(..., description=\"文件名\")\n    file_type: str = Field(..., description=\"文件类型\")\n    file_size: int = Field(..., description=\"文件大小\")\n    detected_info: Optional[DetectedInfo] = Field(None, description=\"检测信息\")\n    estimated_time: Optional[int] = Field(None, description=\"预计处理时间（秒）\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "ConvertSyncResponse",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class ConvertSyncResponse(BaseModel):\n    \"\"\"转换响应（同步模式）\"\"\"\n    success: bool = Field(..., description=\"是否成功\")\n    task_id: str = Field(..., description=\"任务ID\")\n    message: str = Field(..., description=\"提示信息\")\n    filename: str = Field(..., description=\"文件名\")\n    file_type: str = Field(..., description=\"文件类型\")\n    markdown_content: str = Field(..., description=\"Markdown内容\")\n    download_url: str = Field(..., description=\"下载链接\")\n    metadata: ConversionMetadata = Field(..., description=\"转换元数据\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "StatusResponse",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class StatusResponse(BaseModel):\n    \"\"\"状态查询响应\"\"\"\n    success: bool = Field(..., description=\"是否成功\")\n    task_id: str = Field(..., description=\"任务ID\")\n    status: TaskStatus = Field(..., description=\"任务状态\")\n    progress: Optional[TaskProgress] = Field(None, description=\"任务进度\")\n    message: Optional[str] = Field(None, description=\"提示信息\")\n    result: Optional[ConversionResult] = Field(None, description=\"转换结果\")\n    error: Optional[ErrorResponse] = Field(None, description=\"错误信息\")\nclass HealthResponse(BaseModel):",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "HealthResponse",
+        "kind": 6,
+        "importPath": "app.models.response",
+        "description": "app.models.response",
+        "peekOfCode": "class HealthResponse(BaseModel):\n    \"\"\"健康检查响应\"\"\"\n    status: str = Field(..., description=\"服务状态\")\n    timestamp: str = Field(..., description=\"时间戳\")\n    version: str = Field(..., description=\"版本号\")\n    services: Dict[str, str] = Field(..., description=\"服务状态\")\n    metrics: Optional[Dict[str, Any]] = Field(None, description=\"指标\")",
+        "detail": "app.models.response",
+        "documentation": {}
+    },
+    {
+        "label": "Task",
+        "kind": 6,
+        "importPath": "app.models.task",
+        "description": "app.models.task",
+        "peekOfCode": "class Task(BaseModel):\n    \"\"\"任务模型\"\"\"\n    task_id: str = Field(..., description=\"任务ID\")\n    filename: str = Field(..., description=\"原始文件名\")\n    file_path: str = Field(..., description=\"文件路径\")\n    file_type: str = Field(..., description=\"文件类型\")\n    status: TaskStatus = Field(default=TaskStatus.PENDING, description=\"任务状态\")\n    progress: int = Field(default=0, ge=0, le=100, description=\"进度百分比\")\n    current_page: int = Field(default=0, description=\"当前处理页\")\n    total_pages: int = Field(default=0, description=\"总页数\")",
+        "detail": "app.models.task",
+        "documentation": {}
+    },
+    {
+        "label": "ConversionService",
+        "kind": 6,
+        "importPath": "app.services.conversion.conversion_service",
+        "description": "app.services.conversion.conversion_service",
+        "peekOfCode": "class ConversionService:\n    \"\"\"转换服务\"\"\"\n    def __init__(self):\n        \"\"\"初始化服务\"\"\"\n        self.file_type_detector = FileTypeDetector()\n        self.converter_factory = ConverterFactory()\n        self.task_manager = TaskManager()\n        self.file_service = FileService()\n    async def convert(\n        self,",
+        "detail": "app.services.conversion.conversion_service",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.services.conversion.conversion_service",
+        "description": "app.services.conversion.conversion_service",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass ConversionService:\n    \"\"\"转换服务\"\"\"\n    def __init__(self):\n        \"\"\"初始化服务\"\"\"\n        self.file_type_detector = FileTypeDetector()\n        self.converter_factory = ConverterFactory()\n        self.task_manager = TaskManager()\n        self.file_service = FileService()\n    async def convert(",
+        "detail": "app.services.conversion.conversion_service",
+        "documentation": {}
+    },
+    {
+        "label": "TaskManager",
+        "kind": 6,
+        "importPath": "app.services.conversion.task_manager",
+        "description": "app.services.conversion.task_manager",
+        "peekOfCode": "class TaskManager:\n    \"\"\"任务管理器\"\"\"\n    def __init__(self):\n        \"\"\"初始化管理器\"\"\"\n        # 简单的内存存储（生产环境应使用数据库或Redis）\n        self._tasks: Dict[str, Task] = {}\n    def create_task(\n        self,\n        filename: str,\n        file_path: str,",
+        "detail": "app.services.conversion.task_manager",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.services.conversion.task_manager",
+        "description": "app.services.conversion.task_manager",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass TaskManager:\n    \"\"\"任务管理器\"\"\"\n    def __init__(self):\n        \"\"\"初始化管理器\"\"\"\n        # 简单的内存存储（生产环境应使用数据库或Redis）\n        self._tasks: Dict[str, Task] = {}\n    def create_task(\n        self,\n        filename: str,",
+        "detail": "app.services.conversion.task_manager",
+        "documentation": {}
+    },
+    {
+        "label": "DeepSeekClient",
+        "kind": 6,
+        "importPath": "app.services.external.deepseek_client",
+        "description": "app.services.external.deepseek_client",
+        "peekOfCode": "class DeepSeekClient:\n    \"\"\"DeepSeek OCR API 客户端\"\"\"\n    def __init__(self):\n        \"\"\"初始化客户端\"\"\"\n        settings = get_settings()\n        self.client = OpenAI(\n            base_url=settings.deepseek_base_url,\n            api_key=settings.deepseek_api_key,\n        )\n        self.model = settings.deepseek_model",
+        "detail": "app.services.external.deepseek_client",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.services.external.deepseek_client",
+        "description": "app.services.external.deepseek_client",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass DeepSeekClient:\n    \"\"\"DeepSeek OCR API 客户端\"\"\"\n    def __init__(self):\n        \"\"\"初始化客户端\"\"\"\n        settings = get_settings()\n        self.client = OpenAI(\n            base_url=settings.deepseek_base_url,\n            api_key=settings.deepseek_api_key,\n        )",
+        "detail": "app.services.external.deepseek_client",
+        "documentation": {}
+    },
+    {
+        "label": "FileService",
+        "kind": 6,
+        "importPath": "app.services.storage.file_service",
+        "description": "app.services.storage.file_service",
+        "peekOfCode": "class FileService:\n    \"\"\"文件存储服务\"\"\"\n    def __init__(self):\n        \"\"\"初始化服务\"\"\"\n        self.settings = get_settings()\n        self.upload_dir = Path(self.settings.upload_dir)\n        self.output_dir = Path(self.settings.output_dir)\n        # 确保目录存在\n        self.upload_dir.mkdir(parents=True, exist_ok=True)\n        self.output_dir.mkdir(parents=True, exist_ok=True)",
+        "detail": "app.services.storage.file_service",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.services.storage.file_service",
+        "description": "app.services.storage.file_service",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass FileService:\n    \"\"\"文件存储服务\"\"\"\n    def __init__(self):\n        \"\"\"初始化服务\"\"\"\n        self.settings = get_settings()\n        self.upload_dir = Path(self.settings.upload_dir)\n        self.output_dir = Path(self.settings.output_dir)\n        # 确保目录存在\n        self.upload_dir.mkdir(parents=True, exist_ok=True)",
+        "detail": "app.services.storage.file_service",
+        "documentation": {}
+    },
+    {
+        "label": "Settings",
+        "kind": 6,
+        "importPath": "app.config",
+        "description": "app.config",
+        "peekOfCode": "class Settings(BaseSettings):\n    \"\"\"应用配置类\"\"\"\n    # 应用配置\n    app_name: str = Field(default=\"PDF-to-Markdown-API\", env=\"APP_NAME\")\n    app_version: str = Field(default=\"1.0.0\", env=\"APP_VERSION\")\n    app_env: str = Field(default=\"development\", env=\"APP_ENV\")\n    debug: bool = Field(default=False, env=\"DEBUG\")\n    # 服务器配置\n    host: str = Field(default=\"0.0.0.0\", env=\"HOST\")\n    port: int = Field(default=8000, env=\"PORT\")",
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "kind": 2,
+        "importPath": "app.config",
+        "description": "app.config",
+        "peekOfCode": "def get_settings() -> Settings:\n    \"\"\"获取配置实例（用于依赖注入）\"\"\"\n    return settings",
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 5,
+        "importPath": "app.config",
+        "description": "app.config",
+        "peekOfCode": "settings = Settings()\ndef get_settings() -> Settings:\n    \"\"\"获取配置实例（用于依赖注入）\"\"\"\n    return settings",
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_config",
+        "kind": 2,
+        "importPath": "app.dependencies",
+        "description": "app.dependencies",
+        "peekOfCode": "def get_config() -> Settings:\n    \"\"\"\n    获取配置实例\n    Returns:\n        Settings instance\n    \"\"\"\n    return get_settings()",
+        "detail": "app.dependencies",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "logger = logging.getLogger(__name__)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    \"\"\"\n    应用生命周期管理\n    \"\"\"\n    # 启动时执行\n    logger.info(\"Application starting up...\")\n    settings = get_settings()\n    logger.info(f\"Environment: {settings.app_env}\")",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 5,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "settings = get_settings()\napp = FastAPI(\n    title=settings.app_name,\n    version=settings.app_version,\n    description=\"PDF to Markdown Intelligent Conversion System\",\n    lifespan=lifespan\n)\n# 配置 CORS\napp.add_middleware(\n    CORSMiddleware,",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "app = FastAPI(\n    title=settings.app_name,\n    version=settings.app_version,\n    description=\"PDF to Markdown Intelligent Conversion System\",\n    lifespan=lifespan\n)\n# 配置 CORS\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],  # 生产环境应限制具体域名",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "test_with_pagination",
+        "kind": 2,
+        "importPath": "test_no_pagination",
+        "description": "test_no_pagination",
+        "peekOfCode": "def test_with_pagination(pdf_path: str):\n    \"\"\"测试带分页模式(默认)\"\"\"\n    print(\"\\n\" + \"=\"*60)\n    print(\"测试1: 带分页模式 (默认)\")\n    print(\"=\"*60)\n    url = \"http://localhost:8000/api/v1/convert\"\n    with open(pdf_path, 'rb') as f:\n        files = {'file': (Path(pdf_path).name, f, 'application/pdf')}\n        data = {\n            'options': json.dumps({",
+        "detail": "test_no_pagination",
+        "documentation": {}
+    },
+    {
+        "label": "test_without_pagination",
+        "kind": 2,
+        "importPath": "test_no_pagination",
+        "description": "test_no_pagination",
+        "peekOfCode": "def test_without_pagination(pdf_path: str):\n    \"\"\"测试无分页模式\"\"\"\n    print(\"\\n\" + \"=\"*60)\n    print(\"测试2: 无分页模式 (no_pagination_and_metadata=True)\")\n    print(\"=\"*60)\n    url = \"http://localhost:8000/api/v1/convert\"\n    with open(pdf_path, 'rb') as f:\n        files = {'file': (Path(pdf_path).name, f, 'application/pdf')}\n        data = {\n            'options': json.dumps({",
+        "detail": "test_no_pagination",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "test_no_pagination",
+        "description": "test_no_pagination",
+        "peekOfCode": "def main():\n    \"\"\"主函数\"\"\"\n    # 检查服务是否运行\n    try:\n        response = requests.get(\"http://localhost:8000/api/v1/health\")\n        if response.status_code != 200:\n            print(\"❌ 服务未运行,请先启动服务: python app/main.py\")\n            return\n    except Exception as e:\n        print(f\"❌ 无法连接到服务: {e}\")",
+        "detail": "test_no_pagination",
+        "documentation": {}
+    }
+]
