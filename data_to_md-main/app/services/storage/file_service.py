@@ -69,17 +69,19 @@ class FileService:
     
     def save_output_file(
         self,
-        content: str,
+        content,
         task_id: str,
-        original_filename: str
+        original_filename: str,
+        is_pdf: bool = False
     ) -> str:
         """
         保存输出文件
         
         Args:
-            content: 文件内容
+            content: 文件内容（字符串或字节）
             task_id: 任务ID
             original_filename: 原始文件名
+            is_pdf: 是否为PDF文件
             
         Returns:
             str: 保存的文件路径
@@ -89,12 +91,18 @@ class FileService:
         """
         try:
             # 生成输出文件名
-            output_filename = self._generate_output_filename(original_filename, task_id)
+            output_filename = self._generate_output_filename(original_filename, task_id, is_pdf=is_pdf)
             file_path = self.output_dir / output_filename
             
             # 保存文件
-            with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(content)
+            if is_pdf:
+                # PDF 文件：二进制书写
+                with open(file_path, 'wb') as f:
+                    f.write(content)
+            else:
+                # Markdown 文件：文本书写
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(content)
             
             logger.info(f"Output file saved: {file_path}")
             return str(file_path)
@@ -197,13 +205,14 @@ class FileService:
         # 生成新文件名：task_id + 扩展名
         return f"{task_id}{ext}"
     
-    def _generate_output_filename(self, original_filename: str, task_id: str) -> str:
+    def _generate_output_filename(self, original_filename: str, task_id: str, is_pdf: bool = False) -> str:
         """
         生成输出文件名
         
         Args:
             original_filename: 原始文件名
             task_id: 任务ID
+            is_pdf: 是否为PDF文件
             
         Returns:
             str: 生成的输出文件名
@@ -211,8 +220,9 @@ class FileService:
         # 获取原始文件名（不含扩展名）
         stem = Path(original_filename).stem
         
-        # 生成新文件名：原始名_task_id.md
-        return f"{stem}_{task_id}.md"
+        # 根据类型生成新文件名
+        ext = ".pdf" if is_pdf else ".md"
+        return f"{stem}_{task_id}{ext}"
     
     def get_file_size(self, file_path: str) -> int:
         """

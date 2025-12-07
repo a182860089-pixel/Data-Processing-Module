@@ -10,10 +10,12 @@ from dataclasses import dataclass
 @dataclass
 class ConversionResult:
     """转换结果"""
-    markdown: str
-    metadata: Dict[str, Any]
-    status: str
+    markdown: str = None  # PDF → Markdown 时使用
+    pdf_content: bytes = None  # Office/图片 → PDF 时使用
+    metadata: Dict[str, Any] = None
+    status: str = "pending"
     error: str = None
+    output_type: str = "markdown"  # 'markdown' 或 'pdf'
 
 
 class BaseConverter(ABC):

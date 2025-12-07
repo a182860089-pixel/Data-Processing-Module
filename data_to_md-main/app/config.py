@@ -73,6 +73,16 @@ class Settings(BaseSettings):
     image_max_width: int = Field(default=1920, env="IMAGE_MAX_WIDTH")
     image_max_height: int = Field(default=1080, env="IMAGE_MAX_HEIGHT")
     
+    # Office 文档转 PDF 配置
+    office_conversion_method: str = Field(default="python", env="OFFICE_CONVERSION_METHOD")  # python or libreoffice
+    office_conversion_timeout: int = Field(default=60, env="OFFICE_CONVERSION_TIMEOUT")
+    office_max_size_mb: int = Field(default=100, env="OFFICE_MAX_SIZE_MB")
+    
+    # 图片转 PDF 配置
+    image_to_pdf_page_size: str = Field(default="A4", env="IMAGE_TO_PDF_PAGE_SIZE")
+    image_to_pdf_fit_mode: str = Field(default="fit", env="IMAGE_TO_PDF_FIT_MODE")
+    image_to_pdf_max_size_mb: int = Field(default=50, env="IMAGE_TO_PDF_MAX_SIZE_MB")
+    
     # 安全配置
     api_key_required: bool = Field(default=False, env="API_KEY_REQUIRED")
     allowed_origins: str = Field(default="*", env="ALLOWED_ORIGINS")

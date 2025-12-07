@@ -14,6 +14,18 @@ PyMuPDF==1.23.8
 Pillow==10.2.0
 pyvips==2.2.1
 
+# Office 文档处理
+python-pptx==0.6.23
+python-docx==0.8.11
+openpyxl==3.10.10
+
+# PDF 生成
+reportlab==4.0.9
+fpdf2==2.7.0
+
+# 视频处理（可选）
+opencv-python==4.8.1.78
+
 # OpenAI SDK (用于 DeepSeek-OCR)
 openai==1.10.0
 

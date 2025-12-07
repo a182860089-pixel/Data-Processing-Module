@@ -8,24 +8,35 @@ from pydantic import BaseModel, Field, validator
 class ConvertOptions(BaseModel):
     """转换选项
     
-    输出模式说明：
+    输出模式说明（仅PDF）：
     - 模式A（带页码+元数据）: show_page_number=True, include_metadata=True
     - 模式B（纯内容阅读模式）: show_page_number=False, include_metadata=False
     - 兼容模式: no_pagination_and_metadata=True 等同于模式B
     """
+    # PDF 转 Markdown 特有选项
     dpi: int = Field(default=144, ge=72, le=300, description="图像渲染DPI（仅PDF有效）")
-    show_page_number: bool = Field(default=True, description="是否在Markdown中显示页码标记")
-    include_metadata: bool = Field(default=True, description="是否在Markdown开头包含文档元数据")
+    show_page_number: bool = Field(default=True, description="是否在Markdown中显示页码标记（仅PDF有效）")
+    include_metadata: bool = Field(default=True, description="是否在Markdown开头包含文档元数据（仅PDF有效）")
     no_pagination_and_metadata: bool = Field(
         default=False, 
-        description="【兼容参数】是否取消分页和元数据(去掉页面标记、分隔符和元数据)。设为True等同于show_page_number=False且include_metadata=False"
+        description="【兼容参数】是否取消分页和元数据.设为True等同于show_page_number=False且include_metadata=False（仅PDF有效）"
     )
-    async_mode: bool = Field(default=True, alias="async", description="是否异步处理")
     max_pages: int = Field(default=100, ge=1, le=1000, description="最大处理页数（仅PDF有效）")
     ocr_engine: Literal["deepseek", "mineru", "auto"] = Field(
         default="auto",
-        description="OCR 引擎选择：deepseek / mineru / auto（默认 auto：优先 DeepSeek，失败回退 MinerU）"
+        description="OCR 引擎选择（仅PDF有效）: deepseek / mineru / auto"
     )
+    
+    # Office 文档转 PDF 选项
+    keep_layout: bool = Field(default=True, description="是否保持原始布局（仅Office有效）")
+    office_dpi: int = Field(default=96, ge=72, le=300, description="Office 转换是DPI（仅Office有效）")
+    
+    # 图片转 PDF 选项
+    page_size: str = Field(default="A4", description="页面尺寸: A4/A3/A5/letter（仅图片有效）")
+    fit_mode: str = Field(default="fit", description="缩放模式: fit/contain/cover/stretch（仅图片有效）")
+    
+    # 其他选项
+    async_mode: bool = Field(default=True, alias="async", description="是否异步处理")
 
     class Config:
         populate_by_name = True

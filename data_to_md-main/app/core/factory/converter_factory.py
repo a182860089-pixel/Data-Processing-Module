@@ -6,6 +6,8 @@ import logging
 from typing import Dict, Type
 from app.core.base.converter import BaseConverter
 from app.core.converters.pdf.pdf_converter import PDFConverter
+from app.core.converters.office.office_converter import OfficeConverter
+from app.core.converters.image.image_to_pdf_converter import ImageToPDFConverter
 from app.models.enums import FileType
 from app.exceptions.converter_exceptions import UnsupportedFileTypeException
 
@@ -17,11 +19,24 @@ class ConverterFactory:
     
     # 转换器注册表
     _converters: Dict[FileType, Type[BaseConverter]] = {
+        # PDF
         FileType.PDF: PDFConverter,
-        # 预留其他文件类型
-        # FileType.PPTX: OfficeConverter,
-        # FileType.DOCX: OfficeConverter,
-        # FileType.MP4: VideoConverter,
+        # Office 文档
+        FileType.DOCX: OfficeConverter,
+        FileType.DOC: OfficeConverter,
+        FileType.PPTX: OfficeConverter,
+        FileType.PPT: OfficeConverter,
+        FileType.XLSX: OfficeConverter,
+        FileType.XLS: OfficeConverter,
+        # 图片
+        FileType.JPG: ImageToPDFConverter,
+        FileType.JPEG: ImageToPDFConverter,
+        FileType.PNG: ImageToPDFConverter,
+        FileType.GIF: ImageToPDFConverter,
+        FileType.TIFF: ImageToPDFConverter,
+        FileType.BMP: ImageToPDFConverter,
+        FileType.WEBP: ImageToPDFConverter,
+        FileType.HEIC: ImageToPDFConverter,
     }
     
     @classmethod

@@ -32,15 +32,18 @@ async def convert_file(
     options: Optional[str] = Form(None, description="转换选项（JSON格式）")
 ):
     """
-    转换文件为Markdown
+    转换文件
     
     支持的文件类型：
-    - PDF (.pdf)
+    - PDF (.pdf) -> Markdown
+    - Office (【Office　〺.docx, .pptx, .xlsx) -> PDF
+    - 图片 (.jpg, .png, .gif, etc.) -> PDF
     
     转换选项：
-    - dpi: 图像渲染DPI（72-300，默认144）
-    - include_metadata: 是否包含元数据（默认true）
-    - max_pages: 最大处理页数（默认100）
+    - dpi: 图像渲染DPI（仅PDF有效）
+    - include_metadata: 是否包含元数据（仅PDF有效）
+    - page_size: 页面尺寸（仅图片有效）
+    - fit_mode: 缩放模式（仅图片有效）
     """
     settings = get_settings()
     conversion_service = ConversionService()
@@ -99,7 +102,7 @@ async def convert_file(
             task_id=result['task_id'],
             message="文件转换完成",
             filename=file.filename,
-            file_type=result['metadata'].get('file_type', 'unknown'),
+            file_type=result.get('output_type', 'markdown'),
             markdown_content=result['markdown_content'],
             download_url=f"/api/v1/download/{result['task_id']}",
             metadata={
@@ -107,7 +110,8 @@ async def convert_file(
                 'ocr_pages': result['metadata'].get('ocr_pages', 0),
                 'text_pages': result['metadata'].get('text_pages', 0),
                 'processing_time': result['metadata'].get('processing_time', 0),
-                'file_size': result['metadata'].get('output_file_size', 0)
+                'file_size': result['metadata'].get('output_file_size', 0),
+                'output_type': result.get('output_type', 'markdown')
             }
         )
         

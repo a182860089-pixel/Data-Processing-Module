@@ -68,12 +68,24 @@ class ConversionService:
             # 5. 执行转换
             result = await converter.convert(file_path, options)
             
-            # 6. 保存结果
-            output_path = self.file_service.save_output_file(
-                content=result.markdown,
-                task_id=task.task_id,
-                original_filename=filename
-            )
+            # 6. 根据 output_type 保存结果
+            if result.output_type == 'pdf':
+                # Office/图片 -> PDF
+                output_path = self.file_service.save_output_file(
+                    content=result.pdf_content,
+                    task_id=task.task_id,
+                    original_filename=filename,
+                    is_pdf=True
+                )
+                markdown_content = ""
+            else:
+                # PDF -> Markdown
+                output_path = self.file_service.save_output_file(
+                    content=result.markdown,
+                    task_id=task.task_id,
+                    original_filename=filename
+                )
+                markdown_content = result.markdown
             
             # 7. 计算处理时间
             processing_time = time.time() - start_time
@@ -86,7 +98,7 @@ class ConversionService:
             self.task_manager.complete_task(
                 task_id=task.task_id,
                 result_path=output_path,
-                markdown_content=result.markdown,
+                markdown_content=markdown_content,
                 metadata=metadata
             )
             
@@ -99,8 +111,9 @@ class ConversionService:
             return {
                 'task_id': task.task_id,
                 'status': 'completed',
-                'markdown_content': result.markdown,
+                'markdown_content': markdown_content,
                 'output_path': output_path,
+                'output_type': result.output_type,
                 'metadata': metadata
             }
             

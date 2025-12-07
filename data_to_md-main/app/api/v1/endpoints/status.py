@@ -90,11 +90,19 @@ async def download_result(task_id: str):
                 }
             )
         
-        # 返回文件
+        # 根据文件类型设置正确的 media_type
         filename = Path(file_path).name
+        if filename.endswith('.pdf'):
+            media_type = "application/pdf"
+        elif filename.endswith('.md'):
+            media_type = "text/markdown"
+        else:
+            media_type = "application/octet-stream"
+        
+        # 返回文件
         return FileResponse(
             path=file_path,
-            media_type="text/markdown",
+            media_type=media_type,
             filename=filename
         )
         

@@ -10,9 +10,38 @@ const successMessage = ref<string | null>(null);
 const markdown = ref<string>("");
 const downloadUrl = ref<string>("");
 const taskId = ref<string>("");
+const fileType = ref<string>("");
+const processingTime = ref<number>(0);
 
 // 选项：阅读模式（不带分页/元数据）或 调试模式（带分页/元数据）
 const mode = ref<"reader" | "debug">("reader");
+
+const detectFileType = (filename: string): string => {
+  const ext = filename.split('.').pop()?.toLowerCase() || '';
+  const typeMap: Record<string, string> = {
+    pdf: 'PDF',
+    docx: 'Word',
+    doc: 'Word',
+    pptx: 'PowerPoint',
+    ppt: 'PowerPoint',
+    xlsx: 'Excel',
+    xls: 'Excel',
+    jpg: 'Image',
+    jpeg: 'Image',
+    png: 'Image',
+    gif: 'Image',
+    bmp: 'Image',
+    tiff: 'Image',
+    webp: 'Image',
+  };
+  return typeMap[ext] || 'Unknown';
+};
+
+const isValidFile = (filename: string): boolean => {
+  const ext = filename.split('.').pop()?.toLowerCase() || '';
+  const validExt = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'xls', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'];
+  return validExt.includes(ext);
+};
 
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -22,8 +51,8 @@ const handleFileChange = (e: Event) => {
     return;
   }
   const f = files[0];
-  if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
-    error.value = "请选择 PDF 文件";
+  if (!isValidFile(f.name)) {
+    error.value = "请选择 PDF、Office 文档或图片文件";
     file.value = null;
     return;
   }
@@ -33,26 +62,50 @@ const handleFileChange = (e: Event) => {
   downloadUrl.value = "";
   taskId.value = "";
   file.value = f;
+  fileType.value = detectFileType(f.name);
 };
 
 const buildOptions = () => {
-  if (mode.value === "reader") {
-    // 阅读模式：不带分页、不带元数据，更适合直接阅读
+  const baseOptions: Record<string, any> = {};
+  
+  // PDF 转 Markdown
+  if (fileType.value === 'PDF') {
+    if (mode.value === "reader") {
+      return {
+        include_metadata: false,
+        no_pagination_and_metadata: true,
+      };
+    }
     return {
-      include_metadata: false,
-      no_pagination_and_metadata: true,
+      include_metadata: true,
+      no_pagination_and_metadata: false,
     };
   }
-  // 调试模式：带分页和元数据，方便查看每页 OCR 情况
-  return {
-    include_metadata: true,
-    no_pagination_and_metadata: false,
-  };
+  
+  // Office 文档 -> PDF
+  if (['Word', 'PowerPoint', 'Excel'].includes(fileType.value)) {
+    return {
+      keep_layout: true,
+      office_dpi: 96,
+      dpi: 144,
+    };
+  }
+  
+  // 图片 -> PDF
+  if (fileType.value === 'Image') {
+    return {
+      page_size: 'A4',
+      fit_mode: 'fit',
+      dpi: 144,
+    };
+  }
+  
+  return baseOptions;
 };
 
 const handleSubmit = async () => {
   if (!file.value) {
-    error.value = "请先选择一个 PDF 文件";
+    error.value = "请先选择一个文件";
     return;
   }
 
@@ -62,6 +115,9 @@ const handleSubmit = async () => {
   markdown.value = "";
   downloadUrl.value = "";
   taskId.value = "";
+  processingTime.value = 0;
+
+  const startTime = Date.now();
 
   try {
     const formData = new FormData();
@@ -87,18 +143,23 @@ const handleSubmit = async () => {
     }
 
     const data = await resp.json();
-    // 兼容 README 中示例的字段
+    processingTime.value = (Date.now() - startTime) / 1000;
+    
+    // 兼容不同文件类型的响应
     markdown.value = data.markdown_content || data.data?.markdown_content || "";
     taskId.value = data.task_id || data.data?.task_id || "";
     downloadUrl.value =
       data.download_url ||
       (taskId.value ? `/api/v1/download/${taskId.value}` : "");
 
-    if (!markdown.value) {
-      throw new Error("后端未返回 markdown_content 字段");
+    // Office/图片也可能有 markdown_content、或者只有下载链接
+    if (!markdown.value && downloadUrl.value) {
+      successMessage.value = `${fileType.value} 转换完成（程上: ${processingTime.value.toFixed(2)}s）`;
+    } else if (markdown.value) {
+      successMessage.value = `${fileType.value} 转换完成（程上: ${processingTime.value.toFixed(2)}s）`;
+    } else {
+      throw new Error("后端未返回有效数据");
     }
-
-    successMessage.value = "PDF 转换完成";
   } catch (e) {
     error.value = e instanceof Error ? e.message : "转换失败";
   } finally {
@@ -131,11 +192,11 @@ const fullDownloadUrl = () => {
 <template>
   <div class="pdf-uploader">
     <section class="card">
-      <h2 class="card-title">📄 PDF 转 Markdown</h2>
-      <p class="card-subtitle">上传 PDF，后端通过 DeepSeek OCR 将其转换为 Markdown 文本</p>
+      <h2 class="card-title">🔄 多格式转换工具</h2>
+      <p class="card-subtitle">支持 PDF → Markdown，Office/图片 → PDF 转换</p>
 
-      <!-- 模式选择 -->
-      <div class="mode-switch">
+      <!-- 模式选择（仅 PDF 有效） -->
+      <div v-if="fileType === 'PDF'" class="mode-switch">
         <label>
           <input type="radio" value="reader" v-model="mode" />
           阅读模式（不带分页/元数据）
@@ -148,17 +209,24 @@ const fullDownloadUrl = () => {
 
       <div class="form-row">
         <label class="file-label">
-          <span>选择 PDF 文件</span>
-          <input type="file" accept="application/pdf,.pdf" @change="handleFileChange" />
+          <span>选择文件 (PDF/Office/图片)</span>
+          <input 
+            type="file" 
+            accept=".pdf,.docx,.doc,.pptx,.ppt,.xlsx,.xls,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp"
+            @change="handleFileChange" 
+          />
         </label>
 
-        <button class="btn" :disabled="loading" @click="handleSubmit">
+        <button class="btn" :disabled="loading || !file" @click="handleSubmit">
           <span v-if="!loading">开始转换</span>
           <span v-else>正在转换...</span>
         </button>
       </div>
 
-      <p v-if="file" class="file-name">已选择：{{ file.name }}</p>
+      <p v-if="file" class="file-name">
+        📄 已选择：{{ file.name }}
+        <span class="file-type-badge">{{ fileType }}</span>
+      </p>
 
       <!-- 错误/成功提示 -->
       <Transition name="fade">
@@ -170,18 +238,26 @@ const fullDownloadUrl = () => {
     </section>
 
     <!-- 结果展示 -->
-    <section v-if="markdown" class="card result-card">
+    <section v-if="markdown || downloadUrl" class="card result-card">
       <header class="result-header">
-        <h3>转换结果 Markdown</h3>
+        <div>
+          <h3>{{ fileType === 'PDF' ? 'Markdown' : 'PDF' }} 转换结果</h3>
+          <p class="result-meta" v-if="processingTime > 0">
+            耗时: {{ processingTime.toFixed(2) }}s
+          </p>
+        </div>
         <div class="result-actions">
-          <button class="btn btn-secondary" @click="handleCopy">复制内容</button>
+          <button v-if="markdown" class="btn btn-secondary" @click="handleCopy">📝 复制内容</button>
           <a v-if="fullDownloadUrl()" class="btn btn-outline" :href="fullDownloadUrl()" target="_blank" rel="noopener">
-            下载 Markdown 文件
+            📄 下载文件
           </a>
         </div>
       </header>
 
-      <textarea class="markdown-view" readonly :value="markdown"></textarea>
+      <textarea v-if="markdown" class="markdown-view" readonly :value="markdown"></textarea>
+      <div v-else class="no-markdown-hint">
+        ✅ {{ fileType }} 转换成功了！点击上方按钮下载你的 PDF 文件。
+      </div>
     </section>
   </div>
 </template>
@@ -298,6 +374,34 @@ const fullDownloadUrl = () => {
   margin-top: 8px;
   font-size: 13px;
   color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-type-badge {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.result-meta {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.no-markdown-hint {
+  padding: 20px;
+  text-align: center;
+  color: #059669;
+  background: #f0fdf4;
+  border-radius: 8px;
+  border: 1px solid #86efac;
 }
 
 .alert {
