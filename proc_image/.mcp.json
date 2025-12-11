@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "Context 7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
+    },
+    "shadcn-ui-vue": {
+      "command": "cmd",
+      "args": ["/c", "npx", "@jpisnice/shadcn-ui-mcp-server", "--framework", "vue", "--github-api-key", "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"]
+    },
+    "firecrawl-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "$fc-37b6ff20d9784e6fba3792324bbbf364"
+      }
+    },
+    "pydantic-ai Docs": {
+      "command": "cmd",
+      "args": ["/c", "npx", "mcp-remote", "https://gitmcp.io/pydantic/pydantic-ai"]
+    },
+    "chrome-devtools": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}

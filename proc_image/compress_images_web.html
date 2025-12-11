@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>图片批量压缩转 WebP（浏览器版）</title>
+  <style>
+    :root {
+      --bg: #0b0f14; --fg: #eaeef3; --muted: #a4b0be; --accent: #38bdf8; --ok:#22c55e; --warn:#f59e0b; --err:#ef4444;
+    }
+    html, body {height: 100%;}
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--fg); background: linear-gradient(180deg, #0b0f14, #0e1620 60%, #0b0f14);
+    }
+    .container {max-width: 980px; margin: 24px auto; padding: 0 16px;}
+    h1 {font-size: 22px; margin: 0 0 12px; font-weight: 700;}
+    .card {background: #121a24; border: 1px solid #223041; border-radius: 10px; padding: 16px; box-shadow: 0 6px 20px rgba(0,0,0,.25)}
+    .row {display: flex; gap: 12px; flex-wrap: wrap; align-items: center;}
+    .row > * {flex: 1 1 auto;}
+    label {font-size: 13px; color: var(--muted);}
+    input[type="number"], input[type="range"], input[type="text"] {
+      width: 100%; background:#101820; color: var(--fg); border:1px solid #2b3b4e; border-radius:8px; padding:8px; box-sizing:border-box;
+    }
+    input[type="file"] {accent-color: var(--accent);}    
+    .btn {background:#0f1720; border:1px solid #2b3b4e; color:var(--fg); padding:10px 14px; border-radius:8px; cursor:pointer;}
+    .btn.primary {background: linear-gradient(180deg, #0694d3, #2589bd); border: none;}
+    .btn[disabled] {opacity: .5; cursor: not-allowed;}
+    .hint {font-size: 12px; color: var(--muted);}
+    .progress {height: 8px; background:#0f1720; border:1px solid #2b3b4e; border-radius: 999px; overflow: hidden;}
+    .progress > span {display:block; height: 100%; width:0; background: linear-gradient(90deg, #38bdf8, #22c55e);} 
+    table {width:100%; border-collapse: collapse; margin-top: 10px; font-size: 13px;}
+    th, td {padding: 8px 6px; border-bottom: 1px solid #223041; text-align: left;}
+    .right {text-align: right;}
+    .ok {color: var(--ok);} .warn{color: var(--warn);} .err{color: var(--err);} .muted{color: var(--muted);}    
+    .stat {display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 10px; margin-top: 12px;}
+    .pill {background:#0f1720; border:1px solid #2b3b4e; border-radius: 10px; padding:10px;}
+    .mono {font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+  </style>
+  <!-- JSZip + FileSaver for ZIP 下载 -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>图片批量压缩转 WebP（浏览器版）</h1>
+    <div class="card">
+      <div class="row" style="align-items:flex-end;">
+        <div style="flex: 1 1 310px;">
+          <label>选择文件夹或多张图片（推荐选择文件夹，保留相对路径）</label>
+          <input id="fileInput" type="file" webkitdirectory multiple />
+          <div class="hint">支持: .jpg .jpeg .png .bmp .gif .tiff .tif .webp（GIF仅取首帧）</div>
+        </div>
+        <div style="flex:0 0 160px;">
+          <label>最大宽度</label>
+          <input id="maxWidth" type="number" min="1" value="1920" />
+        </div>
+        <div style="flex:0 0 160px;">
+          <label>最大高度</label>
+          <input id="maxHeight" type="number" min="1" value="1080" />
+        </div>
+        <div style="flex:1 1 240px;">
+          <label>WebP 质量：<span id="qVal">95</span></label>
+          <input id="quality" type="range" min="1" max="100" step="1" value="95" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 12px;">
+        <button id="startBtn" class="btn primary" disabled>开始压缩</button>
+        <button id="downloadZipBtn" class="btn" disabled>下载全部 ZIP</button>
+        <span id="supportInfo" class="hint"></span>
+      </div>
+
+      <div class="row" style="margin-top:12px; align-items:center;">
+        <div class="progress" style="flex:1 1 400px;"><span id="bar"></span></div>
+        <div class="right muted" style="flex:0 0 120px;"><span id="barText">0%</span></div>
+      </div>
+
+      <div class="stat">
+        <div class="pill">待处理 <b class="mono" id="fileCount">0</b> 张</div>
+        <div class="pill">成功 <b class="mono ok" id="succ">0</b> / 失败 <b class="mono err" id="fail">0</b></div>
+        <div class="pill">原始总大小 <b class="mono" id="origTotal">0.00</b> MB</div>
+        <div class="pill">压缩后总大小 <b class="mono" id="compTotal">0.00</b> MB</div>
+        <div class="pill">总体压缩率 <b class="mono" id="ratioTotal">0.0</b>%</div>
+      </div>
+
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>文件</th>
+            <th class="right">原始</th>
+            <th class="right">压缩后</th>
+            <th class="right">压缩率</th>
+            <th>下载</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <p class="hint" style="margin-top:10px;">
+      说明：
+      1) 通过 Canvas 重新编码为 WebP，等比缩放至不超过设定的最大宽/高；
+      2) 重新编码过程会去除元数据；
+      3) 浏览器端处理，不会上传到服务器；
+      4) GIF 仅取首帧；
+      5) 若需更强压缩，可后续扩展接入 Squoosh/libwebp（WASM）。
+    </p>
+  </div>
+
+<script>
+(() => {
+  const SUPPORTED_EXTS = new Set(['.jpg','.jpeg','.png','.bmp','.gif','.tiff','.tif','.webp']);
+  const fileInput = document.getElementById('fileInput');
+  const qualityEl = document.getElementById('quality');
+  const qVal = document.getElementById('qVal');
+  const maxWidthEl = document.getElementById('maxWidth');
+  const maxHeightEl = document.getElementById('maxHeight');
+  const startBtn = document.getElementById('startBtn');
+  const downloadZipBtn = document.getElementById('downloadZipBtn');
+  const supportInfo = document.getElementById('supportInfo');
+  const bar = document.getElementById('bar');
+  const barText = document.getElementById('barText');
+  const fileCount = document.getElementById('fileCount');
+  const succEl = document.getElementById('succ');
+  const failEl = document.getElementById('fail');
+  const origTotalEl = document.getElementById('origTotal');
+  const compTotalEl = document.getElementById('compTotal');
+  const ratioTotalEl = document.getElementById('ratioTotal');
+  const tbody = document.querySelector('#resultTable tbody');
+
+  const webpSupported = (() => {
+    const c = document.createElement('canvas');
+    return c.toDataURL && c.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  })();
+  supportInfo.textContent = webpSupported ? '浏览器支持 WebP ✅' : '⚠️ 当前浏览器可能不支持 WebP 编码';
+
+  qVal.textContent = qualityEl.value;
+  qualityEl.addEventListener('input', () => qVal.textContent = qualityEl.value);
+
+  fileInput.addEventListener('change', () => {
+    const files = Array.from(fileInput.files || []);
+    const filtered = files.filter(isSupportedImage);
+    fileCount.textContent = String(filtered.length);
+    startBtn.disabled = filtered.length === 0;
+    tbody.innerHTML = '';
+    resetStats();
+  });
+
+  startBtn.addEventListener('click', async () => {
+    const files = Array.from(fileInput.files || []).filter(isSupportedImage);
+    if (!files.length) return;
+
+    startBtn.disabled = true;
+    downloadZipBtn.disabled = true;
+    tbody.innerHTML = '';
+    resetStats();
+
+    const maxW = Math.max(1, +maxWidthEl.value || 1920);
+    const maxH = Math.max(1, +maxHeightEl.value || 1080);
+    const q = Math.min(100, Math.max(1, +qualityEl.value || 95)) / 100; // 0-1
+
+    let success = 0, failed = 0;
+    let totalOrig = 0, totalComp = 0;
+
+    const zip = new JSZip();
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const idx = i + 1;
+      try {
+        const origSize = file.size; totalOrig += origSize;
+        const { blob: outBlob, newName, zipPath } = await convertToWebP(file, { maxW, maxH, quality: q });
+        const compSize = outBlob.size; totalComp += compSize;
+        success++;
+
+        // 更新 UI
+        addRow(idx, file.webkitRelativePath || file.name, origSize, compSize, outBlob);
+        updateStats(success, failed, totalOrig, totalComp, idx, files.length);
+
+        // 写入 ZIP（保留相对路径）
+        zip.file(zipPath, outBlob);
+      } catch (err) {
+        console.error('处理失败', file.name, err);
+        failed++;
+        addRow(idx, file.webkitRelativePath || file.name, file.size, 0, null, err);
+        updateStats(success, failed, totalOrig, totalComp, idx, files.length);
+      }
+      // 让 UI 有机会刷新
+      await new Promise(r => setTimeout(r));
+    }
+
+    // 生成 ZIP
+    try {
+      const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+      downloadZipBtn.onclick = () => saveAs(zipBlob, 'compressed_webp.zip');
+      downloadZipBtn.disabled = false;
+    } catch (e) {
+      console.error('ZIP 生成失败', e);
+    }
+
+    startBtn.disabled = false;
+  });
+
+  function resetStats() {
+    succEl.textContent = '0';
+    failEl.textContent = '0';
+    origTotalEl.textContent = '0.00';
+    compTotalEl.textContent = '0.00';
+    ratioTotalEl.textContent = '0.0';
+    bar.style.width = '0%';
+    barText.textContent = '0%';
+  }
+
+  function isSupportedImage(f) {
+    const ext = ('.' + (f.name.split('.').pop() || '')).toLowerCase();
+    return SUPPORTED_EXTS.has(ext);
+  }
+
+  function getNewDims(w, h, maxW, maxH) {
+    if (w <= maxW && h <= maxH) return { w, h };
+    const r = Math.min(maxW / w, maxH / h);
+    return { w: Math.max(1, Math.floor(w * r)), h: Math.max(1, Math.floor(h * r)) };
+  }
+
+  async function decodeImage(file) {
+    // 优先使用 createImageBitmap（支持 EXIF 方向纠正），回退到 <img>
+    if ('createImageBitmap' in window) {
+      try {
+        const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+        return { width: bmp.width, height: bmp.height, draw: (ctx) => { ctx.drawImage(bmp, 0, 0); bmp.close(); } };
+      } catch {}
+    }
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((resolve, reject) => {
+        const el = new Image();
+        el.onload = () => resolve(el);
+        el.onerror = reject;
+        el.src = url;
+      });
+      return { width: img.width, height: img.height, draw: (ctx) => ctx.drawImage(img, 0, 0) };
+    } finally { URL.revokeObjectURL(url); }
+  }
+
+  async function convertToWebP(file, { maxW, maxH, quality }) {
+    const decoder = await decodeImage(file);
+    const { w, h } = getNewDims(decoder.width, decoder.height, maxW, maxH);
+
+    const canvas = new OffscreenCanvas ? new OffscreenCanvas(w, h) : Object.assign(document.createElement('canvas'), { width: w, height: h });
+    if (!(canvas instanceof OffscreenCanvas)) { canvas.width = w; canvas.height = h; }
+    const ctx = canvas.getContext('2d', { alpha: true, willReadFrequently: false });
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+
+    decoder.draw(ctx);
+    if (decoder.width !== w || decoder.height !== h) {
+      // 将原图绘制到临时画布，再缩放绘制，避免直接缩放引起的插值锯齿（已设置 smoothing=high）
+      // 这里只需一次 draw 已包含缩放
+    }
+
+    const blob = await toWebPBlob(canvas, quality);
+
+    const base = file.name.replace(/\.[^.]+$/i, '');
+    const newName = `${base}_compressed.webp`;
+    const relPath = (file.webkitRelativePath || file.name).split('/').slice(0, -1).join('/');
+    const zipPath = relPath ? `${relPath}/${newName}` : newName;
+
+    return { blob, newName, zipPath };
+  }
+
+  function toWebPBlob(canvas, quality) {
+    return new Promise((resolve, reject) => {
+      const done = (b) => b ? resolve(b) : reject(new Error('toBlob 失败'));
+      if (canvas.convertToBlob) {
+        canvas.convertToBlob({ type: 'image/webp', quality }).then(done, reject);
+      } else {
+        canvas.toBlob(done, 'image/webp', quality);
+      }
+    });
+  }
+
+  function addRow(idx, name, origBytes, compBytes, blob, error) {
+    const tr = document.createElement('tr');
+    const compKB = compBytes ? (compBytes / 1024) : 0;
+    const origKB = origBytes / 1024;
+    const ratio = compBytes ? (1 - compBytes / origBytes) * 100 : 0;
+
+    tr.innerHTML = `
+      <td class="mono">${idx}</td>
+      <td class="mono">${escapeHtml(name)}</td>
+      <td class="right mono">${fmtKB(origKB)}</td>
+      <td class="right mono">${compBytes ? fmtKB(compKB) : '-'}</td>
+      <td class="right mono ${compBytes ? 'ok' : 'err'}">${compBytes ? ratio.toFixed(1) + '%' : '失败'}</td>
+      <td>${blob ? `<a class="btn" href="#" data-dl>下载</a>` : '<span class="muted">-</span>'}</td>
+    `;
+
+    if (blob) {
+      const a = tr.querySelector('[data-dl]');
+      const url = URL.createObjectURL(blob);
+      const base = name.split('/').pop().replace(/\.[^.]+$/i, '');
+      a.href = url; a.download = base + '_compressed.webp';
+      a.addEventListener('click', () => {
+        // 释放 URL 在一次下载后即可（若需多次，延迟释放）
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+      });
+    }
+
+    tbody.appendChild(tr);
+  }
+
+  function updateStats(succ, fail, totalOrig, totalComp, done, total) {
+    succEl.textContent = String(succ);
+    failEl.textContent = String(fail);
+    origTotalEl.textContent = (totalOrig / 1024 / 1024).toFixed(2);
+    compTotalEl.textContent = (totalComp / 1024 / 1024).toFixed(2);
+    ratioTotalEl.textContent = totalOrig ? ((1 - totalComp / totalOrig) * 100).toFixed(1) : '0.0';
+    const pct = total ? Math.round(done / total * 100) : 0;
+    bar.style.width = pct + '%';
+    barText.textContent = pct + '%';
+  }
+
+  function fmtKB(kb) { return kb.toFixed(2) + ' KB'; }
+  function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
+})();
+</script>
+</body>
+</html>
+

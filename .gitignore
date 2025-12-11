@@ -1,0 +1,79 @@
+# === Virtual environments ===
+.venv/
+venv/
+ENV/
+env/
+
+# === Python bytecode & caches ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# === IDE / editor / OS files ===
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# === Logs & temp files ===
+logs/
+*.log
+*.tmp
+*.temp
+~$*
+
+# === Build / dist / node ===
+dist/
+build/
+node_modules/
+
+# === Application storage (uploads & outputs) ===
+# 这些目录里包含了你当前仓库里最大的 mp4/docx/md/pdf 等文件，
+# 通常是运行时产物，不建议进仓库。
+data_to_md-main/storage/uploads/
+data_to_md-main/storage/outputs/
+
+# 如果 storage 下还有其他持久化缓存，也可以一并忽略：
+data_to_md-main/storage/cache/
+
+# === Large test images & resources ===
+# proc_image 测试图片体积很大，只保留真正需要版本控制的样本。
+proc_image/testimgs/
+
+# === Vendored libraries / archives ===
+# 大型依赖压缩包（如 libvips 安装包）不建议提交，可通过脚本或文档说明如何下载。
+proc_image/tools/libvips/
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+
+# === Data files (按需放开) ===
+# 如果你有真正需要版本控制的小样本数据，可以在下面单独白名单，
+# 否则默认忽略大数据文件类型。
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.parquet
+*.feather
+*.h5
+*.hdf5
+
+# === Media (视频 / 大图片) ===
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+
+# 大尺寸图片，可以按实际需要调整：
+*.jpeg
+*.jpg
+*.png
+*.tiff
+*.bmp
