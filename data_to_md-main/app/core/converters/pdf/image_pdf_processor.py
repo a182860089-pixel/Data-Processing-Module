@@ -12,6 +12,7 @@ from app.models.enums import ChunkType
 from app.core.common.image_processor import ImageProcessor
 from app.services.external.deepseek_client import DeepSeekClient
 from app.services.external.mineru_client import MinerUClient
+from app.exceptions.service_exceptions import MinerUAPIException
 from app.config import get_settings
 
 logger = logging.getLogger(__name__)
@@ -50,6 +51,23 @@ class ImagePDFProcessor(BaseProcessor):
             List[ContentChunk]: 内容片段列表
         """
         logger.info(f"Processing image PDF: {file_path}, {file_info.total_pages} pages")
+        
+        # 当选择 MinerU 时，走整PDF解析链路，返回单个整文 ContentChunk
+        if (self.ocr_engine or "").lower() == "mineru":
+            logger.info("Using MinerU ocr_pdf for whole-document parsing in ImagePDFProcessor")
+            try:
+                markdown = await self.mineru_client.ocr_pdf(file_path)
+                return [
+                    ContentChunk(
+                        content=markdown,
+                        page_number=1,
+                        chunk_type=ChunkType.OCR,
+                        metadata={"ocr_engine": "mineru", "method": "mineru_pdf"}
+                    )
+                ]
+            except Exception as e:
+                logger.error(f"MinerU whole-document parsing failed: {str(e)}")
+                raise
         
         try:
             # 打开PDF文档
@@ -168,22 +186,19 @@ class ImagePDFProcessor(BaseProcessor):
         """
         engine = (self.ocr_engine or "auto").lower()
 
-        # 明确指定 DeepSeek
+        # 明确指定 DeepSeek（逐页）
         if engine == "deepseek":
             markdown = await self.deepseek_client.ocr_image(base64_image)
             return markdown, "deepseek"
 
-        # 明确指定 MinerU
+        # 明确指定 MinerU（逐页不支持）
         if engine == "mineru":
-            markdown = await self.mineru_client.ocr_image(base64_image)
-            return markdown, "mineru"
+            raise MinerUAPIException(
+                message="MinerU 不支持逐页 image OCR",
+                details="请在处理器入口走 mineru 的整PDF解析链路（ocr_pdf）。"
+            )
 
-        # auto 模式：先 DeepSeek，失败则回退 MinerU
-        try:
-            markdown = await self.deepseek_client.ocr_image(base64_image)
-            return markdown, "deepseek"
-        except Exception as e:
-            logger.warning(f"DeepSeek OCR failed, fallback to MinerU: {str(e)}")
-            markdown = await self.mineru_client.ocr_image(base64_image)
-            return markdown, "mineru"
+        # auto 模式：仅尝试 DeepSeek，失败则抛出由上层捕获
+        markdown = await self.deepseek_client.ocr_image(base64_image)
+        return markdown, "deepseek"
  

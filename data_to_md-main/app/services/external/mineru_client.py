@@ -25,12 +25,13 @@ from app.services.external.base_ocr_client import BaseOCRClient
 
 logger = logging.getLogger(__name__)
 
-# MinerU 官方 API 基础 URL
+# MinerU 官方 API 基础 URL（注意：不带尾随斜杠也可，由 _build_url 统一处理）
 MINERU_API_BASE = "https://mineru.net/api/v4"
-MINERU_CREATE_TASK = "/extract/task"
-MINERU_GET_TASK = "/extract/task/{task_id}"
-MINERU_FILE_UPLOAD = "/file-urls/batch"
-MINERU_BATCH_RESULTS = "/extract-results/batch/{batch_id}"
+# 端点路径不要以斜杠开头，避免 urljoin 覆盖掉 base 的路径段
+MINERU_CREATE_TASK = "extract/task"
+MINERU_GET_TASK = "extract/task/{task_id}"
+MINERU_FILE_UPLOAD = "file-urls/batch"
+MINERU_BATCH_RESULTS = "extract-results/batch/{batch_id}"
 
 
 class MinerUClient(BaseOCRClient):
@@ -61,6 +62,12 @@ class MinerUClient(BaseOCRClient):
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
         }
+
+    def _build_url(self, path: str) -> str:
+        """安全拼接 base_url 和相对路径，避免 urljoin 覆盖 base 的路径段"""
+        base = (self.base_url or "").rstrip("/")
+        rel = (path or "").lstrip("/")
+        return f"{base}/{rel}"
 
     async def ocr_image(self, base64_image: str) -> str:
         """MinerU 主要是 PDF 处理，不支持单张图片。此方法抛出异常。"""
@@ -116,7 +123,7 @@ class MinerUClient(BaseOCRClient):
 
     async def _request_upload_url(self, file_path: str) -> tuple[str, str]:
         """申请文件上传链接。返回 (batch_id, upload_url)"""
-        url = urljoin(self.base_url, MINERU_FILE_UPLOAD)
+        url = self._build_url(MINERU_FILE_UPLOAD)
         headers = self._get_headers()
         payload = {
             "files": [
@@ -189,7 +196,7 @@ class MinerUClient(BaseOCRClient):
 
     async def _poll_and_get_result(self, batch_id: str) -> str:
         """轮询任务状态，直到完成。返回 markdown 内容。"""
-        url = urljoin(self.base_url, MINERU_BATCH_RESULTS.format(batch_id=batch_id))
+        url = self._build_url(MINERU_BATCH_RESULTS.format(batch_id=batch_id))
         headers = self._get_headers()
 
         poll_count = 0

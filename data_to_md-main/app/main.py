@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from app.api.v1.endpoints import convert, health, status, image, batch
+from app.api.v1.endpoints import convert, health, status, image, batch, crawler, debug
 from app.config import get_settings
 from app.exceptions.base_exceptions import BaseAppException
 
@@ -132,6 +132,18 @@ app.include_router(
     batch.router,
     prefix="/api/v1",
     tags=["batch"]
+)
+
+app.include_router(
+    crawler.router,
+    prefix="/api/v1",
+    tags=["crawler"]
+)
+
+app.include_router(
+    debug.router,
+    prefix="/api/v1",
+    tags=["debug"]
 )
 
 
