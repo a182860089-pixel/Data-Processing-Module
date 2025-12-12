@@ -11,7 +11,7 @@ print()
 # 后端路径和命令
 backend_path = r"D:\Data Processing Module\data_to_md-main"
 backend_cmd = [
-    "python",
+    r"D:\\venvs\\data_to_md\\Scripts\\python.exe",
     "-m",
     "uvicorn",
     "app.main:app",
