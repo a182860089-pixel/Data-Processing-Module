@@ -6,7 +6,7 @@ try {
 } catch {}
 
 Write-Host "=====================================" -ForegroundColor Green
-Write-Host "  视频转换系统 - 前后端启动脚本" -ForegroundColor Green
+Write-Host "  数据处理小工具 - 前后端启动脚本" -ForegroundColor Green
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
 
@@ -44,10 +44,9 @@ Write-Host "前端地址: http://localhost:5173" -ForegroundColor Cyan
 Write-Host "API文档: http://localhost:8000/docs" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "功能说明:" -ForegroundColor Cyan
-Write-Host "  • 支持视频转Markdown/PDF" -ForegroundColor White
-Write-Host "  • 支持500MB以内的视频文件" -ForegroundColor White
-Write-Host "  • 实时转换选项配置" -ForegroundColor White
-Write-Host "  • 支持拖放上传" -ForegroundColor White
-Write-Host "  • 新增：微信公众号文章爬虫" -ForegroundColor White
+Write-Host "  • 图片压缩：支持 JPEG/PNG/BMP/GIF/TIFF/WebP" -ForegroundColor White
+Write-Host "  • 多图转PDF：批量图片合并为PDF文档" -ForegroundColor White
+Write-Host "  • PDF转Markdown：支持PDF/Office/图片转换" -ForegroundColor White
+Write-Host "  • 微信文章爬取：输入链接自动爬取内容" -ForegroundColor White
 Write-Host ""
 Write-Host "按 Ctrl+C 可关闭任何窗口" -ForegroundColor Yellow

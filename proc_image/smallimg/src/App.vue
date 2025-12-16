@@ -5,7 +5,7 @@ import ImagesToPdfConverter from "./components/ImagesToPdfConverter.vue";
 import ProcessingList from "./components/ProcessingList.vue";
 import ImagePreview from "./components/ImagePreview.vue";
 import PdfUploader from "./components/PdfUploader.vue";
-import VideoUploader from "./components/VideoUploader.vue";
+import WechatCrawler from "./components/WechatCrawler.vue";
 import { useImageProcess } from "./composables/useImageProcess";
 import { generateId } from "./utils/image-utils";
 import type { ImageItem } from "./types";
@@ -17,8 +17,8 @@ const previewItem = ref<ImageItem | null>(null);
 const errorMessage = ref<string>("");
 const successMessage = ref<string>("");
 
-// 当前激活的标签：image = 图片压缩，images-to-pdf = 多图转PDF，pdf = PDF 转 Markdown，video = 视频转换
-const activeTab = ref<"image" | "images-to-pdf" | "pdf" | "video">("image");
+// 当前激活的标签：image = 图片压缩，images-to-pdf = 多图转PDF，pdf = PDF 转 Markdown，wechat = 微信爬取
+const activeTab = ref<"image" | "images-to-pdf" | "pdf" | "wechat">("image");
 
 // 后端服务状态（阶段1验收）
 const API_BASE_URL =
@@ -231,60 +231,17 @@ onUnmounted(() => {
         </button>
         <button
           class="tab-btn"
-          :class="{ active: activeTab === 'video' }"
+          :class="{ active: activeTab === 'wechat' }"
           type="button"
-          @click="activeTab = 'video'"
+          @click="activeTab = 'wechat'"
         >
-          🎬 视频 → MD/PDF
+          🔗 微信文章爬取
         </button>
       </div>
     </header>
 
     <main class="main">
       <div class="container">
-        <!-- 后端服务状态概览（阶段1 可视化验收） -->
-        <section class="status-bar">
-          <div class="status-pill">
-            <span class="label">API Health:</span>
-            <span class="value" :class="['value-tag', healthStatus === 'healthy' ? 'ok' : 'warn']">
-              {{ healthStatus }}
-            </span>
-          </div>
-          <div class="status-pill">
-            <span class="label">Image Service:</span>
-            <span
-              class="value"
-              :class="[
-                'value-tag',
-                imageServiceStatus === 'operational'
-                  ? 'ok'
-                  : imageServiceStatus === 'unavailable'
-                  ? 'err'
-                  : 'warn',
-              ]"
-            >
-              {{ imageServiceStatus }}
-            </span>
-          </div>
-          <div class="status-pill">
-            <span class="label">Batch Service:</span>
-            <span
-              class="value"
-              :class="[
-                'value-tag',
-                batchServiceStatus === 'not_implemented' ? 'warn' : 'ok',
-              ]"
-            >
-              {{ batchServiceStatus }}
-            </span>
-          </div>
-          <button class="status-refresh" type="button" @click="fetchServiceStatus">
-            刷新状态
-          </button>
-        </section>
-
-        <p v-if="statusError" class="status-error">{{ statusError }}</p>
-
         <!-- 错误提示 -->
         <Transition name="message">
           <div v-if="errorMessage" class="message message-error">❌ {{ errorMessage }}</div>
@@ -311,9 +268,9 @@ onUnmounted(() => {
           <PdfUploader />
         </template>
 
-        <!-- 视频转换页面 -->
+        <!-- 微信文章爬取页面 -->
         <template v-else>
-          <VideoUploader @error="handleError" />
+          <WechatCrawler />
         </template>
       </div>
     </main>
@@ -322,11 +279,7 @@ onUnmounted(() => {
     <ImagePreview v-if="activeTab === 'image'" :item="previewItem" @close="handleClosePreview" />
 
     <footer class="footer">
-      <p>
-        📷 图片: JPEG, PNG, BMP, GIF, TIFF, WebP | 最大尺寸: 1920×1080 | WebP 质量: 92
-      </p>
-      <p>📄 PDF: 通过 DeepSeek OCR / PDF 分析，将 PDF 转换为 Markdown 文本</p>
-      <p>🎬 视频: 支持 MP4, AVI, MOV, WMV, MKV, FLV | 最大: 500MB | 输出: Markdown 或 PDF</p>
+      <p>数据处理工具集 · 图片压缩 · 多图合并PDF · PDF转Markdown · 微信文章爬取</p>
     </footer>
   </div>
 </template>

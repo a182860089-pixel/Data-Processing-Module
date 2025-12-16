@@ -10,7 +10,7 @@ from app.core.base.processor import BaseProcessor, ContentChunk
 from app.models.file_info import PDFInfo
 from app.models.enums import ChunkType
 from app.core.common.image_processor import ImageProcessor
-from app.services.external.deepseek_client import DeepSeekClient
+from app.core.converters.pdf.ocr_router import OCRRouter
 from app.services.external.mineru_client import MinerUClient
 from app.exceptions.service_exceptions import MinerUAPIException
 from app.config import get_settings
@@ -29,11 +29,14 @@ class ImagePDFProcessor(BaseProcessor):
         """
         self.settings = get_settings()
         self.image_processor = ImageProcessor()
-        self.deepseek_client = DeepSeekClient()
         self.mineru_client = MinerUClient()
         self.ocr_engine = ocr_engine
         self.dpi = self.settings.pdf_render_dpi
         self.max_concurrent = self.settings.max_concurrent_api_calls
+        
+        # 初始化 OCRRouter（用于逐页 OCR）
+        # 注意：MinerU 不支持逐页 OCR，所以 OCRRouter 主要管理 DeepSeek
+        self.ocr_router = OCRRouter()
     
     async def process(
         self,
@@ -150,6 +153,11 @@ class ImagePDFProcessor(BaseProcessor):
             )
 
             # 调用 OCR 引擎
+            logger.debug(
+                "Routing OCR for page %s via OCRRouter (strategy=%s)",
+                page_number,
+                self.ocr_router.strategy,
+            )
             markdown_content, engine_used = await self._run_ocr(base64_image)
             
             # 创建内容片段
@@ -179,17 +187,12 @@ class ImagePDFProcessor(BaseProcessor):
             )
  
     async def _run_ocr(self, base64_image: str) -> tuple[str, str]:
-        """根据配置的引擎执行 OCR。
+        """根据配置的引擎执行 OCR，通过 OCRRouter 进行路由。
 
         Returns:
             (markdown, engine_used)
         """
         engine = (self.ocr_engine or "auto").lower()
-
-        # 明确指定 DeepSeek（逐页）
-        if engine == "deepseek":
-            markdown = await self.deepseek_client.ocr_image(base64_image)
-            return markdown, "deepseek"
 
         # 明确指定 MinerU（逐页不支持）
         if engine == "mineru":
@@ -198,7 +201,9 @@ class ImagePDFProcessor(BaseProcessor):
                 details="请在处理器入口走 mineru 的整PDF解析链路（ocr_pdf）。"
             )
 
-        # auto 模式：仅尝试 DeepSeek，失败则抛出由上层捕获
-        markdown = await self.deepseek_client.ocr_image(base64_image)
-        return markdown, "deepseek"
+        # deepseek 或 auto 模式：通过 OCRRouter 进行路由
+        # OCRRouter 会根据配置的策略（round_robin/failover）选择引擎
+        # 注意：MinerU 不支持逐页 OCR，所以 OCRRouter 主要管理 DeepSeek
+        markdown, engine_used = await self.ocr_router.ocr_image(base64_image)
+        return markdown, engine_used
  
