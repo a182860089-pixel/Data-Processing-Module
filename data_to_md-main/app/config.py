@@ -50,6 +50,28 @@ class Settings(BaseSettings):
     )
     mineru_timeout: int = Field(default=60, env="MINERU_TIMEOUT")
     
+    # OCR 路由配置
+    ocr_routing_strategy: str = Field(
+        default="failover",
+        env="OCR_ROUTING_STRATEGY"
+    )  # round_robin / failover；默认更稳妥的 failover
+    ocr_circuit_breaker_threshold: int = Field(
+        default=5,
+        env="OCR_CIRCUIT_BREAKER_THRESHOLD"
+    )  # 熔断阈值（连续失败次数）
+    ocr_circuit_breaker_timeout: int = Field(
+        default=60,
+        env="OCR_CIRCUIT_BREAKER_TIMEOUT"
+    )  # 熔断恢复时间（秒）
+    ocr_engine_weights: dict = Field(
+        default={},
+        env="OCR_ENGINE_WEIGHTS"
+    )  # 未来按权重分流时使用
+    enable_mineru_page_ocr: bool = Field(
+        default=False,
+        env="ENABLE_MINERU_PAGE_OCR"
+    )  # MinerU 不支持逐页 OCR，默认禁用以提高稳定性
+    
     # PDF处理配置
     pdf_max_size_mb: int = Field(default=500, env="PDF_MAX_SIZE_MB")
     pdf_max_pages: int = Field(default=100, env="PDF_MAX_PAGES")
