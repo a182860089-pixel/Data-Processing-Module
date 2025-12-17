@@ -1,9 +1,15 @@
 """
 纯图片PDF处理器
 处理纯图片PDF（所有页面OCR）
+
+优化特性：
+- 动态并发控制：根据系统资源自动调整
+- 分批流式处理：减少内存压力
+- 性能监控：实时收集处理指标
 """
 import logging
 import asyncio
+import gc
 import fitz  # PyMuPDF
 from typing import List
 from app.core.base.processor import BaseProcessor, ContentChunk
@@ -14,12 +20,25 @@ from app.core.converters.pdf.ocr_router import OCRRouter
 from app.services.external.mineru_client import MinerUClient
 from app.exceptions.service_exceptions import MinerUAPIException
 from app.config import get_settings
+from app.utils.concurrency import concurrency_manager
+from app.utils.performance import performance_manager
 
 logger = logging.getLogger(__name__)
 
 
 class ImagePDFProcessor(BaseProcessor):
-    """纯图片PDF处理器"""
+    """
+    纯图片PDF处理器
+    
+    优化特性：
+    - 动态并发控制：根据系统 CPU/内存自动调整并发数
+    - 分批流式处理：每批 5 页，处理后释放内存
+    - 性能监控：记录 API 延迟和处理时间
+    """
+    
+    # 分批处理配置
+    PAGES_PER_BATCH = 5
+    GC_AFTER_BATCH = True
     
     def __init__(self, ocr_engine: str = "auto"):
         """初始化处理器
@@ -32,10 +51,12 @@ class ImagePDFProcessor(BaseProcessor):
         self.mineru_client = MinerUClient()
         self.ocr_engine = ocr_engine
         self.dpi = self.settings.pdf_render_dpi
-        self.max_concurrent = self.settings.max_concurrent_api_calls
+        
+        # 动态获取最优并发数（而不是固定值）
+        self.max_concurrent = concurrency_manager.get_optimal_concurrency("io_bound")
+        logger.info(f"ImagePDFProcessor initialized with dynamic concurrency={self.max_concurrent}")
         
         # 初始化 OCRRouter（用于逐页 OCR）
-        # 注意：MinerU 不支持逐页 OCR，所以 OCRRouter 主要管理 DeepSeek
         self.ocr_router = OCRRouter()
     
     async def process(
@@ -75,22 +96,59 @@ class ImagePDFProcessor(BaseProcessor):
         try:
             # 打开PDF文档
             doc = fitz.open(file_path)
+            total_pages = file_info.total_pages
             
-            # 创建信号量限制并发
-            semaphore = asyncio.Semaphore(self.max_concurrent)
+            # 动态获取并发数（考虑性能管理器的建议）
+            adjustment = performance_manager.suggest_concurrency_adjustment()
+            optimal_concurrent = concurrency_manager.get_optimal_concurrency("io_bound", adjustment)
+            semaphore = asyncio.Semaphore(optimal_concurrent)
             
-            # 创建所有页面的处理任务
-            tasks = []
-            for page_num in range(file_info.total_pages):
-                task = self._process_page_with_semaphore(
-                    doc,
-                    page_num,
-                    semaphore
+            logger.info(
+                f"Processing {total_pages} pages with concurrency={optimal_concurrent} "
+                f"(batch_size={self.PAGES_PER_BATCH})"
+            )
+            
+            # 分批流式处理（而不是一次性创建所有任务）
+            content_chunks = []
+            
+            for batch_start in range(0, total_pages, self.PAGES_PER_BATCH):
+                batch_end = min(batch_start + self.PAGES_PER_BATCH, total_pages)
+                page_nums = list(range(batch_start, batch_end))
+                
+                logger.debug(
+                    f"Processing page batch: {batch_start + 1}-{batch_end} of {total_pages}"
                 )
-                tasks.append(task)
-            
-            # 并发执行所有任务
-            content_chunks = await asyncio.gather(*tasks)
+                
+                # 创建当前批次的任务
+                batch_tasks = [
+                    self._process_page_with_semaphore(doc, page_num, semaphore)
+                    for page_num in page_nums
+                ]
+                
+                # 并发执行当前批次
+                batch_results = await asyncio.gather(*batch_tasks, return_exceptions=True)
+                
+                # 收集结果
+                for page_num, result in zip(page_nums, batch_results):
+                    if isinstance(result, Exception):
+                        logger.error(f"Error processing page {page_num + 1}: {result}")
+                        content_chunks.append(
+                            ContentChunk(
+                                content=f"[Error processing page {page_num + 1}: {str(result)}]",
+                                page_number=page_num + 1,
+                                chunk_type=ChunkType.OCR,
+                                metadata={'error': str(result)}
+                            )
+                        )
+                    else:
+                        content_chunks.append(result)
+                
+                # 批处理后释放内存
+                if self.GC_AFTER_BATCH:
+                    del batch_tasks
+                    del batch_results
+                    gc.collect()
+                    logger.debug("Memory released after batch")
             
             # 关闭文档
             doc.close()

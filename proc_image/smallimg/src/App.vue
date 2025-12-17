@@ -1,138 +1,15 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, onMounted } from "vue";
-import ImageUploader from "./components/ImageUploader.vue";
+import { ref, onMounted } from "vue";
+import ImageCompressor from "./components/ImageCompressor.vue";
 import ImagesToPdfConverter from "./components/ImagesToPdfConverter.vue";
-import ProcessingList from "./components/ProcessingList.vue";
-import ImagePreview from "./components/ImagePreview.vue";
-import PdfUploader from "./components/PdfUploader.vue";
+import PdfConverter from "./components/PdfConverter.vue";
 import WechatCrawler from "./components/WechatCrawler.vue";
-import { useImageProcess } from "./composables/useImageProcess";
-import { generateId } from "./utils/image-utils";
-import type { ImageItem } from "./types";
 
-const { processImage, cleanup, progress, processing } = useImageProcess();
-
-const items = ref<ImageItem[]>([]);
-const previewItem = ref<ImageItem | null>(null);
 const errorMessage = ref<string>("");
 const successMessage = ref<string>("");
 
-// 当前激活的标签：image = 图片压缩，images-to-pdf = 多图转PDF，pdf = PDF 转 Markdown，wechat = 微信爬取
+// 当前激活的标签
 const activeTab = ref<"image" | "images-to-pdf" | "pdf" | "wechat">("image");
-
-// 后端服务状态（阶段1验收）
-const API_BASE_URL =
-  (import.meta as any).env?.VITE_PDF_API_BASE_URL ||
-  (import.meta as any).env?.VITE_IMAGE_API_BASE_URL ||
-  "http://localhost:8000";
-
-const healthStatus = ref<string>("未知");
-const imageServiceStatus = ref<string>("未知");
-const batchServiceStatus = ref<string>("未知");
-const statusError = ref<string>("");
-
-const fetchServiceStatus = async () => {
-  try {
-    statusError.value = "";
-
-    const [healthResp, imageResp, batchResp] = await Promise.all([
-      fetch(`${API_BASE_URL}/api/v1/health`),
-      fetch(`${API_BASE_URL}/api/v1/image/status`),
-      fetch(`${API_BASE_URL}/api/v1/batch/status`),
-    ]);
-
-    if (healthResp.ok) {
-      const data = await healthResp.json();
-      healthStatus.value = data.status || "unknown";
-    } else {
-      healthStatus.value = `错误 ${healthResp.status}`;
-    }
-
-    if (imageResp.ok) {
-      const data = await imageResp.json();
-      imageServiceStatus.value = data.status || "unknown";
-    } else {
-      imageServiceStatus.value = `错误 ${imageResp.status}`;
-    }
-
-    if (batchResp.ok) {
-      const data = await batchResp.json();
-      batchServiceStatus.value = data.status || "unknown";
-    } else {
-      batchServiceStatus.value = `错误 ${batchResp.status}`;
-    }
-  } catch (e) {
-    statusError.value =
-      e instanceof Error ? `无法获取服务状态: ${e.message}` : "无法获取服务状态";
-  }
-};
-
-onMounted(() => {
-  fetchServiceStatus();
-});
-
-// 处理上传
-const handleUpload = async (files: File[]) => {
-  errorMessage.value = "";
-  successMessage.value = "";
-
-  // 创建图片项
-  const newItems: ImageItem[] = files.map((file) => ({
-    id: generateId(),
-    file,
-    status: "pending" as const,
-    progress: 0,
-  }));
-
-  items.value.push(...newItems);
-
-  // 逐个处理图片
-  for (const item of newItems) {
-    // 每个任务开始前重置该条目的进度和全局进度，避免上一条任务的进度残留
-    item.status = "processing";
-    item.progress = 0;
-    progress.value = 0;
-
-    // 将 composable 的进度绑定到当前条目
-    // 使用 immediate 和 flush 确保更新及时
-    const stopWatch = watch(
-      () => progress.value,
-      (val) => {
-        // 将 useImageProcess 的进度直接映射到当前条目
-        const newProgress = Math.max(0, Math.min(100, Math.floor(val)));
-        item.progress = newProgress;
-      },
-      { immediate: true, flush: "sync" }
-    );
-
-    try {
-      console.debug("[App] Starting to process", item.id);
-      const result = await processImage(item.file);
-      item.result = result;
-      item.status = "completed";
-      item.progress = 100;
-      console.debug("[App] item completed", item.id, result);
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : "处理失败";
-      console.error("[App] Processing error for", item.id, ":", errorMsg);
-      item.status = "failed";
-      item.error = errorMsg;
-      item.progress = 0;
-    } finally {
-      // 解绑当前条目的进度监听
-      stopWatch();
-    }
-  }
-
-  // 显示成功消息
-  const successCount = newItems.filter((item) => item.status === "completed").length;
-  if (successCount > 0) {
-    successMessage.value = `成功处理 ${successCount} 张图片`;
-    setTimeout(() => {
-      successMessage.value = "";
-    }, 3000);
-  }
-};
 
 // 处理错误
 const handleError = (message: string) => {
@@ -142,60 +19,13 @@ const handleError = (message: string) => {
   }, 5000);
 };
 
-// 处理多图转 PDF 成功
-const handleImagesToPdfSuccess = (result: {
-  taskId: string;
-  filename: string;
-  downloadUrl: string;
-}) => {
-  successMessage.value = `✅ PDF 转换成功！文件: ${result.filename}`;
-  // 添加下载链接到成功消息
-  const link = document.createElement("a");
-  link.href = result.downloadUrl;
-  link.download = result.filename;
-  link.click();
+// 处理成功
+const handleSuccess = (message: string) => {
+  successMessage.value = message;
   setTimeout(() => {
     successMessage.value = "";
   }, 5000);
 };
-
-// 处理多图转 PDF 错误
-const handleImagesToPdfError = (message: string) => {
-  handleError(`多图转PDF失败: ${message}`);
-};
-
-// 移除项
-const handleRemove = (id: string) => {
-  const index = items.value.findIndex((item) => item.id === id);
-  if (index !== -1) {
-    const item = items.value[index];
-    // 清理URL
-    if (item.result?.url) {
-      URL.revokeObjectURL(item.result.url);
-    }
-    items.value.splice(index, 1);
-  }
-};
-
-// 预览
-const handlePreview = (item: ImageItem) => {
-  previewItem.value = item;
-};
-
-// 关闭预览
-const handleClosePreview = () => {
-  previewItem.value = null;
-};
-
-// 清理资源
-onUnmounted(() => {
-  cleanup();
-  items.value.forEach((item) => {
-    if (item.result?.url) {
-      URL.revokeObjectURL(item.result.url);
-    }
-  });
-});
 </script>
 
 <template>
@@ -254,29 +84,25 @@ onUnmounted(() => {
 
         <!-- 图片压缩页面 -->
         <template v-if="activeTab === 'image'">
-          <ImageUploader @upload="handleUpload" @error="handleError" />
-          <ProcessingList :items="items" @remove="handleRemove" @preview="handlePreview" />
+          <ImageCompressor @error="handleError" />
         </template>
 
         <!-- 多图转PDF页面 -->
         <template v-else-if="activeTab === 'images-to-pdf'">
-          <ImagesToPdfConverter @success="handleImagesToPdfSuccess" @error="handleImagesToPdfError" />
+          <ImagesToPdfConverter @error="handleError" />
         </template>
 
         <!-- PDF 转换页面 -->
         <template v-else-if="activeTab === 'pdf'">
-          <PdfUploader />
+          <PdfConverter @error="handleError" />
         </template>
 
         <!-- 微信文章爬取页面 -->
-        <template v-else>
+        <template v-else-if="activeTab === 'wechat'">
           <WechatCrawler />
         </template>
       </div>
     </main>
-
-    <!-- 预览模态框，仅在图片页使用 -->
-    <ImagePreview v-if="activeTab === 'image'" :item="previewItem" @close="handleClosePreview" />
 
     <footer class="footer">
       <p>数据处理工具集 · 图片压缩 · 多图合并PDF · PDF转Markdown · 微信文章爬取</p>

@@ -1,0 +1,2 @@
+# Celery queue package initializer
+

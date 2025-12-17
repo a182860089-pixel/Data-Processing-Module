@@ -81,6 +81,57 @@ class Settings(BaseSettings):
     # 并发配置
     max_concurrent_tasks: int = Field(default=5, env="MAX_CONCURRENT_TASKS")
     max_concurrent_api_calls: int = Field(default=3, env="MAX_CONCURRENT_API_CALLS")
+    max_concurrent_pdf_tasks: int = Field(default=2, env="MAX_CONCURRENT_PDF_TASKS")  # Celery worker 并发
+    
+    # 动态并发配置（性能优化）
+    dynamic_concurrency_enabled: bool = Field(default=True, env="DYNAMIC_CONCURRENCY_ENABLED")
+    min_concurrent_workers: int = Field(default=2, env="MIN_CONCURRENT_WORKERS")
+    max_concurrent_workers: int = Field(default=8, env="MAX_CONCURRENT_WORKERS")
+    memory_per_task_mb: int = Field(default=512, env="MEMORY_PER_TASK_MB")
+    cpu_threshold_percent: float = Field(default=80.0, env="CPU_THRESHOLD_PERCENT")
+    memory_threshold_percent: float = Field(default=85.0, env="MEMORY_THRESHOLD_PERCENT")
+    
+    # 批量处理配置（性能优化）
+    batch_pages_per_chunk: int = Field(default=5, env="BATCH_PAGES_PER_CHUNK")
+    batch_gc_enabled: bool = Field(default=True, env="BATCH_GC_ENABLED")
+    batch_max_files: int = Field(default=20, env="BATCH_MAX_FILES")
+    batch_result_expire_hours: int = Field(default=24, env="BATCH_RESULT_EXPIRE_HOURS")
+    
+    # 缓存配置（性能优化）
+    cache_enabled: bool = Field(default=True, env="CACHE_ENABLED")
+    cache_expire_hours: int = Field(default=24, env="CACHE_EXPIRE_HOURS")
+    cache_max_memory_entries: int = Field(default=1000, env="CACHE_MAX_MEMORY_ENTRIES")
+    cache_redis_prefix: str = Field(default="conv_cache:", env="CACHE_REDIS_PREFIX")
+    
+    # 性能监控配置（性能优化）
+    performance_monitoring_enabled: bool = Field(default=True, env="PERFORMANCE_MONITORING_ENABLED")
+    performance_window_size: int = Field(default=100, env="PERFORMANCE_WINDOW_SIZE")
+    performance_adjustment_interval: int = Field(default=60, env="PERFORMANCE_ADJUSTMENT_INTERVAL")
+    performance_error_threshold: float = Field(default=0.1, env="PERFORMANCE_ERROR_THRESHOLD")
+    performance_latency_threshold_ms: int = Field(default=5000, env="PERFORMANCE_LATENCY_THRESHOLD_MS")
+    
+    # 优先级队列配置（性能优化）
+    priority_queue_enabled: bool = Field(default=True, env="PRIORITY_QUEUE_ENABLED")
+    priority_small_file_threshold_mb: float = Field(default=1.0, env="PRIORITY_SMALL_FILE_THRESHOLD_MB")
+    priority_text_pdf_boost: bool = Field(default=True, env="PRIORITY_TEXT_PDF_BOOST")
+    
+    # Celery 队列配置
+    celery_broker_url: str = Field(
+        default="redis://localhost:6379/0",
+        env="CELERY_BROKER_URL"
+    )
+    celery_result_backend: str = Field(
+        default="redis://localhost:6379/0",
+        env="CELERY_RESULT_BACKEND"
+    )
+    celery_task_soft_time_limit: int = Field(
+        default=600,
+        env="CELERY_TASK_SOFT_TIME_LIMIT"
+    )  # 任务软超时（秒）
+    celery_task_hard_time_limit: int = Field(
+        default=900,
+        env="CELERY_TASK_HARD_TIME_LIMIT"
+    )  # 任务硬超时（秒）
     
     # 存储配置
     upload_dir: str = Field(default="./storage/uploads", env="UPLOAD_DIR")

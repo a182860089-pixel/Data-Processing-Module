@@ -5,14 +5,34 @@ import logging
 from fastapi import APIRouter, HTTPException, status, Response
 from fastapi.responses import FileResponse
 from pathlib import Path
-from app.models.response import StatusResponse, ErrorResponse
+from celery import states
+from celery.result import AsyncResult
+from app.models.enums import TaskStatus
+from app.models.response import (
+    StatusResponse,
+    ErrorResponse,
+    ConversionResult,
+    ConversionMetadata,
+)
 from app.services.conversion.conversion_service import ConversionService
 from app.services.storage.file_service import FileService
+from app.services.queue.celery_app import celery_app
 from app.exceptions.service_exceptions import TaskNotFoundException
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+
+def _map_celery_state(state: str) -> TaskStatus:
+    """Map Celery state to internal TaskStatus enum."""
+    if state in (states.STARTED, states.RETRY, "PROGRESS"):
+        return TaskStatus.PROCESSING
+    if state == states.SUCCESS:
+        return TaskStatus.COMPLETED
+    if state in (states.FAILURE, states.REVOKED):
+        return TaskStatus.FAILED
+    return TaskStatus.PENDING
 
 
 @router.get(
@@ -47,9 +67,46 @@ async def get_task_status(task_id: str):
         return response
         
     except TaskNotFoundException as e:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=e.to_dict()
+        # 不存在于本地 TaskManager 时，尝试查询 Celery 任务
+        async_result = AsyncResult(task_id, app=celery_app)
+        celery_state = async_result.state
+        mapped_status = _map_celery_state(celery_state)
+
+        meta = async_result.info if isinstance(async_result.info, dict) else None
+        error_info = None
+        result_info = None
+
+        if celery_state == states.SUCCESS:
+            payload = async_result.result or {}
+            metadata = payload.get("metadata", {}) or {}
+            conv_metadata = ConversionMetadata(
+                pages_processed=metadata.get("total_pages", 0),
+                ocr_pages=metadata.get("ocr_pages"),
+                text_pages=metadata.get("text_pages"),
+                processing_time=metadata.get("processing_time", 0),
+                file_size=metadata.get("output_file_size", 0),
+                output_type=metadata.get("output_type", payload.get("output_type", "markdown")),
+            )
+            result_info = ConversionResult(
+                markdown_content=payload.get("markdown_content"),
+                download_url=f"/api/v1/download/{payload.get('task_id', task_id)}",
+                metadata=conv_metadata,
+            )
+        elif celery_state in (states.FAILURE, states.REVOKED):
+            error_info = ErrorResponse(
+                code="TASK_FAILED",
+                message="任务失败",
+                details=str(async_result.info),
+            )
+
+        return StatusResponse(
+            success=True,
+            task_id=task_id,
+            status=mapped_status,
+            progress=None,
+            result=result_info,
+            error=error_info,
+            message=meta.get("step") if meta else None,
         )
     except Exception as e:
         logger.error(f"Failed to get task status: {str(e)}")

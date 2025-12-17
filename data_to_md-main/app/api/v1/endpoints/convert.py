@@ -10,6 +10,7 @@ from app.models.request import ConvertOptions
 from app.models.response import ConvertResponse, ConvertSyncResponse, ErrorResponse
 from app.services.conversion.conversion_service import ConversionService
 from app.services.storage.file_service import FileService
+from app.services.queue.tasks import convert_pdf_to_markdown
 from app.config import get_settings
 from app.exceptions.base_exceptions import BaseAppException
 
@@ -140,6 +141,99 @@ async def convert_file(
         )
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "INTERNAL_ERROR",
+                "message": "服务器内部错误",
+                "details": str(e)
+            }
+        )
+
+
+@router.post(
+    "/convert/async",
+    response_model=ConvertResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        413: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    }
+)
+async def convert_file_async(
+    file: UploadFile = File(..., description="要转换的文件"),
+    options: Optional[str] = Form(None, description="转换选项（JSON格式）")
+):
+    """
+    异步转换文件，提交 Celery 任务并立即返回 task_id。
+    """
+    settings = get_settings()
+    file_service = FileService()
+
+    try:
+        if not file.filename:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="文件名不能为空"
+            )
+
+        content = await file.read()
+        file_size = len(content)
+        await file.seek(0)
+
+        max_size = settings.max_request_size_mb * 1024 * 1024
+        if file_size > max_size:
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"文件过大，最大支持 {settings.max_request_size_mb}MB"
+            )
+
+        convert_options = ConvertOptions()
+        if options:
+            try:
+                options_dict = json.loads(options)
+                convert_options = ConvertOptions(**options_dict)
+            except Exception as e:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"选项格式错误: {str(e)}"
+                )
+
+        import uuid
+        temp_task_id = f"temp_{uuid.uuid4().hex[:12]}"
+        file_path = await file_service.save_upload_file(file, temp_task_id)
+
+        task = convert_pdf_to_markdown.delay(
+            file_path=file_path,
+            filename=file.filename,
+            options=convert_options.model_dump()
+        )
+
+        response = ConvertResponse(
+            success=True,
+            task_id=task.id,
+            message="任务已提交，稍后请查询状态",
+            filename=file.filename,
+            file_type=file.content_type or "unknown",
+            file_size=file_size,
+            detected_info=None,
+            estimated_time=None,
+            status_url=f"/api/v1/status/{task.id}"
+        )
+
+        logger.info("Async conversion task submitted: %s", task.id)
+        return response
+
+    except HTTPException:
+        raise
+    except BaseAppException as e:
+        logger.error("Application error: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=e.to_dict()
+        )
+    except Exception as e:
+        logger.error("Unexpected error in async convert: %s", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={

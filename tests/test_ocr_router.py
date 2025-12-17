@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 # 允许从仓库根目录导入 app 包（兼容本地测试与编辑器检查）
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "data_to_md-main"))
 
 from app.core.converters.pdf.ocr_router import OCRRouter, EngineStats  # type: ignore
 from app.exceptions.service_exceptions import APICallException  # type: ignore

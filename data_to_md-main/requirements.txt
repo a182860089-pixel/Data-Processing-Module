@@ -41,3 +41,8 @@ python-dotenv==1.0.1
 # 网页爬虫
 crawl4ai==0.7.8
 
+# 异步任务队列
+celery==5.3.6
+redis==5.0.4
+flower==2.0.1  # 可选：Celery 监控面板
+

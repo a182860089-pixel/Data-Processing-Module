@@ -65,6 +65,25 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 python app/main.py
 ```
 
+### 3.1 异步任务模式（阶段6）
+
+- 运行 Redis（Windows 推荐 Docker）：
+  ```bash
+  docker run -d --name redis -p 6379:6379 redis:7
+  ```
+- 环境变量（可在 `.env` 设置）：
+  - `CELERY_BROKER_URL=redis://localhost:6379/0`
+  - `CELERY_RESULT_BACKEND=redis://localhost:6379/0`
+  - `MAX_CONCURRENT_PDF_TASKS=2`
+  - `CELERY_TASK_SOFT_TIME_LIMIT=600`
+  - `CELERY_TASK_HARD_TIME_LIMIT=900`
+- 启动 Celery Worker（Windows 建议 `-P solo`）：
+  ```bash
+  celery -A celery_worker.celery_app worker -l info -P solo --concurrency=2
+  ```
+- 提交异步转换：`POST /api/v1/convert/async`，返回 `task_id`
+- 轮询状态：`GET /api/v1/status/{task_id}`，完成后用 `/api/v1/download/{task_id}` 下载
+
 ### 4. 访问 API 文档
 
 打开浏览器访问：http://localhost:8000/docs
