@@ -28,6 +28,18 @@
   - 自动提取正文并转换为 Markdown
   - 支持单篇/批量爬取
 
+- ✅ **双引擎 OCR 系统**
+  - 支持 DeepSeek-OCR 和 MinerU 双引擎
+  - 统一的 `BaseOCRClient` 抽象接口
+  - 可配置的引擎选择：`deepseek` / `mineru` / `auto`
+  - `auto` 模式下自动故障转移
+
+- ✅ **OCR 引擎负载均衡**
+  - `OCRRouter` 路由管理器
+  - 支持 `round_robin`（轮询）和 `failover`（故障转移）策略
+  - 熔断机制：连续失败 N 次后自动熔断，超时后恢复
+  - 引擎统计：成功率、失败次数、熔断状态监控
+
 - ✅ **异步任务处理**
   - Celery + Redis 异步任务队列
   - 任务状态实时查询
@@ -35,8 +47,6 @@
 
 ### 规划功能
 
-- 📋 MinerU 双引擎 OCR 支持
-- 📋 OCR 引擎负载均衡
 - 📋 并发测试、压测与优化
 
 ## 🛠 技术栈
@@ -44,7 +54,7 @@
 - **Web 框架**: FastAPI + Uvicorn
 - **PDF 处理**: PyMuPDF (fitz)
 - **图像处理**: Pillow, pyvips
-- **OCR 服务**: DeepSeek-OCR (通过 OpenAI SDK)
+- **OCR 服务**: DeepSeek-OCR + MinerU (双引擎)
 - **Office 处理**: python-pptx, python-docx, openpyxl
 - **PDF 生成**: reportlab, fpdf2
 - **异步队列**: Celery + Redis
@@ -65,11 +75,17 @@ Data Processing Module/
 │   │   │   └── status.py     # 状态查询
 │   │   ├── core/             # 核心转换器
 │   │   │   ├── converters/   # 各类转换器实现
+│   │   │   │   └── pdf/
+│   │   │   │       └── ocr_router.py  # OCR 引擎路由
 │   │   │   └── factory/      # 工厂模式
 │   │   ├── services/         # 业务服务
 │   │   │   ├── conversion/   # 转换服务
 │   │   │   ├── crawler/      # 爬虫服务
-│   │   │   └── queue/        # 任务队列
+│   │   │   ├── queue/        # 任务队列
+│   │   │   └── external/     # 外部服务客户端
+│   │   │       ├── base_ocr_client.py   # OCR 抽象接口
+│   │   │       ├── deepseek_client.py   # DeepSeek 客户端
+│   │   │       └── mineru_client.py     # MinerU 客户端
 │   │   ├── models/           # 数据模型
 │   │   └── config.py         # 配置管理
 │   ├── storage/              # 存储目录
@@ -100,6 +116,8 @@ cp .env.example .env
 主要配置项：
 - `DEEPSEEK_API_KEY`: DeepSeek API 密钥
 - `DEEPSEEK_BASE_URL`: API 基础 URL
+- `MINERU_API_KEY`: MinerU API 密钥（可选）
+- `OCR_ROUTING_STRATEGY`: OCR 路由策略（`round_robin` / `failover`）
 - `CELERY_BROKER_URL`: Redis 地址（异步任务需要）
 
 ### 3. 启动服务
@@ -176,12 +194,12 @@ GET /api/v1/batch/status/{batch_id}
 ```python
 import requests
 
-# PDF 转 Markdown
+# PDF 转 Markdown（指定 OCR 引擎）
 with open('example.pdf', 'rb') as f:
     response = requests.post(
         'http://localhost:8000/api/v1/convert',
         files={'file': f},
-        data={'options': '{"dpi": 144}'}
+        data={'options': '{"dpi": 144, "ocr_engine": "auto"}'}
     )
     result = response.json()
     print(result['markdown_content'])
@@ -190,10 +208,10 @@ with open('example.pdf', 'rb') as f:
 ### cURL 示例
 
 ```bash
-# 转换 PDF
+# 转换 PDF（使用 auto 引擎选择）
 curl -X POST "http://localhost:8000/api/v1/convert" \
   -F "file=@example.pdf" \
-  -F 'options={"dpi": 144}'
+  -F 'options={"dpi": 144, "ocr_engine": "auto"}'
 
 # 压缩图片
 curl -X POST "http://localhost:8000/api/v1/image/compress" \
@@ -209,8 +227,8 @@ curl -X POST "http://localhost:8000/api/v1/image/compress" \
 | 阶段 2 | 图片压缩 WebP API | ✅ 已完成 |
 | 阶段 3 | PDF→Markdown 功能增强 | ✅ 已完成 |
 | 阶段 3.5 | 多格式文件→PDF 转换 | ✅ 已完成 |
-| 阶段 4 | MinerU 双引擎 OCR | 📋 待开发 |
-| 阶段 5 | OCR 引擎负载均衡 | 📋 待开发 |
+| 阶段 4 | MinerU 双引擎 OCR | ✅ 已完成 |
+| 阶段 5 | OCR 引擎负载均衡 | ✅ 已完成 |
 | 阶段 6 | Celery 异步任务队列 | ✅ 已完成 |
 | 阶段 7 | 批量上传 & 并发处理 | ✅ 已完成 |
 | 阶段 8 | 并发测试与优化 | 📋 待开发 |
@@ -223,6 +241,7 @@ curl -X POST "http://localhost:8000/api/v1/image/compress" \
 - [前端接入方案](前端接入方案(3.5阶段).md)
 - [阶段 3.5 开发总结](阶段3.5开发总结.md)
 - [阶段 3.5 测试报告](阶段3.5测试报告.md)
+- [阶段 4 完成总结](data_to_md-main/docs/stage4_summary.md)
 
 ## 📄 许可证
 
