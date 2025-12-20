@@ -18,12 +18,11 @@ router = APIRouter()
 
 def _get_wechat_crawler():
     """延迟导入 WeChatCrawler，避免在未安装 crawl4ai 时导致应用启动失败。"""
+    # 注意：wechat_crawler.py 中对 crawl4ai 采取“函数内导入”，
+    # 这样服务可启动；但对外暴露接口时，我们仍希望在依赖缺失时返回 503。
     try:
-        from app.services.crawler.wechat_crawler import WeChatCrawler  # noqa: WPS433
-
-        return WeChatCrawler()
+        import crawl4ai  # noqa: WPS433,F401
     except ModuleNotFoundError as e:
-        # 典型：No module named 'crawl4ai'
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={
@@ -31,6 +30,21 @@ def _get_wechat_crawler():
                 "message": "爬虫依赖未安装（缺少 crawl4ai），当前环境无法使用爬虫接口",
                 "details": str(e),
                 "hint": "请在后端环境中执行：pip install -r requirements.txt（或单独安装 crawl4ai）",
+            },
+        ) from e
+
+    try:
+        from app.services.crawler.wechat_crawler import WeChatCrawler  # noqa: WPS433
+
+        return WeChatCrawler()
+    except Exception as e:
+        logger.exception("初始化 WeChatCrawler 失败")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "CRAWLER_INIT_ERROR",
+                "message": "爬虫服务初始化失败",
+                "details": str(e),
             },
         ) from e
 
@@ -104,8 +118,14 @@ async def crawl_wechat_article(request: CrawlRequest):
             extract_images=request.extract_images,
             timeout=request.timeout,
         )
-        
-        if result["success"]:
+
+        if not isinstance(result, dict):
+            raise TypeError(f"crawler.crawl_article 返回了非 dict: {type(result)}")
+
+        success = bool(result.get("success"))
+        url = result.get("url") or request.url
+
+        if success:
             return CrawlResponse(
                 success=True,
                 message="文章爬取成功",
@@ -113,30 +133,33 @@ async def crawl_wechat_article(request: CrawlRequest):
                     success=True,
                     title=result.get("title"),
                     content=result.get("content"),
-                    url=result["url"]
-                )
+                    url=url,
+                ),
             )
-        else:
-            return CrawlResponse(
+
+        return CrawlResponse(
+            success=False,
+            message=f"文章爬取失败: {result.get('error', '未知错误')}",
+            data=CrawlResult(
                 success=False,
-                message=f"文章爬取失败: {result.get('error', '未知错误')}",
-                data=CrawlResult(
-                    success=False,
-                    url=result["url"],
-                    error=result.get("error")
-                )
-            )
-            
+                url=url,
+                error=result.get("error"),
+            ),
+        )
+
+    except HTTPException:
+        # 让 FastAPI 自己处理 HTTPException（例如 503 依赖缺失）
+        raise
     except Exception as e:
-        logger.error(f"爬取异常: {str(e)}")
+        logger.exception("爬取异常")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
                 "code": "CRAWL_ERROR",
                 "message": "爬取过程发生错误",
-                "details": str(e)
-            }
-        )
+                "details": str(e),
+            },
+        ) from e
 
 
 @router.post(

@@ -69,54 +69,99 @@ const buildOptions = (fileType: string) => {
   return {};
 };
 
-// 转换单个文件
+// 转换单个文件（使用异步 API + 轮询机制，支持实时进度）
 const convertFile = async (
   file: File,
   onProgress?: (progress: number) => void
 ): Promise<ConvertResult> => {
   const startTime = Date.now();
+  const fileType = detectFileType(file.name);
+  const convertOptions = buildOptions(fileType);
+
+  // 1. 提交到异步 API
   onProgress?.(5);
 
-  const fileType = detectFileType(file.name);
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("options", JSON.stringify(buildOptions(fileType)));
+  formData.append("options", JSON.stringify(convertOptions));
 
-  onProgress?.(20);
-
-  const resp = await fetch(`${API_BASE_URL}/api/v1/convert`, {
+  const submitResp = await fetch(`${API_BASE_URL}/api/v1/convert/async`, {
     method: "POST",
     body: formData,
   });
 
-  onProgress?.(70);
-
-  if (!resp.ok) {
-    let detail = "";
-    try {
-      const data = await resp.json();
-      detail = data?.detail?.message || data?.detail || JSON.stringify(data);
-    } catch {
-      detail = resp.statusText;
-    }
-    throw new Error(`转换失败 (${resp.status}): ${detail}`);
+  if (!submitResp.ok) {
+    const errData = await submitResp.json().catch(() => ({}));
+    throw new Error(errData?.detail?.message || errData?.detail || `提交失败 (${submitResp.status})`);
   }
 
-  const data = await resp.json();
-  const processingTime = (Date.now() - startTime) / 1000;
+  const submitData = await submitResp.json();
+  const taskId = submitData.task_id;
 
-  onProgress?.(100);
+  if (!taskId) {
+    throw new Error("未获取到任务ID");
+  }
 
-  const markdown = data.markdown_content || data.data?.markdown_content || "";
-  const taskId = data.task_id || data.data?.task_id || "";
-  const downloadUrl = data.download_url || (taskId ? `/api/v1/download/${taskId}` : "");
+  onProgress?.(10);
 
-  return {
-    taskId,
-    markdown,
-    downloadUrl: downloadUrl.startsWith("http") ? downloadUrl : `${API_BASE_URL}${downloadUrl}`,
-    processingTime,
-  };
+  // 2. 轮询任务状态
+  const pollInterval = 1000; // 1秒轮询一次
+  const maxPolls = 600; // 最多10分钟
+  let pollCount = 0;
+
+  while (pollCount < maxPolls) {
+    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    pollCount++;
+
+    try {
+      const statusResp = await fetch(`${API_BASE_URL}/api/v1/status/${taskId}`);
+      if (!statusResp.ok) continue;
+
+      const statusData = await statusResp.json();
+      const status = statusData.status;
+
+      // 更新进度
+      if (statusData.progress?.percentage !== undefined) {
+        const progress = Math.min(95, 10 + statusData.progress.percentage * 0.85);
+        onProgress?.(progress);
+      }
+
+      if (status === "completed") {
+        const processingTime = (Date.now() - startTime) / 1000;
+        onProgress?.(100);
+
+        const markdown = statusData.result?.markdown_content || "";
+        const downloadUrl = statusData.result?.download_url || `/api/v1/download/${taskId}`;
+
+        return {
+          taskId,
+          markdown,
+          downloadUrl: downloadUrl.startsWith("http") ? downloadUrl : `${API_BASE_URL}${downloadUrl}`,
+          processingTime,
+        };
+      }
+
+      if (status === "failed") {
+        throw new Error(statusData.error?.message || statusData.error?.details || "转换失败");
+      }
+    } catch (error) {
+      // 业务错误直接抛出，网络错误继续重试
+      if (error instanceof Error) {
+        const msg = error.message;
+        // 业务失败的错误直接抛出，不重试
+        if (msg.includes("转换失败") || msg.includes("任务失败") || 
+            msg.includes("任务数据损坏") || msg.includes("TASK_")) {
+          throw error;
+        }
+        // 其他错误（网络问题等）继续重试
+        console.warn("轮询请求失败，将重试...", error);
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  throw new Error("轮询超时，任务可能仍在后台处理");
 };
 
 const {

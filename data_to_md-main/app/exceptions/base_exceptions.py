@@ -12,6 +12,10 @@ class BaseAppException(Exception):
         self.details = details
         super().__init__(self.message)
     
+    def __reduce__(self):
+        """支持 pickle 序列化（Celery 需要）"""
+        return (self.__class__, (self.message, self.code, self.details))
+    
     def to_dict(self):
         """转换为字典"""
         return {

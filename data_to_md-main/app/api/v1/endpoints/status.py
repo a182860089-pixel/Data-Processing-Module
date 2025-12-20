@@ -68,46 +68,72 @@ async def get_task_status(task_id: str):
         
     except TaskNotFoundException as e:
         # 不存在于本地 TaskManager 时，尝试查询 Celery 任务
-        async_result = AsyncResult(task_id, app=celery_app)
-        celery_state = async_result.state
-        mapped_status = _map_celery_state(celery_state)
+        try:
+            async_result = AsyncResult(task_id, app=celery_app)
+            celery_state = async_result.state
+            mapped_status = _map_celery_state(celery_state)
 
-        meta = async_result.info if isinstance(async_result.info, dict) else None
-        error_info = None
-        result_info = None
+            meta = async_result.info if isinstance(async_result.info, dict) else None
+            error_info = None
+            result_info = None
 
-        if celery_state == states.SUCCESS:
-            payload = async_result.result or {}
-            metadata = payload.get("metadata", {}) or {}
-            conv_metadata = ConversionMetadata(
-                pages_processed=metadata.get("total_pages", 0),
-                ocr_pages=metadata.get("ocr_pages"),
-                text_pages=metadata.get("text_pages"),
-                processing_time=metadata.get("processing_time", 0),
-                file_size=metadata.get("output_file_size", 0),
-                output_type=metadata.get("output_type", payload.get("output_type", "markdown")),
-            )
-            result_info = ConversionResult(
-                markdown_content=payload.get("markdown_content"),
-                download_url=f"/api/v1/download/{payload.get('task_id', task_id)}",
-                metadata=conv_metadata,
-            )
-        elif celery_state in (states.FAILURE, states.REVOKED):
-            error_info = ErrorResponse(
-                code="TASK_FAILED",
-                message="任务失败",
-                details=str(async_result.info),
-            )
+            if celery_state == states.SUCCESS:
+                payload = async_result.result or {}
+                metadata = payload.get("metadata", {}) or {}
+                conv_metadata = ConversionMetadata(
+                    pages_processed=metadata.get("total_pages", 0),
+                    ocr_pages=metadata.get("ocr_pages"),
+                    text_pages=metadata.get("text_pages"),
+                    processing_time=metadata.get("processing_time", 0),
+                    file_size=metadata.get("output_file_size", 0),
+                    output_type=metadata.get("output_type", payload.get("output_type", "markdown")),
+                )
+                result_info = ConversionResult(
+                    markdown_content=payload.get("markdown_content"),
+                    download_url=f"/api/v1/download/{payload.get('task_id', task_id)}",
+                    metadata=conv_metadata,
+                )
+            elif celery_state in (states.FAILURE, states.REVOKED):
+                error_info = ErrorResponse(
+                    code="TASK_FAILED",
+                    message="任务失败",
+                    details=str(async_result.info) if async_result.info else "任务执行失败",
+                )
 
-        return StatusResponse(
-            success=True,
-            task_id=task_id,
-            status=mapped_status,
-            progress=None,
-            result=result_info,
-            error=error_info,
-            message=meta.get("step") if meta else None,
-        )
+            return StatusResponse(
+                success=True,
+                task_id=task_id,
+                status=mapped_status,
+                progress=None,
+                result=result_info,
+                error=error_info,
+                message=meta.get("step") if meta else None,
+            )
+        except ValueError as ve:
+            # Celery 反序列化失败（损坏的任务数据），自动清理并返回失败状态
+            if "Exception information must include" in str(ve):
+                logger.warning(f"Corrupted task data detected for {task_id}, cleaning up...")
+                try:
+                    # 尝试从 Redis 中删除损坏的任务数据
+                    async_result = AsyncResult(task_id, app=celery_app)
+                    async_result.forget()
+                    logger.info(f"Cleaned up corrupted task: {task_id}")
+                except Exception as cleanup_err:
+                    logger.warning(f"Failed to cleanup task {task_id}: {cleanup_err}")
+                
+                return StatusResponse(
+                    success=True,
+                    task_id=task_id,
+                    status=TaskStatus.FAILED,
+                    progress=None,
+                    result=None,
+                    error=ErrorResponse(
+                        code="TASK_CORRUPTED",
+                        message="任务数据损坏，已自动清理",
+                        details="请重新提交任务",
+                    ),
+                )
+            raise
     except Exception as e:
         logger.error(f"Failed to get task status: {str(e)}")
         raise HTTPException(

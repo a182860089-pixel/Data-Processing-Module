@@ -78,8 +78,8 @@ class ConversionCache:
     def _generate_cache_key(
         self,
         file_path: str,
-        options: Dict[str, Any]
-    ) -> str:
+        options: Optional[Dict[str, Any]] = None
+    ) -> Optional[str]:
         """
         生成缓存键
         
@@ -93,6 +93,8 @@ class ConversionCache:
             str: 缓存键
         """
         try:
+            options = options or {}
+
             # 读取文件前 N 字节计算哈希
             with open(file_path, 'rb') as f:
                 file_hash = hashlib.sha256(
@@ -117,7 +119,7 @@ class ConversionCache:
     async def get(
         self,
         file_path: str,
-        options: Dict[str, Any]
+        options: Optional[Dict[str, Any]] = None
     ) -> Optional[Dict[str, Any]]:
         """
         获取缓存的转换结果
@@ -171,9 +173,9 @@ class ConversionCache:
     async def set(
         self,
         file_path: str,
-        options: Dict[str, Any],
-        content: str,
-        metadata: Dict[str, Any] = None
+        options: Optional[Dict[str, Any]] = None,
+        content: str = "",
+        metadata: Optional[Dict[str, Any]] = None
     ) -> bool:
         """
         缓存转换结果
@@ -230,7 +232,7 @@ class ConversionCache:
     async def check_cached(
         self,
         file_path: str,
-        options: Dict[str, Any]
+        options: Optional[Dict[str, Any]] = None
     ) -> bool:
         """
         检查是否有缓存（不获取内容）
@@ -265,7 +267,7 @@ class ConversionCache:
     async def invalidate(
         self,
         file_path: str,
-        options: Dict[str, Any]
+        options: Optional[Dict[str, Any]] = None
     ) -> bool:
         """
         使缓存失效

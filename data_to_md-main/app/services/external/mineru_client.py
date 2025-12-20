@@ -47,8 +47,8 @@ class MinerUClient(BaseOCRClient):
         self.api_key: str = settings.mineru_api_key
         self.base_url: str = settings.mineru_base_url or MINERU_API_BASE
         self.timeout: int = settings.mineru_timeout
-        self.poll_interval: float = 2.0  # 轮询间隔（秒）
-        self.max_polls: int = 300  # 最多轮询 300 次 = 10 分钟
+        self.poll_interval: float = 1.0  # 轮询间隔（秒）- 优化为 1 秒以提高响应速度
+        self.max_polls: int = 600  # 最多轮询 600 次 = 10 分钟
 
         if not self.api_key:
             logger.warning(

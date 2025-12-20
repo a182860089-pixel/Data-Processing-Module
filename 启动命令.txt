@@ -1,0 +1,10 @@
+启动后端：   cd "D:\Data Processing Module\data_to_md-main"
+                     .\venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+启动前端：D:\Data Processing Module\proc_image\smallimg   
+			npm run dev
+
+启动redis ：redis-server.exe redis.windows.conf
+
+
+启动 celery works ：Start-Process -FilePath "D:\venvs\data_to_md\Scripts\python.exe" -WorkingDirectory "D:\Data Processing Module\data_to_md-main" -ArgumentList @("-m", "celery", "-A", "celery_worker.celery_app", "worker", "-P", "threads", "-c", "4", "-l", "info") -WindowStyle Normal

@@ -26,6 +26,14 @@ Start-Process -FilePath $pythonExe -WorkingDirectory $backendPath -ArgumentList 
     "--reload", "--port", "8000", "--host", "0.0.0.0"
 ) -WindowStyle Normal
 
+# 启动 Celery Worker（Windows 建议使用 threads 池）
+$celeryArgs = @(
+    "-m", "celery", "-A", "celery_worker.celery_app", "worker",
+    "-P", "threads", "-c", "4", "-l", "info"
+)
+Write-Host "启动 Celery Worker..." -ForegroundColor Cyan
+Start-Process -FilePath $pythonExe -WorkingDirectory $backendPath -ArgumentList $celeryArgs -WindowStyle Normal
+
 # 等待3秒后启动前端
 Start-Sleep -Seconds 3
 
