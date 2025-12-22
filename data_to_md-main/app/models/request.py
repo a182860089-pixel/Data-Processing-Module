@@ -110,3 +110,39 @@ class ImageCompressOptions(BaseModel):
             }
         }
 
+
+class ImageToWordOptions(BaseModel):
+    """
+    图片转Word选项
+    
+    控制图片OCR识别和Word文档生成的参数
+    """
+    title: Optional[str] = Field(
+        default=None,
+        description="Word文档标题（可选，默认不添加标题）"
+    )
+    include_markdown: bool = Field(
+        default=False,
+        description="是否在响应中返回Markdown内容"
+    )
+    font_name: str = Field(
+        default="Microsoft YaHei",
+        description="Word文档默认字体"
+    )
+    font_size: int = Field(
+        default=11,
+        ge=8,
+        le=72,
+        description="Word文档默认字号"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "文档标题",
+                "include_markdown": False,
+                "font_name": "Microsoft YaHei",
+                "font_size": 11
+            }
+        }
+

@@ -4,12 +4,13 @@ import ImageCompressor from "./components/ImageCompressor.vue";
 import ImagesToPdfConverter from "./components/ImagesToPdfConverter.vue";
 import PdfConverter from "./components/PdfConverter.vue";
 import WechatCrawler from "./components/WechatCrawler.vue";
+import ImageToWord from "./components/ImageToWord.vue";
 
 const errorMessage = ref<string>("");
 const successMessage = ref<string>("");
 
 // 当前激活的标签
-const activeTab = ref<"image" | "images-to-pdf" | "pdf" | "wechat">("image");
+const activeTab = ref<"image" | "images-to-pdf" | "pdf" | "wechat" | "image-to-word">("image");
 
 // 处理错误
 const handleError = (message: string) => {
@@ -67,6 +68,14 @@ const handleSuccess = (message: string) => {
         >
           🔗 微信文章爬取
         </button>
+        <button
+          class="tab-btn"
+          :class="{ active: activeTab === 'image-to-word' }"
+          type="button"
+          @click="activeTab = 'image-to-word'"
+        >
+          📝 图片转Word
+        </button>
       </div>
     </header>
 
@@ -101,11 +110,16 @@ const handleSuccess = (message: string) => {
         <template v-else-if="activeTab === 'wechat'">
           <WechatCrawler />
         </template>
+
+        <!-- 图片转Word页面 -->
+        <template v-else-if="activeTab === 'image-to-word'">
+          <ImageToWord @error="handleError" />
+        </template>
       </div>
     </main>
 
     <footer class="footer">
-      <p>数据处理工具集 · 图片压缩 · 多图合并PDF · PDF转Markdown · 微信文章爬取</p>
+      <p>数据处理工具集 · 图片压缩 · 多图合并PDF · PDF转Markdown · 微信文章爬取 · 图片转Word</p>
     </footer>
   </div>
 </template>

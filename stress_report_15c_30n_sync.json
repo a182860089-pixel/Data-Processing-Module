@@ -1,0 +1,311 @@
+{
+  "test_config": {
+    "base_url": "http://127.0.0.1:8000",
+    "concurrency": 15,
+    "total_requests": 30,
+    "use_async_api": false,
+    "timeout": 300,
+    "test_time": "2025-12-21T16:50:29.305113"
+  },
+  "summary": {
+    "total_requests": 30,
+    "successful_requests": 27,
+    "failed_requests": 3,
+    "success_rate": 90.0,
+    "total_time": 280.54446482658386,
+    "throughput": 0.10693492034691984
+  },
+  "response_times": {
+    "avg": 126.90996081034342,
+    "min": 0.03644847869873047,
+    "max": 280.5394501686096,
+    "p50": 133.41911363601685,
+    "p95": 218.27841186523438,
+    "p99": 280.5394501686096
+  },
+  "errors": {},
+  "results": [
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.03644847869873047,
+      "file_name": "公司财务学.jpg",
+      "file_size": 8330,
+      "error_message": null,
+      "task_id": "task_1cd6421be23c"
+    },
+    {
+      "success": false,
+      "status_code": 500,
+      "response_time": 160.32336950302124,
+      "file_name": "1、2022080901013_陈勇吉_任务书.docx",
+      "file_size": 14619,
+      "error_message": {
+        "code": "ConversionFailedException",
+        "message": "文件转换失败",
+        "details": "Office 文档转换失败"
+      },
+      "task_id": null
+    },
+    {
+      "success": false,
+      "status_code": 500,
+      "response_time": 160.31584286689758,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": {
+        "code": "ConversionFailedException",
+        "message": "文件转换失败",
+        "details": "Office 文档转换失败"
+      },
+      "task_id": null
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 160.33372592926025,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_07c38f7d8269"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 160.3346745967865,
+      "file_name": "1、2022080901013_陈勇吉_任务书.docx",
+      "file_size": 14619,
+      "error_message": null,
+      "task_id": "task_a229880051a0"
+    },
+    {
+      "success": false,
+      "status_code": 500,
+      "response_time": 160.3346745967865,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": {
+        "code": "ConversionFailedException",
+        "message": "文件转换失败",
+        "details": "Office 文档转换失败"
+      },
+      "task_id": null
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 160.3309714794159,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": null,
+      "task_id": "task_39f4bf649f1a"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 160.34584641456604,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "task_ae84abc5c86a"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 172.77125692367554,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_7926ba9433fe"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 172.77025985717773,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_ad2328fedb28"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 172.76824140548706,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_41314bdf67fe"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 172.77229022979736,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_d4d644c0a916"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 172.73901867866516,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_5974646d702c"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 218.26882362365723,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_5eeb2a4a1122"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 218.27841186523438,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_bd87ffb2d3bd"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 57.95828056335449,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "task_b11010190529"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 57.94142723083496,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": null,
+      "task_id": "task_ebd67e68b935"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 57.94244050979614,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_69e9b53c9ba6"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 57.94244050979614,
+      "file_name": "1、2022080901013_陈勇吉_任务书.docx",
+      "file_size": 14619,
+      "error_message": null,
+      "task_id": "task_71a05c4dbe53"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 101.00001215934753,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_186483bb4d6f"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 100.98364901542664,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_8a2df0c01d76"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 93.3150246143341,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_21b35fc75858"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 93.31399130821228,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": null,
+      "task_id": "task_abb5fc717ca6"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 93.31081652641296,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_997f7a9fac59"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 93.31399130821228,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_eae4f75386ff"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 93.32301688194275,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_044a0f54b505"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 106.52238440513611,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_75f1a6a6ec25"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 48.58376216888428,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "task_cd1b25b3f86c"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 48.584280490875244,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "task_943ed9c55def"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 280.5394501686096,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "task_bf290bacd188"
+    }
+  ]
+}

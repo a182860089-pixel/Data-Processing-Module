@@ -1,0 +1,119 @@
+{
+  "test_config": {
+    "base_url": "http://127.0.0.1:8000",
+    "concurrency": 5,
+    "total_requests": 10,
+    "use_async_api": false,
+    "timeout": 300,
+    "test_time": "2025-12-21T16:40:30.860207"
+  },
+  "summary": {
+    "total_requests": 10,
+    "successful_requests": 10,
+    "failed_requests": 0,
+    "success_rate": 100.0,
+    "total_time": 47.19683218002319,
+    "throughput": 0.21187862697769488
+  },
+  "response_times": {
+    "avg": 17.23180811405182,
+    "min": 11.197552680969238,
+    "max": 47.19583010673523,
+    "p50": 11.545179605484009,
+    "p95": 47.19583010673523,
+    "p99": 47.19583010673523
+  },
+  "errors": {},
+  "results": [
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.545181035995483,
+      "file_name": "灰太狼.jpg",
+      "file_size": 5788,
+      "error_message": null,
+      "task_id": "task_0be76442dc2a"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.545178174972534,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_b0288dec086f"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 22.118834733963013,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_b9b541761c71"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.197552680969238,
+      "file_name": "灰太狼.jpg",
+      "file_size": 5788,
+      "error_message": null,
+      "task_id": "task_3c6e82f5f905"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.197552680969238,
+      "file_name": "公司财务学.jpg",
+      "file_size": 8330,
+      "error_message": null,
+      "task_id": "task_3bdff5d12e6a"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 22.743730306625366,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_1cee202bb816"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.947236776351929,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_64a481071970"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.324342012405396,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": null,
+      "task_id": "task_713e455fdfea"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.502642631530762,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "task_f69df47f6b02"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 47.19583010673523,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "task_53e78d75f33b"
+    }
+  ]
+}

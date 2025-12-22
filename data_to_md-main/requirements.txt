@@ -19,6 +19,10 @@ python-pptx==0.6.23
 python-docx==0.8.11
 openpyxl==3.1.5
 
+# Markdown 处理（图片转Word功能）
+markdown==3.5.1
+beautifulsoup4==4.12.2
+
 # PDF 生成
 reportlab==4.0.9
 fpdf2==2.7.0

@@ -1,0 +1,209 @@
+{
+  "test_config": {
+    "base_url": "http://127.0.0.1:8000",
+    "concurrency": 10,
+    "total_requests": 20,
+    "use_async_api": false,
+    "timeout": 300,
+    "test_time": "2025-12-21T16:44:31.923246"
+  },
+  "summary": {
+    "total_requests": 20,
+    "successful_requests": 20,
+    "failed_requests": 0,
+    "success_rate": 100.0,
+    "total_time": 199.82298469543457,
+    "throughput": 0.10008858605772265
+  },
+  "response_times": {
+    "avg": 63.90172601938248,
+    "min": 0.028632402420043945,
+    "max": 166.610933303833,
+    "p50": 62.056182980537415,
+    "p95": 166.610933303833,
+    "p99": 166.610933303833
+  },
+  "errors": {},
+  "results": [
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.028632402420043945,
+      "file_name": "灰太狼.jpg",
+      "file_size": 5788,
+      "error_message": null,
+      "task_id": "task_915bc500f52e"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.06150221824646,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "task_9e046db6d53f"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.06100845336914,
+      "file_name": "1、2022080901013_陈勇吉_任务书.docx",
+      "file_size": 14619,
+      "error_message": null,
+      "task_id": "task_408dcc5a7179"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.054455041885376,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_64308856836e"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.0635039806366,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "task_512f87df05db"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.06100845336914,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_5d705a3c29d7"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.05791091918945,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "task_bfea267d47f9"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.06350350379944,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_5b38301de17c"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 62.61969876289368,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_5b7c59456d2b"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 42.587666034698486,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "task_22116ff59a55"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 42.587666034698486,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": null,
+      "task_id": "task_3d4eb6950392"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 42.58866739273071,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "task_b64a0e5f74f2"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 42.587666034698486,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_c11c2e55481e"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 42.587666034698486,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_0b3013c5e204"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 42.21583557128906,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "task_dbc047040e96"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 43.35823130607605,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "task_4055d5744a54"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 11.497950077056885,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "task_175cdc4dd93f"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 166.610933303833,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "task_359aa9045251"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 166.5835316181183,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "task_75475a4ceac3"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 137.75748324394226,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "task_fb27ddcef475"
+    }
+  ]
+}

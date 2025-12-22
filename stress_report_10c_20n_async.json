@@ -1,0 +1,209 @@
+{
+  "test_config": {
+    "base_url": "http://127.0.0.1:8000",
+    "concurrency": 10,
+    "total_requests": 20,
+    "use_async_api": true,
+    "timeout": 300,
+    "test_time": "2025-12-21T16:45:05.102994"
+  },
+  "summary": {
+    "total_requests": 20,
+    "successful_requests": 20,
+    "failed_requests": 0,
+    "success_rate": 100.0,
+    "total_time": 0.36389684677124023,
+    "throughput": 54.960630127616305
+  },
+  "response_times": {
+    "avg": 0.16639673709869385,
+    "min": 0.030959367752075195,
+    "max": 0.35753941535949707,
+    "p50": 0.15176641941070557,
+    "p95": 0.35753941535949707,
+    "p99": 0.35753941535949707
+  },
+  "errors": {},
+  "results": [
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.25884103775024414,
+      "file_name": "123.png",
+      "file_size": 850626,
+      "error_message": null,
+      "task_id": "79c94b50-8e2a-4a42-bfe4-79066714ed80"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.26822614669799805,
+      "file_name": "1、2022080901013_陈勇吉_任务书.docx",
+      "file_size": 14619,
+      "error_message": null,
+      "task_id": "53a282fc-7002-4a41-a3fe-7bdb5f7b1b1f"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.2702639102935791,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "6f77345d-24d2-4ec0-b1f1-1fafed7a2175"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.2772350311279297,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "9b679ba9-986a-42e5-93d4-f20123897e84"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.27655982971191406,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "0512f741-9d42-4f7d-9e19-453609c1c27f"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.2864196300506592,
+      "file_name": "公司财务学.jpg",
+      "file_size": 8330,
+      "error_message": null,
+      "task_id": "2a961dba-a56b-4c51-997e-b414cebe3219"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.28289318084716797,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "7b7ab433-3c9a-4f9e-9368-ebefd2c1803c"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.2818942070007324,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "91a1c565-124e-40cb-b584-2a73c068e907"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.03839921951293945,
+      "file_name": "2、2020080901024_陈跃辉_开题报告.docx",
+      "file_size": 32491,
+      "error_message": null,
+      "task_id": "4fd2e995-6fa4-4790-b863-40385f1b03a6"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.04469180107116699,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "17761181-9474-4f6c-977d-4c4064443efc"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.04265403747558594,
+      "file_name": "环境组件.docx",
+      "file_size": 14160,
+      "error_message": null,
+      "task_id": "1ca504a1-9ecb-4af5-80a4-23aa347c60a6"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.041989803314208984,
+      "file_name": "头像.jpg",
+      "file_size": 54193,
+      "error_message": null,
+      "task_id": "200006e7-e60d-459c-afb1-dcdf6a956b96"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.041989803314208984,
+      "file_name": "1、2022080901013_陈勇吉_任务书.docx",
+      "file_size": 14619,
+      "error_message": null,
+      "task_id": "a852bdc6-f119-4913-b068-327a12a4b580"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.0440220832824707,
+      "file_name": "day08笔记.pdf",
+      "file_size": 147960,
+      "error_message": null,
+      "task_id": "58c74115-18be-4295-9dce-8ff82b14e7a6"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.0440220832824707,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "6f2e5003-fe9b-4197-a65a-ca555ae2d894"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.042580366134643555,
+      "file_name": "严建任务书返修版.docx",
+      "file_size": 16347,
+      "error_message": null,
+      "task_id": "1047b39d-0c49-46e3-958f-3d47c8b68498"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.042237281799316406,
+      "file_name": "灰太狼.jpg",
+      "file_size": 5788,
+      "error_message": null,
+      "task_id": "4e1a8762-1c5d-417e-8e01-a24100532865"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.030959367752075195,
+      "file_name": "springboot.png",
+      "file_size": 5269,
+      "error_message": null,
+      "task_id": "d5168b92-ecec-4876-8467-1d358b5d65ee"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.35753941535949707,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "56a11060-4b99-42e0-9dc9-4fbd3b29c071"
+    },
+    {
+      "success": true,
+      "status_code": 200,
+      "response_time": 0.35451650619506836,
+      "file_name": "5_images_task_e9928ecdcf6a.pdf",
+      "file_size": 2552000,
+      "error_message": null,
+      "task_id": "75b574cc-3b8f-4071-a9a0-2362afc47dcf"
+    }
+  ]
+}

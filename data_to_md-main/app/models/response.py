@@ -133,3 +133,23 @@ class ImageCompressResponse(BaseModel):
     download_url: str = Field(..., description="下载链接")
     metadata: ImageCompressMetadata = Field(..., description="压缩元数据")
 
+
+class ImageToWordMetadata(BaseModel):
+    """图片转Word元数据"""
+    original_size: int = Field(..., description="原始图片大小（字节）")
+    output_size: int = Field(..., description="Word文档大小（字节）")
+    markdown_length: int = Field(..., description="Markdown内容长度")
+    processing_time: float = Field(..., description="处理时间（秒）")
+
+
+class ImageToWordResponse(BaseModel):
+    """图片转Word响应"""
+    success: bool = Field(..., description="是否成功")
+    message: str = Field(..., description="提示信息")
+    task_id: str = Field(..., description="任务ID")
+    filename: str = Field(..., description="原始文件名")
+    output_filename: str = Field(..., description="输出Word文件名")
+    download_url: str = Field(..., description="Word文档下载链接")
+    markdown_content: Optional[str] = Field(None, description="Markdown内容（仅当include_markdown=True时返回）")
+    metadata: ImageToWordMetadata = Field(..., description="转换元数据")
+
