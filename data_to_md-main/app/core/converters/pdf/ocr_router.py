@@ -187,59 +187,34 @@ class OCRRouter:
     
     async def _ocr_with_round_robin(self, base64_image: str) -> Tuple[str, str]:
         """使用轮询策略执行 OCR"""
+        # 只在选择引擎时加锁，不要在 OCR 调用期间持有锁
         async with self._lock:
-            # 选择下一个可用引擎
             engine_name = await self._select_available_engine_round_robin()
-            if not engine_name:
-                raise APICallException(
-                    message="所有 OCR 引擎都不可用（熔断或错误）",
-                    details="请检查引擎配置和网络连接"
-                )
         
-        # 尝试使用选中的引擎
+        if not engine_name:
+            raise APICallException(
+                message="所有 OCR 引擎都不可用（熔断或错误）",
+                details="请检查引擎配置和网络连接"
+            )
+        
+        # 锁已释放，现在可以并发执行 OCR
         return await self._try_ocr_with_engine(engine_name, base64_image)
     
     async def _ocr_with_failover(self, base64_image: str) -> Tuple[str, str]:
-        """使用故障转移策略执行 OCR"""
-        # 优先使用 deepseek
-        primary_engine = "deepseek"
-        fallback_engine = "mineru"
+        """使用故障转移策略执行 OCR
         
-        # 尝试主引擎
-        if await self._is_engine_available(primary_engine):
-            try:
-                return await self._try_ocr_with_engine(primary_engine, base64_image)
-            except APICallException as e:
-                logger.warning(
-                    f"Primary engine '{primary_engine}' failed, "
-                    f"attempting fallback: {str(e)}"
-                )
-                # 主引擎失败，尝试备用引擎
-                if await self._is_engine_available(fallback_engine):
-                    try:
-                        return await self._try_ocr_with_engine(fallback_engine, base64_image)
-                    except APICallException as fallback_error:
-                        logger.error(
-                            f"Fallback engine '{fallback_engine}' also failed: {str(fallback_error)}"
-                        )
-                        raise APICallException(
-                            message="所有 OCR 引擎都失败",
-                            details=f"主引擎错误: {str(e)}, 备用引擎错误: {str(fallback_error)}"
-                        )
-                else:
-                    raise APICallException(
-                        message="主引擎失败且备用引擎不可用",
-                        details=f"主引擎错误: {str(e)}"
-                    )
+        简化逻辑：只有一个引擎时直接调用，不检查熔断状态
+        """
+        # 直接使用 deepseek，不检查熔断状态（重试逻辑在 DeepSeekClient 中处理）
+        primary_engine = "deepseek"
+        
+        if primary_engine in self.engines:
+            return await self._try_ocr_with_engine(primary_engine, base64_image)
         else:
-            # 主引擎不可用，尝试备用引擎
-            if await self._is_engine_available(fallback_engine):
-                return await self._try_ocr_with_engine(fallback_engine, base64_image)
-            else:
-                raise APICallException(
-                    message="所有 OCR 引擎都不可用（熔断）",
-                    details="请等待熔断恢复或检查引擎配置"
-                )
+            raise APICallException(
+                message="没有可用的 OCR 引擎",
+                details="请检查引擎配置"
+            )
     
     async def _select_available_engine_round_robin(self) -> Optional[str]:
         """轮询选择下一个可用引擎"""
@@ -300,7 +275,6 @@ class OCRRouter:
             raise ValueError(f"Unknown engine: {engine_name}")
         
         engine = self.engines[engine_name]
-        stats = self.engine_stats[engine_name]
         
         # 特殊处理：MinerU 不支持逐页 OCR
         if engine_name == "mineru":
@@ -309,24 +283,11 @@ class OCRRouter:
                 details="请在处理器入口走 mineru 的整PDF解析链路（ocr_pdf）。"
             )
         
-        try:
-            logger.debug(f"Calling OCR engine: {engine_name}")
-            markdown = await engine.ocr_image(base64_image)
-            
-            # 记录成功
-            stats.record_success()
-            logger.info(f"OCR success with engine '{engine_name}'")
-            
-            return markdown, engine_name
-            
-        except APICallException as e:
-            # 记录失败
-            stats.record_failure()
-            logger.error(
-                f"OCR failed with engine '{engine_name}': {str(e)} "
-                f"(consecutive failures: {stats.consecutive_failures})"
-            )
-            raise
+        # 直接调用，重试逻辑在 DeepSeekClient._retry_with_backoff 中处理
+        logger.debug(f"Calling OCR engine: {engine_name}")
+        markdown = await engine.ocr_image(base64_image)
+        logger.info(f"OCR success with engine '{engine_name}'")
+        return markdown, engine_name
     
     def get_engine_stats(self, engine_name: Optional[str] = None) -> Dict:
         """

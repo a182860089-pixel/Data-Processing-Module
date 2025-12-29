@@ -28,6 +28,11 @@ class Settings(BaseSettings):
         default="",
         env="DEEPSEEK_API_KEY"
     )
+    # 多 API Key 支持：用逗号分隔多个 key，如 "key1,key2,key3"
+    deepseek_api_keys: str = Field(
+        default="",
+        env="DEEPSEEK_API_KEYS"
+    )
     deepseek_base_url: str = Field(
         default="https://api.siliconflow.cn",
         env="DEEPSEEK_BASE_URL"
@@ -38,6 +43,7 @@ class Settings(BaseSettings):
     )
     deepseek_max_tokens: int = Field(default=4096, env="DEEPSEEK_MAX_TOKENS")
     deepseek_timeout: int = Field(default=60, env="DEEPSEEK_TIMEOUT")
+    deepseek_rpm_limit: int = Field(default=60, env="DEEPSEEK_RPM_LIMIT")  # 每个 Key 每分钟最大请求数
 
     # MinerU API配置（占位，需根据实际部署填写环境变量）
     mineru_api_key: str = Field(
@@ -56,13 +62,13 @@ class Settings(BaseSettings):
         env="OCR_ROUTING_STRATEGY"
     )  # round_robin / failover；默认更稳妥的 failover
     ocr_circuit_breaker_threshold: int = Field(
-        default=5,
+        default=100,
         env="OCR_CIRCUIT_BREAKER_THRESHOLD"
-    )  # 熔断阈值（连续失败次数）
+    )  # 熔断阈值（连续失败次数），调高避免过早熔断
     ocr_circuit_breaker_timeout: int = Field(
-        default=60,
+        default=10,
         env="OCR_CIRCUIT_BREAKER_TIMEOUT"
-    )  # 熔断恢复时间（秒）
+    )  # 熔断恢复时间（秒），缩短以快速恢复
     ocr_engine_weights: dict = Field(
         default={},
         env="OCR_ENGINE_WEIGHTS"
@@ -80,7 +86,7 @@ class Settings(BaseSettings):
     
     # 并发配置
     max_concurrent_tasks: int = Field(default=5, env="MAX_CONCURRENT_TASKS")
-    max_concurrent_api_calls: int = Field(default=3, env="MAX_CONCURRENT_API_CALLS")
+    max_concurrent_api_calls: int = Field(default=3, env="MAX_CONCURRENT_API_CALLS")  # 控制并发避免触发 API 限流
     max_concurrent_pdf_tasks: int = Field(default=2, env="MAX_CONCURRENT_PDF_TASKS")  # Celery worker 并发
     
     # 动态并发配置（性能优化）

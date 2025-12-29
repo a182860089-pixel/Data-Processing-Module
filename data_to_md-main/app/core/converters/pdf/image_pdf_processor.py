@@ -37,7 +37,7 @@ class ImagePDFProcessor(BaseProcessor):
     """
     
     # 分批处理配置
-    PAGES_PER_BATCH = 5
+    PAGES_PER_BATCH = 10  # 增加批大小以提高并发效率
     GC_AFTER_BATCH = True
     
     def __init__(self, ocr_engine: str = "auto"):
