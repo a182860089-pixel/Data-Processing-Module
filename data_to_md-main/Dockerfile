@@ -16,7 +16,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # - 其他: 通用构建工具和字体支持
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libvips-dev \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
