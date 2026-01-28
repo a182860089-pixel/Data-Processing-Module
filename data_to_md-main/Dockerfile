@@ -10,6 +10,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
+# 使用阿里云镜像源加速（可选，如果网络不稳定可以启用）
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources || true
+
 # 安装系统依赖
 # - libvips: pyvips 需要
 # - libgl1: opencv 需要
