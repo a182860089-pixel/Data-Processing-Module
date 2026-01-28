@@ -1,0 +1,63 @@
+services:
+  # 主应用服务
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-to-md-app
+    ports:
+      - "8000:8000"
+    volumes:
+      # 持久化存储目录
+      - ./storage:/app/storage
+      # 环境变量文件
+      - ./.env:/app/.env:ro
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=production
+    restart: unless-stopped
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  # Redis 服务（Celery 异步任务需要）
+  redis:
+    image: redis:7-alpine
+    container_name: data-to-md-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Celery Worker（可选，用于异步任务）
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-to-md-celery
+    command: celery -A celery_worker.celery_app worker -l info --concurrency=2
+    volumes:
+      - ./storage:/app/storage
+      - ./.env:/app/.env:ro
+    env_file:
+      - .env
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    restart: unless-stopped
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:

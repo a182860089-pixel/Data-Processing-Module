@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# 测试
+.pytest_cache/
+tests/
+test_*.py
+htmlcov/
+.coverage
+
+# 本地存储（运行时挂载）
+storage/uploads/*
+storage/outputs/*
+storage/cache/*
+storage/logs/*
+!storage/.gitkeep
+
+# 环境变量（运行时挂载）
+.env
+
+# 文档和其他
+*.md
+*.txt
+docs/
+pics/
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
