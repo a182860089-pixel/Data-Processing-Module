@@ -37,7 +37,7 @@ storage/logs/*
 
 # 文档和其他
 *.md
-*.txt
+!requirements.txt
 docs/
 pics/
 *.log
