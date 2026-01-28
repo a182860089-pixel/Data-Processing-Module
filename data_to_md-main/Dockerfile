@@ -10,23 +10,20 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# 安装系统依赖（使用重试机制提高稳定性）
-# - libvips: pyvips 需要
+# 安装系统依赖
+# - libvips42t64: pyvips 运行时库（比 libvips-dev 依赖少很多）
 # - libgl1: opencv 需要
-# - 其他: 通用构建工具和字体支持
-RUN for i in 1 2 3; do \
-        apt-get update && \
-        apt-get install -y --no-install-recommends \
-            libvips-dev \
-            libgl1 \
-            libglib2.0-0 \
-            libsm6 \
-            libxext6 \
-            libxrender-dev \
-            libfontconfig1 \
-            fonts-wqy-zenhei \
-        && break || sleep 10; \
-    done && rm -rf /var/lib/apt/lists/*
+# - 其他: 字体支持
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libvips42t64 \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    libfontconfig1 \
+    fonts-wqy-zenhei \
+    && rm -rf /var/lib/apt/lists/*
 
 # 复制依赖文件
 COPY requirements.txt .
