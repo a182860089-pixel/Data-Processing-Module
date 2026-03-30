@@ -8,6 +8,11 @@ interface VideoConversionOptions {
   frame_quality: number;
   include_metadata: boolean;
   include_frames: boolean;
+  frame_mode: 'interval' | 'scene';
+  enable_asr: boolean;
+  enable_subtitle_extraction: boolean;
+  enable_video_summary: boolean;
+  subtitle_priority: 'subtitle_first' | 'asr_first' | 'both';
 }
 
 interface ConversionResult {
@@ -22,6 +27,7 @@ interface ConversionResult {
     metadata: Record<string, any>;
   };
   error?: string;
+  statusMessage?: string;
 }
 
 const emit = defineEmits<{
@@ -35,9 +41,15 @@ const keyframeInterval = ref(5);
 const maxFrames = ref(50);
 const frameQuality = ref(85);
 const includeMetadata = ref(true);
-const includeFrames = ref(true);
+const includeFrames = ref(false);
+const frameMode = ref<'interval' | 'scene'>('scene');
+const enableAsr = ref(true);
+const enableSubtitleExtraction = ref(true);
+const enableVideoSummary = ref(true);
+const subtitlePriority = ref<'subtitle_first' | 'asr_first' | 'both'>('asr_first');
 const isConverting = ref(false);
 const apiBaseUrl = ref('http://localhost:8000');
+const maxParallelTasks = 2;
 
 const handleDragOver = (e: DragEvent) => {
   e.preventDefault();
@@ -110,31 +122,38 @@ const convertVideo = async (video: ConversionResult) => {
     frame_quality: frameQuality.value,
     include_metadata: includeMetadata.value,
     include_frames: includeFrames.value,
+    frame_mode: frameMode.value,
+    enable_asr: enableAsr.value,
+    enable_subtitle_extraction: enableSubtitleExtraction.value,
+    enable_video_summary: enableVideoSummary.value,
+    subtitle_priority: subtitlePriority.value,
   };
 
   formData.append('options', JSON.stringify(options));
 
   try {
     video.status = 'processing';
-    video.progress = 10;
+    video.progress = 5;
+    video.statusMessage = '提交任务中';
 
     const xhr = new XMLHttpRequest();
 
     // 监听上传进度
     xhr.upload.addEventListener('progress', (e) => {
-      if (e.lengthComputable) {
-        video.progress = 10 + (e.loaded / e.total) * 30;
-      }
-    });
+        if (e.lengthComputable) {
+          video.progress = Math.min(20, 5 + (e.loaded / e.total) * 15);
+        }
+      });
 
     // 发送请求
-    const response = await new Promise<{
-      success: boolean;
-      task_id: string;
-      markdown_content?: string;
-      file_type: string;
-      metadata: Record<string, any>;
-    }>((resolve, reject) => {
+      const response = await new Promise<{
+        success: boolean;
+        task_id: string;
+        markdown_content?: string;
+        file_type: string;
+        metadata: Record<string, any>;
+        status_url?: string;
+      }>((resolve, reject) => {
       xhr.onload = () => {
         try {
           const data = JSON.parse(xhr.responseText);
@@ -151,55 +170,116 @@ const convertVideo = async (video: ConversionResult) => {
       xhr.onerror = () => reject(new Error('网络错误'));
       xhr.ontimeout = () => reject(new Error('请求超时'));
 
-      xhr.open('POST', `${apiBaseUrl.value}/api/v1/convert`);
+      const endpoint = outputType.value === 'pdf'
+        ? `${apiBaseUrl.value}/api/v1/convert/async`
+        : `${apiBaseUrl.value}/api/v1/convert/markdown/async`;
+
+      xhr.open('POST', endpoint);
       xhr.send(formData);
     });
 
-    video.progress = 40;
+    video.progress = 25;
+    video.statusMessage = '任务已提交，等待处理';
 
-    // 检查返回的输出类型
-    const actualOutputType = response.file_type || response.metadata?.output_type || 'markdown';
-    console.log('Output type:', actualOutputType, 'Response:', response);
+    const taskId = response.task_id;
+    if (!taskId) {
+      throw new Error('未返回任务ID');
+    }
+
+    const taskResult = await pollTaskResult(taskId, video);
+
+    const actualOutputType = taskResult.file_type || taskResult.metadata?.output_type || 'markdown';
 
     if (actualOutputType === 'pdf') {
-      // 如果是PDF，需要先下载
       const downloadResponse = await fetch(
-        `${apiBaseUrl.value}/api/v1/download/${response.task_id}`
+        `${apiBaseUrl.value}/api/v1/download/${taskId}`
       );
+      if (!downloadResponse.ok) {
+        throw new Error('PDF 结果下载失败');
+      }
       const pdfBlob = await downloadResponse.blob();
       video.result = {
-        task_id: response.task_id,
+        task_id: taskId,
         pdf_content: pdfBlob,
-        metadata: response.metadata,
+        metadata: taskResult.metadata || {},
       };
     } else {
-      // Markdown输出
       video.result = {
-        task_id: response.task_id,
-        markdown_content: response.markdown_content || '',
-        metadata: response.metadata,
+        task_id: taskId,
+        markdown_content: taskResult.markdown_content || '',
+        metadata: taskResult.metadata || {},
       };
-      console.log('Markdown content length:', response.markdown_content?.length || 0);
     }
 
     video.progress = 100;
     video.status = 'completed';
+    video.statusMessage = '转换完成';
   } catch (error) {
     video.status = 'failed';
     video.error = error instanceof Error ? error.message : '转换失败';
+    video.statusMessage = '转换失败';
   }
 };
 
 const startAllConversions = async () => {
   isConverting.value = true;
 
-  for (const video of videos.value) {
-    if (video.status === 'pending') {
-      await convertVideo(video);
+  const pendingVideos = videos.value.filter(video => video.status === 'pending');
+  const queue = [...pendingVideos];
+
+  const workers = Array.from({ length: Math.min(maxParallelTasks, queue.length) }, async () => {
+    while (queue.length > 0) {
+      const nextVideo = queue.shift();
+      if (!nextVideo) {
+        return;
+      }
+      await convertVideo(nextVideo);
     }
+  });
+
+  if (workers.length > 0) {
+    await Promise.allSettled(workers);
   }
 
   isConverting.value = false;
+};
+
+const pollTaskResult = async (taskId: string, video: ConversionResult) => {
+  const maxPolls = 900;
+
+  for (let i = 0; i < maxPolls; i++) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const statusResponse = await fetch(`${apiBaseUrl.value}/api/v1/status/${taskId}`);
+    if (!statusResponse.ok) {
+      continue;
+    }
+
+    const statusData = await statusResponse.json();
+    if (typeof statusData.progress?.percentage === 'number') {
+      video.progress = Math.max(25, Math.min(99, statusData.progress.percentage));
+    }
+    if (statusData.message) {
+      video.statusMessage = statusData.message;
+    }
+
+    if (statusData.status === 'completed') {
+      return {
+        file_type: statusData.result?.metadata?.output_type || outputType.value,
+        markdown_content: statusData.result?.markdown_content || '',
+        download_url: statusData.result?.download_url || `/api/v1/download/${taskId}`,
+        metadata: statusData.result?.metadata || {},
+      };
+    }
+
+    if (statusData.status === 'failed') {
+      throw new Error(
+        statusData.error?.details || statusData.error?.message || '任务执行失败'
+      );
+    }
+  }
+
+  throw new Error('任务轮询超时');
 };
 
 const downloadMarkdown = (video: ConversionResult) => {
@@ -252,7 +332,7 @@ const clearAll = () => {
       <div class="upload-content">
         <div class="upload-icon">🎬</div>
         <h3>上传视频文件</h3>
-        <p class="supported">支持: MP4, AVI, MOV, WMV, MKV, FLV (最大 500MB)</p>
+        <p class="supported">默认提取音频/字幕文本生成 Markdown，支持: MP4, AVI, MOV, WMV, MKV, FLV (最大 500MB)</p>
         <input
           type="file"
           multiple
@@ -308,6 +388,20 @@ const clearAll = () => {
         </div>
 
         <div class="option-item">
+          <label>抽帧模式</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" v-model="frameMode" value="scene" />
+              场景检测
+            </label>
+            <label>
+              <input type="radio" v-model="frameMode" value="interval" />
+              固定间隔
+            </label>
+          </div>
+        </div>
+
+        <div class="option-item">
           <label>帧质量</label>
           <input
             type="range"
@@ -324,10 +418,10 @@ const clearAll = () => {
           <input type="checkbox" v-model="includeMetadata" />
           包含元数据
         </label>
-        <label>
-          <input type="checkbox" v-model="includeFrames" />
-          包含关键帧
-        </label>
+            <label>
+              <input type="checkbox" v-model="includeFrames" />
+              内嵌关键帧图片（会让 Markdown 很长）
+            </label>
       </div>
 
       <div class="api-config">
@@ -374,6 +468,10 @@ const clearAll = () => {
         <div class="item-info">
           <span>{{ (video.file.size / 1024 / 1024).toFixed(2) }} MB</span>
           <span>{{ video.progress }}%</span>
+        </div>
+
+        <div v-if="video.statusMessage" class="status-message">
+          {{ video.statusMessage }}
         </div>
 
         <div v-if="video.result" class="item-actions">
@@ -734,6 +832,12 @@ function formatValue(value: any): string {
   font-size: 12px;
   color: #6b7280;
   margin-bottom: 12px;
+}
+
+.status-message {
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #4b5563;
 }
 
 .item-actions {

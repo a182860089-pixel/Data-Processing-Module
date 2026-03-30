@@ -1,18 +1,41 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import ImageCompressor from "./components/ImageCompressor.vue";
 import ImagesToPdfConverter from "./components/ImagesToPdfConverter.vue";
 import PdfConverter from "./components/PdfConverter.vue";
+import MultiFormatToMarkdown from "./components/MultiFormatToMarkdown.vue";
+import VideoUploader from "./components/VideoUploader.vue";
 import WechatCrawler from "./components/WechatCrawler.vue";
 import ImageToWord from "./components/ImageToWord.vue";
+import SystemConfig from "./components/SystemConfig.vue";
 
 const errorMessage = ref<string>("");
 const successMessage = ref<string>("");
 
 // 当前激活的标签
-const activeTab = ref<"image" | "images-to-pdf" | "pdf" | "wechat" | "image-to-word">("image");
+const activeTab = ref<
+  "image" |
+  "images-to-pdf" |
+  "pdf" |
+  "video-to-md" |
+  "multi-format-md" |
+  "wechat" |
+  "image-to-word" |
+  "system-config"
+>("image");
 
-// 处理错误
+// 导航菜单配置
+const menuItems = [
+  { id: 'image', label: '图片压缩', icon: '📷' },
+  { id: 'images-to-pdf', label: '多图转 PDF', icon: '🖼️' },
+  { id: 'pdf', label: 'PDF 转 Markdown', icon: '📄' },
+  { id: 'video-to-md', label: '视频转 MD', icon: '🎬' },
+  { id: 'multi-format-md', label: '多格式转 MD', icon: '🧩' },
+  { id: 'wechat', label: '微信文章爬取', icon: '🔗' },
+  { id: 'image-to-word', label: '图片转 Word', icon: '📝' },
+  { id: 'system-config', label: '系统配置', icon: '⚙️' },
+] as const;
+
 const handleError = (message: string) => {
   errorMessage.value = message;
   setTimeout(() => {
@@ -20,7 +43,6 @@ const handleError = (message: string) => {
   }, 5000);
 };
 
-// 处理成功
 const handleSuccess = (message: string) => {
   successMessage.value = message;
   setTimeout(() => {
@@ -30,300 +52,258 @@ const handleSuccess = (message: string) => {
 </script>
 
 <template>
-  <div class="app">
-    <header class="header">
-      <h1>🛠 数据处理小工具</h1>
-      <p class="subtitle">图片压缩 & PDF 转 Markdown 一站式工具</p>
-
-      <div class="tabs">
-        <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'image' }"
-          type="button"
-          @click="activeTab = 'image'"
-        >
-          📷 图片压缩
-        </button>
-        <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'images-to-pdf' }"
-          type="button"
-          @click="activeTab = 'images-to-pdf'"
-        >
-          🖼️ 多图转 PDF
-        </button>
-        <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'pdf' }"
-          type="button"
-          @click="activeTab = 'pdf'"
-        >
-          📄 PDF → Markdown
-        </button>
-        <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'wechat' }"
-          type="button"
-          @click="activeTab = 'wechat'"
-        >
-          🔗 微信文章爬取
-        </button>
-        <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'image-to-word' }"
-          type="button"
-          @click="activeTab = 'image-to-word'"
-        >
-          📝 图片转Word
-        </button>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <div class="logo-icon">🛠</div>
+        <h1 class="logo-text">数据工具集</h1>
       </div>
-    </header>
+      
+      <nav class="nav-menu">
+        <button
+          v-for="item in menuItems"
+          :key="item.id"
+          class="nav-item"
+          :class="{ active: activeTab === item.id }"
+          @click="activeTab = item.id"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </button>
+      </nav>
 
-    <main class="main">
-      <div class="container">
-        <!-- 错误提示 -->
-        <Transition name="message">
-          <div v-if="errorMessage" class="message message-error">❌ {{ errorMessage }}</div>
+      <div class="sidebar-footer">
+        <p>Version 2.0</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Message Bar -->
+      <div class="message-container">
+        <Transition name="fade">
+          <div v-if="errorMessage" class="alert error">
+            ❌ {{ errorMessage }}
+          </div>
         </Transition>
-
-        <!-- 成功提示 -->
-        <Transition name="message">
-          <div v-if="successMessage" class="message message-success">✅ {{ successMessage }}</div>
+        <Transition name="fade">
+          <div v-if="successMessage" class="alert success">
+            ✅ {{ successMessage }}
+          </div>
         </Transition>
+      </div>
 
-        <!-- 图片压缩页面 -->
-        <template v-if="activeTab === 'image'">
-          <ImageCompressor @error="handleError" />
-        </template>
-
-        <!-- 多图转PDF页面 -->
-        <template v-else-if="activeTab === 'images-to-pdf'">
-          <ImagesToPdfConverter @error="handleError" />
-        </template>
-
-        <!-- PDF 转换页面 -->
-        <template v-else-if="activeTab === 'pdf'">
-          <PdfConverter @error="handleError" />
-        </template>
-
-        <!-- 微信文章爬取页面 -->
-        <template v-else-if="activeTab === 'wechat'">
-          <WechatCrawler />
-        </template>
-
-        <!-- 图片转Word页面 -->
-        <template v-else-if="activeTab === 'image-to-word'">
-          <ImageToWord @error="handleError" />
-        </template>
+      <!-- Content Views -->
+      <div class="content-wrapper">
+        <Transition name="fade-slide" mode="out-in">
+          <KeepAlive>
+            <component 
+              :is="
+                activeTab === 'image' ? ImageCompressor :
+                activeTab === 'images-to-pdf' ? ImagesToPdfConverter :
+                activeTab === 'pdf' ? PdfConverter :
+                activeTab === 'video-to-md' ? VideoUploader :
+                activeTab === 'multi-format-md' ? MultiFormatToMarkdown :
+                activeTab === 'wechat' ? WechatCrawler :
+                activeTab === 'image-to-word' ? ImageToWord :
+                SystemConfig
+              "
+              @error="handleError"
+              @success="handleSuccess"
+            />
+          </KeepAlive>
+        </Transition>
       </div>
     </main>
-
-    <footer class="footer">
-      <p>数据处理工具集 · 图片压缩 · 多图合并PDF · PDF转Markdown · 微信文章爬取 · 图片转Word</p>
-    </footer>
   </div>
 </template>
 
 <style scoped>
-.app {
+.app-container {
+  display: flex;
   min-height: 100vh;
+  background-color: var(--slate-100);
+  font-family: var(--font-sans);
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 260px;
+  background-color: white;
+  border-right: 1px solid var(--slate-200);
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 10;
 }
 
-.header {
-  text-align: center;
-  padding: 40px 20px 24px;
-  color: white;
-}
-
-.header h1 {
-  margin: 0 0 12px 0;
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.subtitle {
-  margin: 0 0 16px 0;
-  font-size: 15px;
-  opacity: 0.9;
-}
-
-.tabs {
-  margin-top: 8px;
-  display: inline-flex;
-  gap: 8px;
-  padding: 4px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.25);
-}
-
-.tab-btn {
-  border: none;
-  background: transparent;
-  color: #e5e7eb;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
-}
-
-.tab-btn.active {
-  background: white;
-  color: #111827;
-  transform: translateY(-1px);
-}
-
-.main {
-  flex: 1;
-  padding: 20px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.status-bar {
+.logo-area {
+  padding: 32px 24px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 12px;
 }
 
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.06);
-  color: #111827;
-  font-size: 13px;
-}
-
-.status-pill .label {
-  opacity: 0.7;
-}
-
-.value-tag {
-  display: inline-flex;
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--primary-500);
+  color: white;
+  border-radius: 8px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-weight: 600;
+  font-size: 20px;
 }
 
-.value-tag.ok {
-  background-color: #ecfdf3;
-  color: #16a34a;
+.logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin: 0;
 }
 
-.value-tag.warn {
-  background-color: #fffbeb;
-  color: #d97706;
+.nav-menu {
+  flex: 1;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.value-tag.err {
-  background-color: #fef2f2;
-  color: #b91c1c;
-}
-
-.status-refresh {
-  margin-left: auto;
-  padding: 6px 12px;
-  border-radius: 999px;
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
   border: none;
-  background: rgba(255, 255, 255, 0.9);
-  color: #111827;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
-}
-
-.status-refresh:hover {
-  background: #ffffff;
-  transform: translateY(-1px);
-}
-
-.status-error {
-  margin: 0 0 10px 0;
-  font-size: 12px;
-  color: #fee2e2;
-}
-
-.message {
-  padding: 16px 20px;
+  background: transparent;
   border-radius: 8px;
-  margin-bottom: 20px;
+  color: var(--slate-600);
   font-size: 14px;
   font-weight: 500;
-  animation: slideDown 0.3s ease;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
 }
 
-.message-error {
-  background-color: #fff1f0;
-  border: 1px solid #ffccc7;
-  color: #ff4d4f;
+.nav-item:hover {
+  background-color: var(--slate-50);
+  color: var(--slate-900);
 }
 
-.message-success {
-  background-color: #f6ffed;
-  border: 1px solid #b7eb8f;
-  color: #52c41a;
+.nav-item.active {
+  background-color: var(--primary-50);
+  color: var(--primary-600);
 }
 
-.footer {
+.nav-item.active .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-icon {
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.sidebar-footer {
+  padding: 24px;
+  border-top: 1px solid var(--slate-100);
+  color: var(--slate-400);
+  font-size: 12px;
   text-align: center;
-  padding: 16px 20px 20px;
-  color: white;
-  font-size: 13px;
-  opacity: 0.9;
 }
 
-.footer p {
-  margin: 2px 0;
+/* Main Content Styling */
+.main-content {
+  flex: 1;
+  margin-left: 260px; /* Width of sidebar */
+  padding: 32px 48px;
+  max-width: 1400px; /* Prevent too wide on large screens */
 }
 
-/* 过渡动画 */
-.message-enter-active,
-.message-leave-active {
-  transition: all 0.3s ease;
+/* Alerts */
+.message-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none; /* Let clicks pass through */
 }
 
-.message-enter-from {
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  pointer-events: auto;
+  min-width: 300px;
+}
+
+.alert.error {
+  background-color: #fef2f2;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+}
+
+.alert.success {
+  background-color: #f0fdf4;
+  color: #22c55e;
+  border: 1px solid #dcfce7;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
-  transform: translateY(-20px);
 }
 
-.message-leave-to {
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-slide-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (max-width: 768px) {
-  .header h1 {
-    font-size: 26px;
+  .sidebar {
+    width: 64px;
   }
-
-  .subtitle {
-    font-size: 13px;
+  .nav-label, .logo-text, .sidebar-footer {
+    display: none;
+  }
+  .main-content {
+    margin-left: 64px;
+    padding: 20px;
+  }
+  .logo-area {
+    padding: 24px 12px;
+    justify-content: center;
+  }
+  .nav-item {
+    justify-content: center;
+    padding: 12px;
   }
 }
 </style>
