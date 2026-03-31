@@ -204,12 +204,7 @@ class MixedPDFProcessor(BaseProcessor):
             
         except Exception as e:
             logger.error(f"Failed to OCR page {page_number}: {str(e)}")
-            return ContentChunk(
-                content=f"[Error OCR page {page_number}: {str(e)}]",
-                page_number=page_number,
-                chunk_type=ChunkType.OCR,
-                metadata={'error': str(e), 'ocr_engine': self.ocr_engine}
-            )
+            raise
     
     def _process_with_text_extraction(
         self,
@@ -245,12 +240,7 @@ class MixedPDFProcessor(BaseProcessor):
             
         except Exception as e:
             logger.error(f"Failed to extract text from page {page_number}: {str(e)}")
-            return ContentChunk(
-                content=f"[Error extracting text from page {page_number}: {str(e)}]",
-                page_number=page_number,
-                chunk_type=ChunkType.TEXT,
-                metadata={'error': str(e)}
-            )
+            raise
 
     async def _run_ocr(self, base64_image: str) -> tuple[str, str]:
         """根据配置的引擎执行 OCR。
@@ -271,4 +261,3 @@ class MixedPDFProcessor(BaseProcessor):
         # OCRRouter 会根据配置的策略（round_robin/failover）选择引擎
         markdown, engine_used = await self.ocr_router.ocr_image(base64_image)
         return markdown, engine_used
-

@@ -126,22 +126,11 @@ class ImagePDFProcessor(BaseProcessor):
                 ]
                 
                 # 并发执行当前批次
-                batch_results = await asyncio.gather(*batch_tasks, return_exceptions=True)
+                batch_results = await asyncio.gather(*batch_tasks)
                 
                 # 收集结果
-                for page_num, result in zip(page_nums, batch_results):
-                    if isinstance(result, Exception):
-                        logger.error(f"Error processing page {page_num + 1}: {result}")
-                        content_chunks.append(
-                            ContentChunk(
-                                content=f"[Error processing page {page_num + 1}: {str(result)}]",
-                                page_number=page_num + 1,
-                                chunk_type=ChunkType.OCR,
-                                metadata={'error': str(result)}
-                            )
-                        )
-                    else:
-                        content_chunks.append(result)
+                for result in batch_results:
+                    content_chunks.append(result)
                 
                 # 批处理后释放内存
                 if self.GC_AFTER_BATCH:
@@ -236,13 +225,7 @@ class ImagePDFProcessor(BaseProcessor):
             
         except Exception as e:
             logger.error(f"Failed to process page {page_number}: {str(e)}")
-            # 返回错误信息作为内容
-            return ContentChunk(
-                content=f"[Error processing page {page_number}: {str(e)}]",
-                page_number=page_number,
-                chunk_type=ChunkType.OCR,
-                metadata={'error': str(e), 'ocr_engine': self.ocr_engine}
-            )
+            raise
  
     async def _run_ocr(self, base64_image: str) -> tuple[str, str]:
         """根据配置的引擎执行 OCR，通过 OCRRouter 进行路由。
