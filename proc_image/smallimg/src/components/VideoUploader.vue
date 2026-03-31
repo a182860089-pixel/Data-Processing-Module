@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { renderMarkdownPreview } from '@/utils/markdown-preview';
+import WorkbenchShell from './WorkbenchShell.vue';
 
 interface VideoConversionOptions {
   output_type: 'markdown' | 'pdf';
@@ -50,6 +52,14 @@ const subtitlePriority = ref<'subtitle_first' | 'asr_first' | 'both'>('asr_first
 const isConverting = ref(false);
 const apiBaseUrl = ref('http://localhost:8000');
 const maxParallelTasks = 2;
+const fileInput = ref<HTMLInputElement | null>(null);
+const previewMode = ref<'formatted' | 'source'>('formatted');
+
+const completedVideos = computed(() => videos.value.filter(video => video.status === 'completed' && video.result));
+
+const openPicker = () => {
+  fileInput.value?.click();
+};
 
 const handleDragOver = (e: DragEvent) => {
   e.preventDefault();
@@ -320,195 +330,157 @@ const clearAll = () => {
 </script>
 
 <template>
-  <div class="video-uploader">
-    <!-- 上传区域 -->
-    <div
-      class="upload-zone"
-      :class="{ dragging: isDragging }"
-      @dragover="handleDragOver"
-      @dragleave="handleDragLeave"
-      @drop="handleDrop"
-    >
-      <div class="upload-content">
-        <div class="upload-icon">🎬</div>
-        <h3>上传视频文件</h3>
-        <p class="supported">默认提取音频/字幕文本生成 Markdown，支持: MP4, AVI, MOV, WMV, MKV, FLV (最大 500MB)</p>
-        <input
-          type="file"
-          multiple
-          accept="video/*"
-          style="display: none"
-          @change="handleFileSelect"
-          ref="fileInput"
-        />
-        <button class="btn-primary" @click="$refs.fileInput?.click()">
-          选择文件
-        </button>
-        <p class="drag-hint">或拖放视频到此处</p>
+  <WorkbenchShell title="实时任务看板" :count="videos.length" :clear-disabled="videos.length === 0 || isConverting" @clear="clearAll">
+    <template #controls>
+      <div class="panel-card intro-card">
+        <p class="panel-caption">第一步：视频策略</p>
+        <h2>输出格式、抽帧模式与分析密度</h2>
+        <p class="panel-copy">左侧负责视频解析参数和文件输入。任务队列、结果下载与元数据查看全部在右侧。</p>
       </div>
-    </div>
 
-    <!-- 转换选项 -->
-    <div class="options-panel">
-      <div class="option-row">
-        <div class="option-item">
-          <label>输出格式</label>
-          <div class="radio-group">
-            <label>
-              <input type="radio" v-model="outputType" value="markdown" />
-              Markdown
-            </label>
-            <label>
-              <input type="radio" v-model="outputType" value="pdf" />
-              PDF
-            </label>
-          </div>
+      <div class="upload-zone compact-upload" :class="{ dragging: isDragging }" @dragover="handleDragOver" @dragleave="handleDragLeave" @drop="handleDrop">
+        <div class="upload-content">
+          <div class="upload-icon">🎬</div>
+          <h3>上传视频文件</h3>
+          <p class="supported">默认提取音频/字幕文本生成 Markdown，支持: MP4, AVI, MOV, WMV, MKV, FLV (最大 500MB)</p>
+          <input type="file" multiple accept="video/*" style="display: none" @change="handleFileSelect" ref="fileInput" />
+          <button class="launch-button compact" @click="openPicker">选择文件</button>
+          <p class="drag-hint">或拖放视频到此处</p>
         </div>
+      </div>
 
+      <div class="panel-card">
+        <label>输出格式</label>
+        <div class="radio-group">
+          <label><input type="radio" v-model="outputType" value="markdown" /> Markdown</label>
+          <label><input type="radio" v-model="outputType" value="pdf" /> PDF</label>
+        </div>
+      </div>
+
+      <div class="panel-card option-stack">
         <div class="option-item">
           <label>关键帧间隔 (秒)</label>
-          <input
-            type="range"
-            v-model.number="keyframeInterval"
-            min="1"
-            max="30"
-          />
+          <input type="range" v-model.number="keyframeInterval" min="1" max="30" />
           <span class="value-display">{{ keyframeInterval }}秒</span>
         </div>
-
         <div class="option-item">
           <label>最大帧数</label>
-          <input
-            type="range"
-            v-model.number="maxFrames"
-            min="5"
-            max="200"
-          />
+          <input type="range" v-model.number="maxFrames" min="5" max="200" />
           <span class="value-display">{{ maxFrames }}</span>
         </div>
-
-        <div class="option-item">
-          <label>抽帧模式</label>
-          <div class="radio-group">
-            <label>
-              <input type="radio" v-model="frameMode" value="scene" />
-              场景检测
-            </label>
-            <label>
-              <input type="radio" v-model="frameMode" value="interval" />
-              固定间隔
-            </label>
-          </div>
-        </div>
-
         <div class="option-item">
           <label>帧质量</label>
-          <input
-            type="range"
-            v-model.number="frameQuality"
-            min="50"
-            max="100"
-          />
+          <input type="range" v-model.number="frameQuality" min="50" max="100" />
           <span class="value-display">{{ frameQuality }}%</span>
         </div>
       </div>
 
-      <div class="checkbox-group">
-        <label>
-          <input type="checkbox" v-model="includeMetadata" />
-          包含元数据
-        </label>
-            <label>
-              <input type="checkbox" v-model="includeFrames" />
-              内嵌关键帧图片（会让 Markdown 很长）
-            </label>
+      <div class="panel-card">
+        <label>抽帧模式</label>
+        <div class="radio-group">
+          <label><input type="radio" v-model="frameMode" value="scene" /> 场景检测</label>
+          <label><input type="radio" v-model="frameMode" value="interval" /> 固定间隔</label>
+        </div>
+        <div class="checkbox-group stacked">
+          <label><input type="checkbox" v-model="includeMetadata" /> 包含元数据</label>
+          <label><input type="checkbox" v-model="includeFrames" /> 内嵌关键帧图片</label>
+        </div>
       </div>
 
-      <div class="api-config">
+      <div class="panel-card">
         <label>API 地址</label>
         <input type="text" v-model="apiBaseUrl" class="api-input" />
       </div>
-    </div>
 
-    <!-- 转换列表 -->
-    <div v-if="videos.length > 0" class="conversion-list">
-      <div class="list-header">
-        <h4>转换队列 ({{ videos.length }})</h4>
-        <div class="list-actions">
-          <button
-            class="btn-primary"
-            @click="startAllConversions"
-            :disabled="isConverting || videos.every(v => v.status !== 'pending')"
-          >
-            {{ isConverting ? '转换中...' : '开始转换' }}
-          </button>
-          <button class="btn-secondary" @click="clearAll">清空</button>
-        </div>
+      <button class="launch-button" :class="{ disabled: isConverting || videos.every(v => v.status !== 'pending') }" :disabled="isConverting || videos.every(v => v.status !== 'pending')" @click="startAllConversions">
+        {{ isConverting ? '转换中...' : '开始视频转换' }}
+      </button>
+    </template>
+
+    <template #preview>
+      <div v-if="videos.length === 0" class="empty-preview">
+        <div class="empty-mark">🎬</div>
+        <h3>等待视频进入任务区</h3>
+        <p>右侧负责转换进度、结果下载与元数据查看。</p>
       </div>
 
-      <div v-for="video in videos" :key="video.id" class="video-item">
-        <div class="item-header">
-          <span class="file-name">{{ video.file.name }}</span>
-          <span class="status-badge" :class="video.status">
-            {{ getStatusText(video.status) }}
-          </span>
-          <button
-            v-if="video.status !== 'processing'"
-            class="btn-remove"
-            @click="removeVideo(video.id)"
-          >
-            ✕
-          </button>
+      <div v-else class="result-stack">
+        <div v-if="completedVideos.length > 0" class="preview-cards">
+          <article v-for="video in completedVideos" :key="video.id" class="preview-card">
+            <p class="panel-caption">完成结果</p>
+            <h3>{{ video.file.name }}</h3>
+            <p>{{ video.result?.markdown_content ? '已生成 Markdown 输出' : '已生成 PDF 输出' }}</p>
+            <div v-if="video.result?.markdown_content" class="reader-panel">
+              <div class="reader-toolbar">
+                <h4 class="reader-title">Markdown 预览</h4>
+                <div class="reader-actions">
+                  <div class="reader-switcher">
+                    <button class="reader-switch" :class="{ active: previewMode === 'formatted' }" @click="previewMode = 'formatted'">阅读视图</button>
+                    <button class="reader-switch" :class="{ active: previewMode === 'source' }" @click="previewMode = 'source'">源码视图</button>
+                  </div>
+                </div>
+              </div>
+              <div
+                v-if="previewMode === 'formatted'"
+                class="reader-content reader-markdown"
+                v-html="renderMarkdownPreview(video.result.markdown_content)"
+              ></div>
+              <textarea
+                v-else
+                class="reader-source"
+                readonly
+                :value="video.result.markdown_content"
+              ></textarea>
+            </div>
+            <div class="item-actions">
+              <button v-if="video.result?.markdown_content" class="btn-small" @click="downloadMarkdown(video)">下载 Markdown</button>
+              <button v-if="video.result?.pdf_content" class="btn-small" @click="downloadPDF(video)">下载 PDF</button>
+            </div>
+          </article>
         </div>
 
-        <div class="progress-bar">
-          <div class="progress-fill" :style="{ width: video.progress + '%' }"></div>
-        </div>
+        <div class="conversion-list">
+          <div v-for="video in videos" :key="video.id" class="video-item">
+            <div class="item-header">
+              <span class="file-name">{{ video.file.name }}</span>
+              <span class="status-badge" :class="video.status">{{ getStatusText(video.status) }}</span>
+              <button v-if="video.status !== 'processing'" class="btn-remove" @click="removeVideo(video.id)">✕</button>
+            </div>
 
-        <div class="item-info">
-          <span>{{ (video.file.size / 1024 / 1024).toFixed(2) }} MB</span>
-          <span>{{ video.progress }}%</span>
-        </div>
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: video.progress + '%' }"></div>
+            </div>
 
-        <div v-if="video.statusMessage" class="status-message">
-          {{ video.statusMessage }}
-        </div>
+            <div class="item-info">
+              <span>{{ (video.file.size / 1024 / 1024).toFixed(2) }} MB</span>
+              <span>{{ video.progress }}%</span>
+            </div>
 
-        <div v-if="video.result" class="item-actions">
-          <button
-            v-if="video.result.markdown_content"
-            class="btn-small"
-            @click="downloadMarkdown(video)"
-          >
-            📥 下载 Markdown
-          </button>
-          <button
-            v-if="video.result.pdf_content"
-            class="btn-small"
-            @click="downloadPDF(video)"
-          >
-            📥 下载 PDF
-          </button>
-        </div>
+            <div v-if="video.statusMessage" class="status-message">{{ video.statusMessage }}</div>
 
-        <div v-if="video.error" class="error-message">
-          ❌ {{ video.error }}
-        </div>
+            <div v-if="video.result" class="item-actions">
+              <button v-if="video.result.markdown_content" class="btn-small" @click="downloadMarkdown(video)">📥 下载 Markdown</button>
+              <button v-if="video.result.pdf_content" class="btn-small" @click="downloadPDF(video)">📥 下载 PDF</button>
+            </div>
 
-        <div v-if="video.result?.metadata" class="metadata-preview">
-          <details>
-            <summary>查看元数据</summary>
-            <table>
-              <tr v-for="(value, key) in video.result.metadata" :key="key">
-                <td class="key">{{ key }}</td>
-                <td class="value">{{ formatValue(value) }}</td>
-              </tr>
-            </table>
-          </details>
+            <div v-if="video.error" class="error-message">❌ {{ video.error }}</div>
+
+            <div v-if="video.result?.metadata" class="metadata-preview">
+              <details>
+                <summary>查看元数据</summary>
+                <table>
+                  <tr v-for="(value, key) in video.result.metadata" :key="key">
+                    <td class="key">{{ key }}</td>
+                    <td class="value">{{ formatValue(value) }}</td>
+                  </tr>
+                </table>
+              </details>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </WorkbenchShell>
 </template>
 
 <script lang="ts">
@@ -553,7 +525,10 @@ function formatValue(value: any): string {
 }
 
 .upload-content {
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .upload-icon {
@@ -577,6 +552,24 @@ function formatValue(value: any): string {
   margin: 12px 0 0 0;
   font-size: 12px;
   color: #9ca3af;
+}
+
+.compact-upload {
+  padding: 28px 18px;
+  border-radius: 24px;
+}
+
+.compact-upload .upload-icon {
+  font-size: 42px;
+}
+
+.compact-upload .supported {
+  max-width: 260px;
+  line-height: 1.7;
+}
+
+.compact-upload .launch-button.compact {
+  margin-top: 2px;
 }
 
 .btn-primary,
@@ -844,6 +837,140 @@ function formatValue(value: any): string {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
+}
+
+.reader-panel {
+  margin: 16px 0;
+  border-radius: 24px;
+  border: 1px solid rgba(221, 228, 242, 0.9);
+  background: linear-gradient(180deg, rgba(248, 250, 255, 0.96), rgba(255, 255, 255, 0.98));
+  overflow: hidden;
+}
+
+.reader-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.reader-title {
+  margin: 0;
+  font-size: 14px;
+  color: #12203a;
+}
+
+.reader-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reader-switcher {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(240, 244, 255, 0.96);
+  border: 1px solid rgba(210, 219, 242, 0.92);
+}
+
+.reader-switch {
+  min-height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #7d88a3;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reader-switch.active {
+  background: #fff;
+  color: #12203a;
+  box-shadow: 0 8px 18px rgba(110, 125, 163, 0.14);
+}
+
+.reader-content,
+.reader-source {
+  min-height: 260px;
+  max-height: 520px;
+}
+
+.reader-content {
+  overflow: auto;
+  padding: 18px;
+}
+
+.reader-source {
+  width: 100%;
+  border: none;
+  resize: vertical;
+  padding: 18px;
+  box-sizing: border-box;
+  background: transparent;
+  color: #334155;
+  font: inherit;
+  line-height: 1.7;
+}
+
+.reader-markdown {
+  color: #334155;
+  line-height: 1.75;
+}
+
+.reader-markdown :deep(h1),
+.reader-markdown :deep(h2),
+.reader-markdown :deep(h3) {
+  margin: 0 0 12px;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.reader-markdown :deep(h1) {
+  font-size: 28px;
+}
+
+.reader-markdown :deep(h2) {
+  font-size: 22px;
+}
+
+.reader-markdown :deep(h3) {
+  font-size: 18px;
+}
+
+.reader-markdown :deep(p) {
+  margin: 0 0 14px;
+}
+
+.reader-markdown :deep(ul) {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+
+.reader-markdown :deep(li + li) {
+  margin-top: 6px;
+}
+
+.reader-markdown :deep(blockquote) {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-left: 4px solid rgba(99, 102, 241, 0.34);
+  border-radius: 14px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #475569;
+}
+
+.reader-markdown :deep(code) {
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.08);
+  color: #be123c;
+  font-family: 'Consolas', 'Courier New', monospace;
 }
 
 .error-message {
