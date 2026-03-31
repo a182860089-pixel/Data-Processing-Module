@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { renderMarkdownPreview } from '@/utils/markdown-preview';
 import WorkbenchShell from './WorkbenchShell.vue';
+import WorkbenchSummaryCard from './WorkbenchSummaryCard.vue';
 
 interface VideoConversionOptions {
   output_type: 'markdown' | 'pdf';
@@ -317,6 +318,16 @@ const downloadPDF = (video: ConversionResult) => {
   URL.revokeObjectURL(element.href);
 };
 
+const copyMarkdown = async (video: ConversionResult) => {
+  if (!video.result?.markdown_content?.trim()) return;
+
+  try {
+    await navigator.clipboard.writeText(video.result.markdown_content);
+  } catch (error) {
+    emit('error', error instanceof Error ? error.message : '复制失败');
+  }
+};
+
 const removeVideo = (id: string) => {
   const index = videos.value.findIndex(v => v.id === id);
   if (index !== -1) {
@@ -406,10 +417,20 @@ const clearAll = () => {
 
       <div v-else class="result-stack">
         <div v-if="completedVideos.length > 0" class="preview-cards">
-          <article v-for="video in completedVideos" :key="video.id" class="preview-card">
-            <p class="panel-caption">完成结果</p>
-            <h3>{{ video.file.name }}</h3>
-            <p>{{ video.result?.markdown_content ? '已生成 Markdown 输出' : '已生成 PDF 输出' }}</p>
+          <WorkbenchSummaryCard
+            v-for="video in completedVideos"
+            :key="video.id"
+            eyebrow="完成结果"
+            :title="video.file.name"
+            :description="video.result?.markdown_content ? '已生成 Markdown 输出' : '已生成 PDF 输出'"
+            compact-actions
+          >
+            <template #actions>
+              <button class="ghost-button" :disabled="!video.result?.markdown_content?.trim()" @click="copyMarkdown(video)">复制</button>
+              <button v-if="video.result?.markdown_content" class="launch-button compact" @click="downloadMarkdown(video)">下载</button>
+              <button v-else-if="video.result?.pdf_content" class="launch-button compact" @click="downloadPDF(video)">下载</button>
+            </template>
+
             <div v-if="video.result?.markdown_content" class="reader-panel">
               <div class="reader-toolbar">
                 <h4 class="reader-title">Markdown 预览</h4>
@@ -432,11 +453,7 @@ const clearAll = () => {
                 :value="video.result.markdown_content"
               ></textarea>
             </div>
-            <div class="item-actions">
-              <button v-if="video.result?.markdown_content" class="btn-small" @click="downloadMarkdown(video)">下载 Markdown</button>
-              <button v-if="video.result?.pdf_content" class="btn-small" @click="downloadPDF(video)">下载 PDF</button>
-            </div>
-          </article>
+          </WorkbenchSummaryCard>
         </div>
 
         <div class="conversion-list">
@@ -618,6 +635,22 @@ function formatValue(value: any): string {
 
 .btn-small:hover {
   background: #e5ebff;
+}
+
+.ghost-button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #8390ab;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ghost-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-remove {
